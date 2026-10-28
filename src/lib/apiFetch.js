@@ -16,29 +16,35 @@ export function buildQueryString(params = {}) {
   return queryString ? `?${queryString}` : "";
 }
 
+// 일반 객체({}) 또는 배열([])인지 확인 (FormData, Blob, URLSearchParams 등은 제외)
+function isJsonBody(body) {
+  if (Array.isArray(body)) return true;
+  if (body === null || typeof body !== "object") return false;
+  const proto = Object.getPrototypeOf(body);
+  return proto === Object.prototype || proto === null;
+}
+
 /**
- * fetch 래퍼 함수 (클라이언트 컴포넌트)
+ * fetch 래퍼 함수 (클라이언트 컴포넌트 전용)
  * @param {string} endpoint - API 경로 (예: '/cards/me')
- * @param {RequestInit & { next?: { revalidate?: number | false, tags?: string[] } }} options - fetch 옵션
+ * @param {RequestInit} options - fetch 옵션
  */
 export async function apiFetch(endpoint, options = {}) {
   const { body, headers: customHeaders, ...restOptions } = options;
   const url = `${BASE_URL}${endpoint}`;
 
-  // 1. FormData 여부 확인 (포토카드 이미지 업로드 대응)
-  const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
+  // 1. 헤더 준비 (Headers 인스턴스, 일반 객체 모두 지원)
+  const headers = new Headers(customHeaders);
 
-  const headers = {
-    ...(isFormData ? {} : { "Content-Type": "application/json" }),
-    ...customHeaders,
-  };
-
-  // 2. 일반 객체면 자동으로 JSON 문자열로 변환
-  const serializedBody = isFormData
-    ? body
-    : body && typeof body === "object"
-      ? JSON.stringify(body)
-      : body;
+  // 2. body 직렬화: 일반 객체/배열만 JSON으로 변환, 나머지(FormData 등)는 그대로 전달
+  let serializedBody = body;
+  if (isJsonBody(body)) {
+    serializedBody = JSON.stringify(body);
+    // JSON 본문을 실제로 보낼 때만 Content-Type 설정
+    if (!headers.has("Content-Type")) {
+      headers.set("Content-Type", "application/json");
+    }
+  }
 
   // 3. fetch 호출
   const res = await fetch(url, {
@@ -48,17 +54,18 @@ export async function apiFetch(endpoint, options = {}) {
     credentials: "include",
   });
 
-  // 4. 204 No Content (알림 전체 읽음 등) 즉시 종료
+  // 4. 204 No Content 즉시 종료
   if (res.status === 204) {
     return null;
   }
 
-  // 5. 안전한 JSON 파싱
+  // 5. JSON 파싱
   let json = null;
+  let parseFailed = false;
   try {
     json = await res.json();
   } catch {
-    json = null;
+    parseFailed = true;
   }
 
   // 6. 공통 에러 응답 처리: { error: { code, message, fieldErrors } }
@@ -66,13 +73,21 @@ export async function apiFetch(endpoint, options = {}) {
     const errorInfo = json?.error || {};
     const error = new Error(errorInfo.message || `API 요청 실패 (${res.status})`);
 
-    error.status = res.status; // 401, 400 등 HTTP 상태 코드
-    error.code = errorInfo.code || "UNKNOWN_ERROR"; // UNAUTHENTICATED, INVALID_INPUT_VALUE 등
-    error.fieldErrors = errorInfo.fieldErrors || {}; // 폼 유효성 에러 객체
+    error.status = res.status;
+    error.code = errorInfo.code || "UNKNOWN_ERROR";
+    error.fieldErrors = errorInfo.fieldErrors || {};
 
     throw error;
   }
 
-  // 7. 리턴
+  // 7. 성공(2xx)인데 JSON 파싱에 실패한 경우도 명확한 에러로 처리
+  if (parseFailed) {
+    const error = new Error("에러가 발생하였습니다.");
+    error.status = res.status;
+    error.code = "INVALID_RESPONSE";
+    error.fieldErrors = {};
+    throw error;
+  }
+
   return json;
 }
