@@ -1,0 +1,16 @@
+{
+  // 기본 포맷터를 Prettier로 지정
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // 저장 시 자동으로 포맷팅 (Prettier 작동)
+  "editor.formatOnSave": true,
+
+  // 저장 시 ESLint의 자동 수정(Fix) 기능 작동 (Perfectionist 정렬 등)
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // 바닐라 익스트랙트 .css.js 파일도 자바스크립트로 인식
+  "files.associations": {
+    "*.css.js": "javascript"
+  }
+}
