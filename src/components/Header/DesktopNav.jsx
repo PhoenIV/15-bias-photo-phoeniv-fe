@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { IconButton } from "@/components/common/IconButton";
+import { IconButton } from "@/components/ui/IconButton";
 
 import { LogoutButton } from "./HeaderButtons";
 
