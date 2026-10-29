@@ -8,10 +8,11 @@ export default function Logo({ className }) {
     <Link href="/" className={className}>
       <Image
         alt="최애의 포토"
-        height={24}
+        height={25}
         priority
         src="/images/logo.svg"
-        width={138}
+        unoptimized
+        width={139}
         className={styles.logoImage}
       />
     </Link>
