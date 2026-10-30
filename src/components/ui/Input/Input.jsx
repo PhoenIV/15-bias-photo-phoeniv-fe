@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 import clsx from "clsx";
 
 import * as styles from "./Input.css.js";
@@ -20,13 +22,23 @@ export default function Input({
   variant = "default",
   ...restProps
 }) {
+  const inputId = useId();
+  const errorId = error ? `${inputId}-error` : undefined;
   const hasError = Boolean(error);
 
   return (
     <div className={clsx(styles.wrapper, className)}>
-      {label && <label className={styles.labelRecipe({ variant })}>{label}</label>}
+      {label && (
+        <label htmlFor={inputId} className={styles.labelRecipe({ variant })}>
+          {label}
+        </label>
+      )}
+
       <div className={styles.inputContainer}>
         <input
+          id={inputId}
+          aria-errormessage={errorId}
+          aria-invalid={hasError}
           className={styles.inputRecipe({
             error: hasError,
             hasRightElement: Boolean(rightElement),
@@ -36,7 +48,12 @@ export default function Input({
         />
         {rightElement && <div className={styles.rightElement}>{rightElement}</div>}
       </div>
-      {hasError && <p className={styles.errorMessage}>{error}</p>}
+
+      {hasError && (
+        <p id={errorId} className={styles.errorMessage}>
+          {error}
+        </p>
+      )}
     </div>
   );
 }

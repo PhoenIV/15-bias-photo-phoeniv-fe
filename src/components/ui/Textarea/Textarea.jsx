@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 import clsx from "clsx";
 
 import * as styles from "./Textarea.css.js";
@@ -11,13 +13,29 @@ import * as styles from "./Textarea.css.js";
  * @param {string} [props.className] - 외부 주입 클래스
  */
 export default function Textarea({ className, error, label, ...restProps }) {
+  const inputId = useId();
+  const errorId = error ? `${inputId}-error` : undefined;
   const hasError = Boolean(error);
 
   return (
     <div className={clsx(styles.wrapper, className)}>
-      {label && <label className={styles.label}>{label}</label>}
-      <textarea className={styles.textareaRecipe({ error: hasError })} {...restProps} />
-      {hasError && <p className={styles.errorMessage}>{error}</p>}
+      {label && (
+        <label htmlFor={inputId} className={styles.label}>
+          {label}
+        </label>
+      )}
+      <textarea
+        id={inputId}
+        aria-errormessage={errorId}
+        aria-invalid={hasError}
+        className={styles.textareaRecipe({ error: hasError })}
+        {...restProps}
+      />
+      {hasError && (
+        <p id={errorId} className={styles.errorMessage}>
+          {error}
+        </p>
+      )}
     </div>
   );
 }

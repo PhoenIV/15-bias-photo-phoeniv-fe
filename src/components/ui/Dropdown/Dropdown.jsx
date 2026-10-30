@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 import clsx from "clsx";
 
@@ -32,6 +32,9 @@ export default function Dropdown({
   placeholder = "선택해 주세요",
   value,
 }) {
+  const dropdownId = useId();
+  const labelId = label ? `${dropdownId}-label` : undefined;
+
   const [isOpen, setIsOpen] = useState(false);
   const [internalValue, setInternalValue] = useState(defaultValue);
   const wrapperRef = useRef(null);
@@ -41,6 +44,7 @@ export default function Dropdown({
   const selectedOption = options.find((opt) => opt.value === currentValue);
   const hasError = Boolean(error);
 
+  // 드롭다운 바깥 영역 클릭 시 메뉴 닫기
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
@@ -69,11 +73,17 @@ export default function Dropdown({
 
   return (
     <div ref={wrapperRef} className={clsx(styles.wrapper, className)}>
-      {label && <label className={styles.label}>{label}</label>}
+      {label && (
+        <label id={labelId} className={styles.label}>
+          {label}
+        </label>
+      )}
 
       <button
+        id={dropdownId}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
+        aria-labelledby={labelId}
         disabled={disabled}
         type="button"
         className={styles.triggerRecipe({
@@ -99,8 +109,16 @@ export default function Dropdown({
               key={opt.value}
               aria-selected={opt.value === currentValue}
               role="option"
+              tabIndex={0} // 키보드 접근성
               className={styles.menuItem}
               onClick={() => handleSelect(opt.value)}
+              onKeyDown={(e) => {
+                // 키보드 접근성
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handleSelect(opt.value);
+                }
+              }}
             >
               {opt.label}
             </li>

@@ -33,7 +33,7 @@ export const buttonRecipe = recipe({
         selectors: { "&:hover:not(:disabled)": { opacity: 0.9 } },
       },
       secondary: {
-        fontWeight: vars.fontWeight.medium, // secondary는 모두 medium체
+        fontWeight: vars.fontWeight.regular,
         backgroundColor: vars.colors.black,
         color: vars.colors.white,
         border: `1px solid ${vars.colors.gray100}`,
