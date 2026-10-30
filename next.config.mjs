@@ -10,12 +10,8 @@ const nextConfig = {
   reactStrictMode: true,
   reactCompiler: true,
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "image.tmdb.org",
-      },
-    ],
+    loader: "custom",
+    loaderFile: "./src/utils/cloudinaryLoader.js",
   },
 };
 
