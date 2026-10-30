@@ -42,7 +42,7 @@ const eslintConfig = defineConfig([
             {
               // 별칭(@)을 사용하는 내부 로직
               groupName: "internal-logic",
-              elementNamePattern: ["^@/(hooks|utils|store|api|lib|constants)/.*"],
+              elementNamePattern: ["^@/(hooks|utils|store|api|lib|constants|services|styles)/.*"],
             },
             {
               // 별칭(@)을 사용하는 내부 컴포넌트

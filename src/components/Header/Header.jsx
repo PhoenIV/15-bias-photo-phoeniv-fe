@@ -2,8 +2,8 @@ import Link from "next/link";
 
 import clsx from "clsx";
 
-import { IconButton } from "@/components/common/IconButton";
 import { Logo } from "@/components/common/Logo";
+import { IconButton } from "@/components/ui/IconButton";
 
 import DesktopNav from "./DesktopNav";
 import { MenuButton } from "./HeaderButtons";

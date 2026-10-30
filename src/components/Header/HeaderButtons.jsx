@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { IconButton } from "@/components/common/IconButton";
+import { IconButton } from "@/components/ui/IconButton";
 
 import * as styles from "./Header.css";
 
