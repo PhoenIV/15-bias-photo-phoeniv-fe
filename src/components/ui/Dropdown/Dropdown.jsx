@@ -38,6 +38,7 @@ export default function Dropdown({
   const [isOpen, setIsOpen] = useState(false);
   const [internalValue, setInternalValue] = useState(defaultValue);
   const wrapperRef = useRef(null);
+  const triggerRef = useRef(null);
 
   const isControlled = value !== undefined;
   const currentValue = isControlled ? value : internalValue;
@@ -81,6 +82,7 @@ export default function Dropdown({
 
       <button
         id={dropdownId}
+        ref={triggerRef}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-labelledby={labelId}
@@ -117,6 +119,7 @@ export default function Dropdown({
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
                   handleSelect(opt.value);
+                  triggerRef.current?.focus();
                 }
               }}
             >

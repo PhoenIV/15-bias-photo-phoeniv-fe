@@ -21,12 +21,12 @@ export default function SearchInput({
   ...restProps
 }) {
   const handleKeyDown = (e) => {
-    // 한글 조합 중일 때 엔터키가 두 번 먹히는 현상 방지
-    if (e.nativeEvent.isComposing) return;
-
-    if (e.key === "Enter" && onSearch) {
+    // Enter키를 눌렀고, onSearch가 있고, 한글 조합 중이 아닐 때만 검색 실행
+    if (e.key === "Enter" && onSearch && !e.nativeEvent.isComposing) {
       onSearch(e.currentTarget.value);
     }
+
+    // 외부에서 주입된 onKeyDown은 항상 정상적으로 전달됨
     if (onKeyDown) {
       onKeyDown(e);
     }
