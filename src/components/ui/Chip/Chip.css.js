@@ -1,6 +1,6 @@
 import { recipe } from "@vanilla-extract/recipes";
 
-import { vars } from "@/styles/theme.css.js";
+import { media, vars } from "@/styles/theme.css.js";
 
 export const chipRecipe = recipe({
   base: {
@@ -14,18 +14,14 @@ export const chipRecipe = recipe({
 
   variants: {
     variant: {
-      outlined: {
-        border: "1px solid",
-        gap: "10px",
-      },
-      ghost: {
-        border: "none",
-      },
+      outlined: { border: "1px solid", gap: "10px" },
+      ghost: { border: "none" },
     },
     size: {
-      lg: {},
-      md: {},
-      sm: {},
+      responsive: {}, // 화면 크기에 따라 자동 전환 (모바일 → 태블릿 → PC)
+      lg: {}, // PC 값 고정
+      md: {}, // 태블릿 값 고정
+      sm: {}, // 모바일 값 고정
     },
     color: {
       default: { borderColor: vars.colors.gray400, color: vars.colors.gray400 },
@@ -37,7 +33,7 @@ export const chipRecipe = recipe({
   },
 
   compoundVariants: [
-    // 1. 테두리 있는 타입 (lg, md, sm)
+    // --- outlined ---
     {
       variants: { variant: "outlined", size: "lg" },
       style: {
@@ -62,8 +58,21 @@ export const chipRecipe = recipe({
         fontWeight: vars.fontWeight.light,
       },
     },
+    {
+      // 모바일 sm → 태블릿 md → PC lg 값
+      variants: { variant: "outlined", size: "responsive" },
+      style: {
+        padding: "6px 10px",
+        fontSize: vars.fontSize[12],
+        fontWeight: vars.fontWeight.light,
+        "@media": {
+          [media.tablet]: { fontSize: vars.fontSize[14] },
+          [media.pc]: { padding: "8px 20px", fontSize: vars.fontSize[16] },
+        },
+      },
+    },
 
-    // 2. 테두리 없는 타입 (lg, md, sm)
+    // --- ghost ---
     {
       variants: { variant: "ghost", size: "lg" },
       style: {
@@ -86,6 +95,18 @@ export const chipRecipe = recipe({
         padding: "4px 8px",
         fontSize: vars.fontSize[10],
         fontWeight: vars.fontWeight.regular,
+      },
+    },
+    {
+      variants: { variant: "ghost", size: "responsive" },
+      style: {
+        padding: "4px 8px",
+        fontSize: vars.fontSize[10],
+        fontWeight: vars.fontWeight.regular,
+        "@media": {
+          [media.tablet]: { fontSize: vars.fontSize[14] },
+          [media.pc]: { padding: "4px 10px", fontSize: vars.fontSize[16] },
+        },
       },
     },
   ],
