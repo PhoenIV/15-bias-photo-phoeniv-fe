@@ -38,7 +38,12 @@ export default function AlertModal({
       {title && <h2 className={styles.alertTitle}>{title}</h2>}
       {description && <p className={styles.alertDesc}>{description}</p>}
       <div className={styles.alertButtonWrapper}>
-        <Button size="responsive" thickness="thin" variant="primary" onClick={handleConfirm}>
+        <Button
+          fullWidth
+          variant="primary"
+          className={styles.alertButtonOverride}
+          onClick={handleConfirm}
+        >
           {confirmText}
         </Button>
       </div>

@@ -33,15 +33,15 @@ export const contentRecipe = recipe({
     variant: {
       alert: {
         maxWidth: "345px",
-        padding: "60px 32px 40px 32px",
+        padding: "60px 20px 40px 20px",
         "@media": {
           [media.tablet]: {
             maxWidth: "400px",
-            padding: "60px 60px 40px 60px",
+            padding: "60px 32px 40px 32px",
           },
           [media.pc]: {
             maxWidth: "560px",
-            padding: "80px 120px 60px 120px",
+            padding: "80px 60px 60px 60px",
           },
         },
       },
@@ -136,7 +136,18 @@ export const alertButtonWrapper = style({
   maxWidth: "120px",
   "@media": {
     [media.pc]: {
-      maxWidth: "150px",
+      maxWidth: "170px",
+    },
+  },
+});
+
+export const alertButtonOverride = style({
+  height: "55px !important",
+  fontSize: `${vars.fontSize[16]} !important`,
+  "@media": {
+    [media.pc]: {
+      height: "60px !important",
+      fontSize: `${vars.fontSize[18]} !important`,
     },
   },
 });
