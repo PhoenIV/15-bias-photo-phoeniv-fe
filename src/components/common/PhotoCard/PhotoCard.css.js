@@ -19,7 +19,7 @@ export const cardWrapperRecipe = recipe({
     gap: "10px",
     "@media": {
       [media.tablet]: { gap: "20px" },
-      [media.pc]: { pgap: "25px" },
+      [media.pc]: { gap: "25px" },
     },
   },
   variants: {

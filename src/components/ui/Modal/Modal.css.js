@@ -20,6 +20,10 @@ export const contentRecipe = recipe({
   base: {
     position: "relative",
     width: "100%",
+    maxHeight: "calc(100dvh - 32px)",
+    overflowY: "auto",
+    overscrollBehavior: "contain",
+    boxSizing: "border-box",
     backgroundColor: vars.colors.gray500,
     borderRadius: "2px",
     color: vars.colors.white,
