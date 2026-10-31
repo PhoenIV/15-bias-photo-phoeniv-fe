@@ -1,10 +1,7 @@
 import clsx from "clsx";
 
-import { GlobalLayout } from "@/components/layouts/GlobalLayout";
-
-import "@/styles/global.css.js";
-
 import { baskinRobbins, notoSansKr } from "@/styles/fonts";
+import "@/styles/global.css.js";
 
 export const metadata = {
   title: "최애의 포토",
@@ -16,9 +13,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ko" className={clsx(notoSansKr.variable, baskinRobbins.variable)}>
-      <body>
-        <GlobalLayout>{children}</GlobalLayout>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
