@@ -117,7 +117,7 @@ color: vars.colors.main`,
 />`,
 
   exchangeReceived: `<ExchangePhotoCard
-  imageId=""samples/dessert-on-a-plate""
+  imageId="samples/dessert-on-a-plate"
   title="스페인 여행"
   grade="COMMON"
   category="MD"

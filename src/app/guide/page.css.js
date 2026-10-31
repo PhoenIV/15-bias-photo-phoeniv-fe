@@ -221,10 +221,13 @@ export const colorToken = style({
 
 export const cardGrid = style({
   display: "grid",
-  gridTemplateColumns: "repeat(2, minmax(0, 1fr))", // 모바일, 태블릿 기본 2열
+  gridTemplateColumns: "minmax(0, 1fr)", // 모바일 기본 1열
   gap: "16px",
   width: "100%",
   "@media": {
+    [media.tablet]: {
+      gridTemplateColumns: "repeat(2, minmax(0, 1fr))", // 태블릿 2열
+    },
     [media.pc]: {
       gridTemplateColumns: "repeat(3, minmax(0, 1fr))", // PC 환경(1024px 이상)에서는 3열
     },
