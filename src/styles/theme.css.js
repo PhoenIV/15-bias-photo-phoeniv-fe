@@ -52,6 +52,21 @@ export const vars = createGlobalTheme(":root", {
     medium: "24px",
     large: "40px",
   },
+
+  /**
+   * Z-Index 컨벤션
+   *
+   * 1. 전역(Global) 팝업 요소들은 반드시 아래의 vars.zIndex 토큰을 사용하세요.
+   * 2. 포토카드 내부 뱃지 등 특정 컴포넌트 안에만 있는 지역(Local) z-index는
+   *    테마에 추가하지 말고, 해당 CSS 파일에서 10~99 사이의 "두 자리 숫자"로만 하드코딩해서 사용해 주세요.
+   */
+  zIndex: {
+    base: "1", // 기본
+    dropdown: "100", // 드랍다운
+    sticky: "200", // 스크롤 헤더
+    modal: "1000", // 모달
+    toast: "9999", // 토스트
+  },
 });
 
 // JS 상수로 쓸 브레이크 포인트 (미디어 쿼리용)

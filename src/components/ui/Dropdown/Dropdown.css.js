@@ -93,7 +93,7 @@ export const menuList = style({
   backgroundColor: vars.colors.black,
   border: `1px solid ${vars.colors.gray200}`,
   borderRadius: "2px",
-  zIndex: 50,
+  zIndex: vars.zIndex.dropdown,
   maxHeight: "240px",
   overflowY: "auto",
   listStyle: "none",
