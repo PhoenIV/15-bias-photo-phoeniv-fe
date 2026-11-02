@@ -17,7 +17,6 @@ export const signupContainer = style({
   width: "100%",
   maxWidth: "345px",
   minHeight: "100dvh",
-  border: `1px solid ${vars.colors.white}`,
 
   "@media": {
     [media.tablet]: {
