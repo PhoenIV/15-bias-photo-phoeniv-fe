@@ -32,6 +32,7 @@ export const vars = createGlobalTheme(":root", {
     24: "1.5rem", // 24px
     28: "1.75rem", // 28px
     32: "2rem", // 32px
+    36: "2.25rem", // 36px
     40: "2.5rem", // 40px
     46: "2.875rem", // 46px
     48: "3rem", // 48px
