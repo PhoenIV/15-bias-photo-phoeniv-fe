@@ -6,6 +6,7 @@ import { buttonRecipe } from "./Button.css";
  * 공통 버튼 컴포넌트
  *
  * @param {Object} props
+ * @param {React.ElementType} [props.as="button"] 렌더링할 HTML 태그나 Next.js Link 컴포넌트
  * @param {React.ReactNode} props.children - 버튼 내부에 들어갈 내용
  * @param {"primary" | "secondary"} [props.variant="primary"] - 버튼 스타일
  * @param {"thick" | "thin"} [props.thickness="thick"] - 버튼 두께
@@ -16,6 +17,7 @@ import { buttonRecipe } from "./Button.css";
  * @param {"button" | "submit" | "reset"} [props.type="button"] - 버튼의 기본 HTML 타입
  */
 export default function Button({
+  as: Component = "button", // 외부에서 주입받은 태그로 렌더링합니다. (기본값은 'button')
   children,
   variant = "primary",
   thickness = "thick",
@@ -27,14 +29,15 @@ export default function Button({
   ...restProps
 }) {
   return (
-    <button
+    <Component
       disabled={disabled}
-      type={type}
+      // <a> 태그나 <Link>일 때는 type="button" 속성이 들어가면 웹 표준에 어긋나므로 분기 처리
+      type={Component === "button" ? type : undefined}
       className={clsx(buttonRecipe({ variant, thickness, size }), className)}
       style={fullWidth ? { width: "100%" } : undefined}
       {...restProps}
     >
       {children}
-    </button>
+    </Component>
   );
 }
