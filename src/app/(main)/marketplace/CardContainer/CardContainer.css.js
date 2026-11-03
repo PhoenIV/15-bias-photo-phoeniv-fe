@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-import { media, vars } from "@/styles/theme.css.js";
+import { media } from "@/styles/theme.css.js";
 
 export const container = style({
   display: "grid",
@@ -18,5 +18,3 @@ export const container = style({
     },
   },
 });
-
-export const photoCard = style({});
