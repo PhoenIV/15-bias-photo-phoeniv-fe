@@ -1,7 +1,7 @@
 export default function cloudinaryLoader({ src, width, quality }) {
   // 로컬 이미지 예외 처리
   if (src.startsWith("/")) {
-    return src;
+    return `${src}?w=${width}&q=${quality || 75}`;
   }
 
   // 그 외(Cloudinary)
@@ -12,5 +12,6 @@ export default function cloudinaryLoader({ src, width, quality }) {
   const params = ["f_auto", "c_limit", `w_${width}`, `q_${qOption}`];
 
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+
   return `https://res.cloudinary.com/${cloudName}/image/upload/${params.join(",")}/${src}`;
 }
