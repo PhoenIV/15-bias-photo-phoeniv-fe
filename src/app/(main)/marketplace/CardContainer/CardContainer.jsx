@@ -53,7 +53,7 @@ export default function CardContainer({ params }) {
             key={sale.id}
             category={sale.card.genre}
             grade={sale.card.grade}
-            imageId={sale.card.imagePublicId}
+            imageId="cld-sample-5" // {sale.card.imagePublicId}
             price={sale.price}
             remainCount={sale.remainingQuantity}
             title={sale.card.name}

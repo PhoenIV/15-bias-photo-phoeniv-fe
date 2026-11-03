@@ -50,7 +50,7 @@ export const sellButton = style({
   right: "15px",
   bottom: "15px",
   width: "100%",
-  maxWidth: "713px",
+  maxWidth: "345px",
   zIndex: "100", // 모바일 화면에서 포토카드 사진 뒤로 가려져서 드롭다운과 같은 수준으로 하드코딩
   whiteSpace: "nowrap",
   "@media": {
