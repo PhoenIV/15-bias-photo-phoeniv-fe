@@ -40,8 +40,7 @@ export default function LoginPage() {
         //여기 안에 들어가는 error.fieldErrors는 apiFetch가 던지는 에러로서
         //미리 정해진 거임
         //catch에서 꺼낸 error는 리턴문에선 쓸 수 없음 따라서 fieldError를 써야됨
-      }
-      if (error.code === "INVALID_CREDENTIALS") {
+      } else if (error.code === "INVALID_CREDENTIALS") {
         setLoginError(error.message);
       } else {
         setLoginError(error.status ? error.message : "네트워크 오류가 발생했습니다.");
@@ -86,7 +85,14 @@ export default function LoginPage() {
             type="submit"
             className={styles.loginBtn}
           >
-            {isLoading ? <span aria-label="로그인중" className={styles.spinner} /> : "로그인"}
+            {isLoading ? (
+              <span role="status">
+                <span aria-hidden="true" className={styles.spinner} />
+                <span className={styles.srOnly}>로그인 중</span>
+              </span>
+            ) : (
+              "로그인"
+            )}
           </Button>
           <div className={styles.navRegister}>
             <div className={styles.text}>최애의 포토가 처음이신가요?</div>

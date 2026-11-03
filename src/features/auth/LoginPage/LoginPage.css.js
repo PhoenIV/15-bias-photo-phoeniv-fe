@@ -85,10 +85,24 @@ const spin = keyframes({
 });
 
 export const spinner = style({
+  display: "block",
   width: "24px",
   height: "24px",
   border: "3px solid currentColor",
   borderTopColor: "transparent",
   borderRadius: "50%",
   animation: `${spin} 0.8s linear infinite`,
+});
+
+// 화면에서는 숨기고 스크린 리더에게만 읽히게 하는 스타일
+export const srOnly = style({
+  position: "absolute",
+  width: "1px",
+  height: "1px",
+  padding: 0,
+  margin: "-1px",
+  overflow: "hidden",
+  clip: "rect(0, 0, 0, 0)",
+  whiteSpace: "nowrap",
+  border: 0,
 });
