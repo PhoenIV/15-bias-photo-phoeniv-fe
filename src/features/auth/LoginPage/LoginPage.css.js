@@ -1,4 +1,4 @@
-import { globalStyle, style } from "@vanilla-extract/css";
+import { globalStyle, keyframes, style } from "@vanilla-extract/css";
 
 import { media, vars } from "@/styles/theme.css.js";
 
@@ -53,12 +53,13 @@ export const navRegister = style({
   gap: "10px",
 });
 
-export const buttonText = style({
+export const loginBtn = style({
   color: vars.colors.black,
   fontFamily: vars.fonts.base,
   fontSize: vars.fontSize[18],
   fontWeight: vars.fontWeight.bold,
   lineHeight: "normal",
+  cursor: "pointer",
 });
 
 export const text = style({
@@ -75,4 +76,19 @@ export const link = style({
   fontWeight: vars.fontWeight.regular,
   lineHeight: "normal",
   textDecoration: "underline",
+});
+
+const spin = keyframes({
+  "0%": { transform: "rotate(0deg) scale(1)", opacity: 0.4 },
+  "50%": { transform: "rotate(180deg) scale(0.5)", opacity: 1 },
+  "100%": { transform: "rotate(360deg) scale(1)", opacity: 0.4 },
+});
+
+export const spinner = style({
+  width: "24px",
+  height: "24px",
+  border: "3px solid currentColor",
+  borderTopColor: "transparent",
+  borderRadius: "50%",
+  animation: `${spin} 0.8s linear infinite`,
 });
