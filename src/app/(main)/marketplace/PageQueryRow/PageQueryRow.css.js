@@ -60,6 +60,7 @@ export const filters = style({
 
 export const filter = style({
   height: "22px",
+  whiteSpace: "nowrap",
 });
 
 export const mobileFilter = style({

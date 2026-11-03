@@ -1,13 +1,12 @@
 "use client";
 import Image from "next/image";
-import { useEffect } from "react";
 
 import { Dropdown } from "@/components/ui/Dropdown/index.js";
 import { SearchInput } from "@/components/ui/SearchInput";
 
 import * as styles from "./PageQueryRow.css.js";
 
-export default function PageQueryRow() {
+export default function PageQueryRow({ onSearch, onFilterChange, onSortChange }) {
   // 필터에 사용할 상수들
   const grade = {
     value: "grade",
@@ -37,6 +36,7 @@ export default function PageQueryRow() {
   };
   const excludeSoldOut = {
     value: "excludeSoldOut",
+    defaultValue: "include",
     options: [
       { label: "품절 포함", value: "include" },
       { label: "품절 제외", value: "exclude" },
@@ -56,18 +56,20 @@ export default function PageQueryRow() {
     ],
   };
 
-  useEffect(() => {}, []);
-
   return (
     <div className={styles.pageQueryRow}>
-      <SearchInput className={styles.search} />
+      <SearchInput className={styles.search} onSearch={onSearch} />
       <div className={styles.filters}>
         {filters.map((filter) => (
           <Dropdown
             key={filter.value}
+            defaultValue={filter.defaultValue ?? ""}
             options={filter.options}
             placeholder={filter.placeholder}
             className={styles.filter}
+            onChange={(value) => {
+              onFilterChange(filter.value, value);
+            }}
           />
         ))}
       </div>
@@ -75,7 +77,12 @@ export default function PageQueryRow() {
         <Image alt="검색 필터" height={25} src="/images/ic-filter.svg" width={25} />
       </button>
       <div className={styles.blankSpace}></div>
-      <Dropdown defaultValue={sort.defaultValue} options={sort.options} className={styles.sort} />
+      <Dropdown
+        defaultValue={sort.defaultValue}
+        options={sort.options}
+        className={styles.sort}
+        onChange={onSortChange}
+      />
     </div>
   );
 }
