@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import { useEffect } from "react";
 
 import { Dropdown } from "@/components/ui/Dropdown/index.js";
@@ -60,8 +60,8 @@ export default function PageQueryRow() {
 
   return (
     <div className={styles.pageQueryRow}>
-      <div className={styles.leftArea}>
-        <SearchInput />
+      <SearchInput className={styles.search} />
+      <div className={styles.filters}>
         {filters.map((filter) => (
           <Dropdown
             key={filter.value}
@@ -71,9 +71,11 @@ export default function PageQueryRow() {
           />
         ))}
       </div>
-      <div className={styles.rightArea}>
-        <Dropdown defaultValue={sort.defaultValue} options={sort.options} className={styles.sort} />
-      </div>
+      <button aria-label="필터 열기" className={styles.mobileFilter}>
+        <Image alt="검색 필터" height={25} src="/images/ic-filter.svg" width={25} />
+      </button>
+      <div className={styles.blankSpace}></div>
+      <Dropdown defaultValue={sort.defaultValue} options={sort.options} className={styles.sort} />
     </div>
   );
 }
