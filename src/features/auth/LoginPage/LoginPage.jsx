@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation.js";
 import { useState } from "react";
 
 import { login } from "@/services/authService.js";
@@ -15,6 +16,7 @@ import { PasswordInput } from "@/components/ui/PasswordInput";
 import * as styles from "./LoginPage.css.js";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +36,7 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       const { user } = await login({ email, password });
+      router.push("/marketplace"); //로그인 요청 성공 후 이동
     } catch (error) {
       if (error.code === "VALIDATION_FAILED") {
         setFieldError(error.fieldErrors);
