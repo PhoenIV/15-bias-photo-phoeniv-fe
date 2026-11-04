@@ -41,6 +41,7 @@ export default function SignupPage() {
       const { user } = await signup({ email, nickname, password, passwordConfirm });
       router.push("/marketplace");
     } catch (error) {
+      setIsLoading(false); //중복요청 방지
       //서버에서 보내는 에러코드가 있는지 판별
       const isFieldErrorCode =
         error.code === "VALIDATION_FAILED" ||
@@ -56,8 +57,6 @@ export default function SignupPage() {
       } else {
         setSignupError(error.status ? error.message : "네트워크 오류가 발생했습니다.");
       }
-    } finally {
-      setIsLoading(false);
     }
   };
 
