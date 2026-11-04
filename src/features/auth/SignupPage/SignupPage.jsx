@@ -41,11 +41,17 @@ export default function SignupPage() {
       const { user } = await signup({ email, nickname, password, passwordConfirm });
       router.push("/marketplace");
     } catch (error) {
-      if (
+      //서버에서 보내는 에러코드가 있는지 판별
+      const isFieldErrorCode =
         error.code === "VALIDATION_FAILED" ||
         error.code === "EMAIL_DUPLICATE" ||
-        error.code === "NICKNAME_DUPLICATE"
-      ) {
+        error.code === "NICKNAME_DUPLICATE";
+
+      //fieldErrors가 빈 객체인지 판별
+      const hasFieldErrors = Object.keys(error.fieldErrors ?? {}).length !== 0;
+
+      //fieldErrors가 빈 객체여도 error.message를 띄워주기 위해
+      if (isFieldErrorCode && hasFieldErrors) {
         setFieldError(error.fieldErrors);
       } else {
         setSignupError(error.status ? error.message : "네트워크 오류가 발생했습니다.");
@@ -56,13 +62,21 @@ export default function SignupPage() {
   };
 
   //onChange안에 들어갈 함수
-  const handleChange = (field, setter) => (event) => {
-    //입력값을 상태로 저장
-    setter(event.target.value);
+  const handleChange =
+    (field, setter, linkedFields = []) =>
+    (event) => {
+      setter(event.target.value);
 
-    //검증 후 재 입력할 때 fieldError를 비워주는 역할
-    setFieldError((prev) => ({ ...prev, [field]: "" }));
-  };
+      //검증 후 재 입력할 때 해당 필드와 연관된 필드의 fieldError를 비워주는 역할
+      setFieldError((prev) => {
+        const next = { ...prev, [field]: "" };
+
+        linkedFields.forEach((linked) => {
+          next[linked] = "";
+        });
+        return next;
+      });
+    };
 
   return (
     <>
@@ -71,6 +85,7 @@ export default function SignupPage() {
           <Logo className={styles.logoSize} />
           <div className={styles.formContainer}>
             <Input
+              disabled={isLoading}
               error={fieldError.email}
               label="이메일"
               placeholder="이메일을 입력해주세요"
@@ -78,6 +93,7 @@ export default function SignupPage() {
               onChange={handleChange("email", setEmail)}
             />
             <Input
+              disabled={isLoading}
               error={fieldError.nickname}
               label="닉네임"
               placeholder="닉네임을 입력해주세요"
@@ -85,13 +101,15 @@ export default function SignupPage() {
               onChange={handleChange("nickname", setNickname)}
             />
             <PasswordInput
+              disabled={isLoading}
               error={fieldError.password}
               label="비밀번호"
               placeholder="8자 이상 입력해주세요"
               value={password}
-              onChange={handleChange("password", setPassword)}
+              onChange={handleChange("password", setPassword, ["passwordConfirm"])}
             />
             <PasswordInput
+              disabled={isLoading}
               error={fieldError.passwordConfirm}
               label="비밀번호 확인"
               placeholder="비밀번호를 한번 더 입력해주세요"
