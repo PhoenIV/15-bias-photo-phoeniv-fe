@@ -1,10 +1,14 @@
 "use client";
 
+userKeys;
 import Link from "next/link";
 import { useRouter } from "next/navigation.js";
 import { useState } from "react";
 
+import { useQueryClient } from "@tanstack/react-query";
+
 import { login } from "@/services/authService.js";
+import { userKeys } from "@/services/queryKeys.js";
 import { validateLogin } from "@/utils/validators.js";
 
 import { Logo } from "@/components/common/Logo";
@@ -16,6 +20,7 @@ import { PasswordInput } from "@/components/ui/PasswordInput";
 import * as styles from "./LoginPage.css.js";
 
 export default function LoginPage() {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,6 +41,8 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       const { user } = await login({ email, password });
+      queryClient.setQueryData(userKeys.me(), user); //user 데이터를 캐시에 담는 과정
+
       router.push("/marketplace"); //로그인 요청 성공 후 이동
     } catch (error) {
       if (error.code === "VALIDATION_FAILED") {
