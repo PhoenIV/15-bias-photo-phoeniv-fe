@@ -38,6 +38,7 @@ export default function LoginPage() {
       const { user } = await login({ email, password });
       router.push("/marketplace"); //로그인 요청 성공 후 이동
     } catch (error) {
+      setIsLoading(false); //중복요청 방지: 한번 보낸 요청이 실패해야 가입하기 버튼의 잠금이 풀림
       if (error.code === "VALIDATION_FAILED") {
         setFieldError(error.fieldErrors);
         //여기 안에 들어가는 error.fieldErrors는 apiFetch가 던지는 에러로서
@@ -48,8 +49,6 @@ export default function LoginPage() {
       } else {
         setLoginError(error.status ? error.message : "네트워크 오류가 발생했습니다.");
       }
-    } finally {
-      setIsLoading(false);
     }
   };
 
