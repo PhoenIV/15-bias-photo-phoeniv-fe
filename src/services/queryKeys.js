@@ -9,3 +9,9 @@ export const userKeys = {
   all: ["users"],
   me: () => [...userKeys.all, "me"],
 };
+
+export const saleKeys = {
+  all: ["sales"],
+  lists: (params = {}) => [...saleKeys.all, "list", params],
+  detail: (id) => [...saleKeys.all, "detail", id],
+};
