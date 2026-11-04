@@ -1,4 +1,5 @@
 import { globalStyle, style } from "@vanilla-extract/css";
+import { keyframes } from "@vanilla-extract/css";
 
 import { media, vars } from "@/styles/theme.css.js";
 
@@ -75,4 +76,33 @@ export const link = style({
   fontWeight: vars.fontWeight.regular,
   lineHeight: "normal",
   textDecoration: "underline",
+});
+
+const spin = keyframes({
+  "0%": { transform: "rotate(0deg) scale(1)", opacity: 0.4 },
+  "50%": { transform: "rotate(180deg) scale(0.5)", opacity: 1 },
+  "100%": { transform: "rotate(360deg) scale(1)", opacity: 0.4 },
+});
+
+export const spinner = style({
+  display: "block",
+  width: "24px",
+  height: "24px",
+  border: "3px solid currentColor",
+  borderTopColor: "transparent",
+  borderRadius: "50%",
+  animation: `${spin} 0.8s linear infinite`,
+});
+
+// 화면에서는 숨기고 스크린 리더에게만 읽히게 하는 스타일
+export const srOnly = style({
+  position: "absolute",
+  width: "1px",
+  height: "1px",
+  padding: 0,
+  margin: "-1px",
+  overflow: "hidden",
+  clip: "rect(0, 0, 0, 0)",
+  whiteSpace: "nowrap",
+  border: 0,
 });
