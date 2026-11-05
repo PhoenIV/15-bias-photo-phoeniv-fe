@@ -3,6 +3,8 @@ import clsx from "clsx";
 import { baskinRobbins, notoSansKr } from "@/styles/fonts";
 import "@/styles/global.css.js";
 
+import AppProviders from "@/providers/AppProviders";
+
 export const metadata = {
   title: "최애의 포토",
   description: `디지털 시대의 새로운 수집 문화를 선도하는 플랫폼입니다. 
@@ -13,7 +15,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ko" className={clsx(notoSansKr.variable, baskinRobbins.variable)}>
-      <body>{children}</body>
+      <body>
+        <AppProviders>{children}</AppProviders>
+      </body>
     </html>
   );
 }

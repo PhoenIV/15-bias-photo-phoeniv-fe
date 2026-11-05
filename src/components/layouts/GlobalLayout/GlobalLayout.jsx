@@ -1,9 +1,9 @@
-import { AppHeader } from "@/components/Header";
+import { HeaderContainer } from "@/components/Header";
 
 export default function GlobalLayout({ children }) {
   return (
     <div>
-      <AppHeader />
+      <HeaderContainer />
       <main>{children}</main>
     </div>
   );
