@@ -1,9 +1,9 @@
-import MarketplaceClient from "./MarketplaceClient.js";
+import { MarketplacePage } from "@/features/marketplace/MarketplacePage";
 
-export default function Marketplace({}) {
+export default function Page() {
   return (
     <>
-      <MarketplaceClient />
+      <MarketplacePage />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { style } from "@vanilla-extract/css";
+import { globalStyle, style } from "@vanilla-extract/css";
 
 import { media } from "@/styles/theme.css";
 
@@ -96,4 +96,24 @@ export const sort = style({
       height: "50px",
     },
   },
+});
+
+export const mobileFilterModal = style({
+  position: "fixed",
+  left: 0,
+  right: 0,
+  bottom: 0,
+  width: "100dvw",
+  minWidth: "375px",
+  maxWidth: "none",
+  height: "45dvh",
+  maxHeight: "45dvh",
+  boxSizing: "border-box",
+  padding: "15px",
+  borderRadius: "12px 12px 0 0",
+  alignItems: "stretch",
+});
+
+globalStyle(`${mobileFilterModal} button[aria-label="모달 닫기"]`, {
+  display: "none",
 });
