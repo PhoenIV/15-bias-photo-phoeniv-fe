@@ -49,6 +49,8 @@ export const tab = style({
   width: "auto",
   padding: "0 15px",
   whiteSpace: "nowrap",
+  color: "inherit",
+  font: "inherit",
 });
 
 // 탭마다의 항목을 감싸는 래퍼
@@ -67,6 +69,12 @@ export const options = style({
   margin: "15px",
 });
 
+export const optionButton = style({
+  color: "inherit",
+  font: "inherit",
+  // textAlign: "left",
+});
+
 export const applyRow = style({
   display: "flex",
   flex: "0 0 20%",
@@ -75,6 +83,8 @@ export const applyRow = style({
   gap: "15px",
   width: "100%",
 });
+
+export const initializeButton = style({});
 
 export const applyButton = style({
   width: "60%",

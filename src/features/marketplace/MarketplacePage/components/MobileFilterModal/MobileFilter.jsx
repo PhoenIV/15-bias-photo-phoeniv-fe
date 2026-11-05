@@ -13,10 +13,12 @@ const filters = [grade, genre, excludeSoldOut];
 
 function FilterTabs({ activeTab, onTabChange }) {
   return (
-    <div className={styles.filterTabs}>
+    <div role="tablist" className={styles.filterTabs}>
       {filters.map((filter) => (
-        <span
+        <button
+          id={`tab-${filter.value}`}
           key={filter.value}
+          aria-controls={`panel-${filter.value}`}
           aria-selected={activeTab === filter.value}
           role="tab"
           type="button"
@@ -25,74 +27,117 @@ function FilterTabs({ activeTab, onTabChange }) {
           onClick={() => onTabChange(filter.value)}
         >
           {filter.label}
-        </span>
+        </button>
       ))}
     </div>
   );
 }
 
-function GradeFilter({ value, onChange }) {
+function GradeFilter({ activeTab, value, onChange }) {
   return (
-    <ul className={styles.wrapper}>
-      {grade.options.map((opt) => (
-        <li
-          key={opt.value}
-          className={clsx(
-            styles[`${opt.color}`],
-            styles.options,
-            value === opt.value && styles.selectedOption,
-          )}
-          onClick={() => onChange(value === opt.value ? "" : opt.value)}
-        >
-          {opt.label}
-        </li>
-      ))}
-    </ul>
+    <div
+      id="panel-grade"
+      aria-labelledby="tab-grade"
+      hidden={activeTab !== "grade"}
+      role="tabpanel"
+      className={styles.wrapper}
+    >
+      <ul>
+        {grade.options.map((opt) => (
+          <li
+            key={opt.value}
+            className={clsx(
+              styles[`${opt.color}`],
+              styles.options,
+              value === opt.value && styles.selectedOption,
+            )}
+          >
+            <button
+              aria-pressed={value === opt.value}
+              type="button"
+              className={styles.optionButton}
+              onClick={() => onChange(value === opt.value ? "" : opt.value)}
+            >
+              {opt.label}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
-function GenreFilter({ value, onChange }) {
+function GenreFilter({ activeTab, value, onChange }) {
   return (
-    <ul className={styles.wrapper}>
-      {genre.options.map((opt) => (
-        <li
-          key={opt.value}
-          className={clsx(styles.options, value === opt.value && styles.selectedOption)}
-          onClick={() => onChange(value === opt.value ? "" : opt.value)}
-        >
-          {opt.label}
-        </li>
-      ))}
-    </ul>
+    <div
+      id="panel-genre"
+      aria-labelledby="tab-genre"
+      hidden={activeTab !== "genre"}
+      role="tabpanel"
+      className={styles.wrapper}
+    >
+      <ul>
+        {genre.options.map((opt) => (
+          <li
+            key={opt.value}
+            className={clsx(styles.options, value === opt.value && styles.selectedOption)}
+          >
+            <button
+              aria-pressed={value === opt.value}
+              type="button"
+              className={styles.optionButton}
+              onClick={() => onChange(value === opt.value ? "" : opt.value)}
+            >
+              {opt.label}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
-function SoldOutFilter({ value, onChange }) {
+function SoldOutFilter({ activeTab, value, onChange }) {
   return (
-    <ul className={styles.wrapper}>
-      {excludeSoldOut.options.map((opt) => (
-        <li
-          key={opt.value}
-          className={clsx(styles.options, value === opt.value && styles.selectedOption)}
-          onClick={() => onChange(opt.value)}
-        >
-          {opt.label}
-        </li>
-      ))}
-    </ul>
+    <div
+      id="panel-excludeSoldOut"
+      aria-labelledby="tab-excludeSoldOut"
+      hidden={activeTab !== "excludeSoldOut"}
+      role="tabpanel"
+      className={styles.wrapper}
+    >
+      <ul>
+        {excludeSoldOut.options.map((opt) => (
+          <li
+            key={opt.value}
+            className={clsx(styles.options, value === opt.value && styles.selectedOption)}
+          >
+            <button
+              aria-pressed={value === opt.value}
+              type="button"
+              className={styles.optionButton}
+              onClick={() => onChange(opt.value)}
+            >
+              {opt.label}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
 function ApplyRow({ onApply, onInitialize }) {
   return (
     <div className={styles.applyRow}>
-      <Image
-        alt="필터 초기화"
-        height={30}
-        src="/images/ic-exchange.svg"
-        width={30}
+      <button
+        aria-label="필터 초기화"
+        type="button"
+        className={styles.initializeButton}
         onClick={onInitialize}
-      />
+      >
+        <Image alt="" height={30} src="/images/ic-exchange.svg" width={30} />
+      </button>
       <Button thickness="thin" className={styles.applyButton} onClick={onApply}>
         필터 적용하기
       </Button>
@@ -126,11 +171,15 @@ export default function MobileFilter({ params, onApply, onClose }) {
         </button>
       </div>
       <FilterTabs activeTab={activeTab} onTabChange={setActiveTab} />
-      {activeTab === "grade" ? <GradeFilter value={grade} onChange={setGrade} /> : null}
-      {activeTab === "genre" ? <GenreFilter value={genre} onChange={setGenre} /> : null}
-      {activeTab === "excludeSoldOut" ? (
-        <SoldOutFilter value={excludeSoldOut} onChange={setExcludeSoldOut} />
-      ) : null}
+      {/* {activeTab === "grade" ? ( */}
+      <GradeFilter activeTab={activeTab} value={grade} onChange={setGrade} />
+      {/* ) : null} */}
+      {/* {activeTab === "genre" ? ( */}
+      <GenreFilter activeTab={activeTab} value={genre} onChange={setGenre} />
+      {/* ) : null}
+      {activeTab === "excludeSoldOut" ? ( */}
+      <SoldOutFilter activeTab={activeTab} value={excludeSoldOut} onChange={setExcludeSoldOut} />
+      {/* ) : null} */}
       <ApplyRow onApply={handleApply} onInitialize={handleInitialize} />
     </div>
   );
