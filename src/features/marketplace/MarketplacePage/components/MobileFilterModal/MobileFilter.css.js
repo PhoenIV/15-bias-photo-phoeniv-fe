@@ -70,9 +70,10 @@ export const options = style({
 });
 
 export const optionButton = style({
+  width: "100%",
+  height: "100%",
   color: "inherit",
   font: "inherit",
-  // textAlign: "left",
 });
 
 export const applyRow = style({
