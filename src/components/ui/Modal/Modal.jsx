@@ -23,6 +23,7 @@ export default function Modal({
   className,
   isOpen,
   onClose,
+  onCloseAutoFocus, // 승현: 코드래빗 리뷰에 따라 추가했습니다.
   variant = "default",
   ariaLabel = "모달",
 }) {
@@ -40,6 +41,7 @@ export default function Modal({
           <Dialog.Content
             aria-label={ariaLabel}
             className={clsx(styles.contentRecipe({ variant }), className)}
+            onCloseAutoFocus={onCloseAutoFocus} // 승현: 코드래빗 리뷰에 따라 추가했습니다.
           >
             {onClose && (
               <Dialog.Close asChild>

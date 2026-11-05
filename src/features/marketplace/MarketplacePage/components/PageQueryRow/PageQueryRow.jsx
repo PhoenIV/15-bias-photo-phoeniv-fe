@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Dropdown } from "@/components/ui/Dropdown";
 import { Modal } from "@/components/ui/Modal";
@@ -21,6 +21,7 @@ export default function PageQueryRow({
 }) {
   const filters = [grade, genre, excludeSoldOut];
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const filterButtonRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -56,6 +57,7 @@ export default function PageQueryRow({
           ))}
         </div>
         <button
+          ref={filterButtonRef}
           aria-label="필터 열기"
           className={styles.mobileFilter}
           onClick={() => setIsModalOpen(true)}
@@ -74,6 +76,10 @@ export default function PageQueryRow({
         isOpen={isModalOpen}
         className={styles.mobileFilterModal}
         onClose={() => setIsModalOpen(false)}
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+          filterButtonRef.current?.focus();
+        }}
       >
         <MobileFilter
           params={params}
