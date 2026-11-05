@@ -2,7 +2,6 @@
 // 여기에 없는 경로는 기본 Header(로고) 표시
 // 피그마를 보고 서브 타이틀을 정리한 것으로 경로는 자유롭게 변경해주세요!
 export const SUB_PAGE_TITLES = {
-  "/marketplace": "마켓플레이스",
   "/marketplace/sell": "나의 포토카드 판매하기",
   "/my-gallery": "마이갤러리",
   "/my-gallery/create": "포토카드 생성",

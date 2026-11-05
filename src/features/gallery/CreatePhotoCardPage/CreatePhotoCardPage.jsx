@@ -59,8 +59,8 @@ export default function CreatePhotoCardPage() {
   }, [isQuotaExhausted, isSuccessRedirecting, toast]);
 
   const onSubmit = (values) => {
-    // 중복 제출 방지
-    if (isPending) return;
+    // 중복 제출 및 성공 후 이동 중 차단
+    if (isPending || isSuccessRedirecting) return;
 
     // 한도 초과 시 제출 차단
     if (isQuotaExhausted) {
@@ -75,7 +75,7 @@ export default function CreatePhotoCardPage() {
     mutate(payload, {
       onError: (error) => {
         // 한도 초과 에러
-        if (error.code === "CARD_QUOTA_EXCEEDED" || error.status === 403) {
+        if (error.code === "CARD_QUOTA_EXCEEDED") {
           toast.warning("이번달 모든 생성 기회를 소진했어요");
           return;
         }
@@ -211,7 +211,7 @@ export default function CreatePhotoCardPage() {
 
         <div>
           <Button
-            disabled={!isValid || isPending || isQuotaExhausted}
+            disabled={!isValid || isPending || isQuotaExhausted || isSuccessRedirecting}
             fullWidth
             size="md"
             thickness="thin"
