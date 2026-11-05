@@ -13,8 +13,7 @@ import * as styles from "./layout.css";
 //useMe()안에 옵션 refetchOnMount: 'always'-> 해당 옵션이 있는 컴포넌트가 마운트 될때 useMe의 queryFn이 호출됨
 export default function PrivateLayout({ children }) {
   const router = useRouter();
-  const { user, isPending, error, refetch } = useMe({ refetchOnMount: "always" });
-  const isUnauthenticated = error?.status === 401;
+  const { user, isPending, isUnauthenticated, refetch } = useMe({ refetchOnMount: "always" });
 
   //비로그인 유저 접급시 로그인 페이지로 이동 (replace를 사용하여 뒤로가기 했을 때도 다시 접근 못하게)
   useEffect(() => {
