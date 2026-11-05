@@ -4,7 +4,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation.js";
 import { useState } from "react";
 
+import { useQueryClient } from "@tanstack/react-query";
+
 import { signup } from "@/services/authService.js";
+import { userKeys } from "@/services/queryKeys.js";
 import { validateSignup } from "@/utils/validators.js";
 
 import { Logo } from "@/components/common/Logo";
@@ -16,6 +19,7 @@ import { PasswordInput } from "@/components/ui/PasswordInput";
 import * as styles from "./SignupPage.css.js";
 
 export default function SignupPage() {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [nickname, setNickname] = useState("");
@@ -39,6 +43,9 @@ export default function SignupPage() {
     setIsLoading(true);
     try {
       const { user } = await signup({ email, nickname, password, passwordConfirm });
+      await queryClient.cancelQueries({ queryKey: userKeys.me() });
+      queryClient.setQueryData(userKeys.me(), user);
+
       router.push("/marketplace");
     } catch (error) {
       setIsLoading(false); //중복요청 방지
