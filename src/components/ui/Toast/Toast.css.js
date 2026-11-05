@@ -47,12 +47,14 @@ export const toastItem = style({
   fontSize: vars.fontSize[14],
   fontWeight: vars.fontWeight.regular,
   fontFamily: vars.fonts.base,
-  whiteSpace: "nowrap",
+  maxWidth: "100%",
+  wordBreak: "keep-all",
   animation: `${slideDown} 0.25s ease-out`,
   "@media": {
     [media.tablet]: {
       padding: "14px 28px",
       fontSize: vars.fontSize[16],
+      whiteSpace: "nowrap",
     },
   },
 });
