@@ -3,6 +3,9 @@ import { style } from "@vanilla-extract/css";
 import { media, vars } from "@/styles/theme.css.js";
 
 export const page = style({
+  display: "flex",
+  flexDirection: "column",
+  minHeight: "100dvh",
   minWidth: "375px",
   padding: "15px",
   "@media": {

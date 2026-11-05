@@ -19,6 +19,7 @@ export default function CardContainer({ params }) {
     fetchNextPage,
     isFetchingNextPage,
     isFetchNextPageError,
+    refetch,
   } = useInfiniteQuery({
     queryKey: saleKeys.lists(params),
     queryFn: ({ pageParam }) =>
@@ -48,12 +49,31 @@ export default function CardContainer({ params }) {
     return () => observer.disconnect();
   }, [hasNextPage, fetchNextPage, isFetchingNextPage, isFetchNextPageError]);
 
-  if (isPending) return <p>로딩중...</p>;
-  if (isError && !data) return <p>조회에 실패했습니다.</p>;
+  if (isPending)
+    return (
+      <div className={styles.wrapper}>
+        <p className={styles.informText}>최애가 나를 기다린다!</p>
+        <p className={styles.informText}>로딩중...</p>
+      </div>
+    );
+  if (isError && !data)
+    return (
+      <div className={styles.wrapper}>
+        <p className={styles.informText}>앗! 조회에 실패했습니다.</p>
+        <Button className={styles.retryButton} onClick={() => refetch()}>
+          다시 시도하기
+        </Button>
+      </div>
+    );
 
   const sales = data.pages.flatMap((page) => page.data);
 
-  if (sales.length === 0) return <p>조회 결과가 없습니다.</p>;
+  if (sales.length === 0)
+    return (
+      <div className={styles.wrapper}>
+        <p className={styles.informText}>조회 결과가 없습니다.</p>
+      </div>
+    );
 
   return (
     <>
@@ -75,11 +95,13 @@ export default function CardContainer({ params }) {
       </div>
 
       {hasNextPage && <div ref={loadMoreRef} aria-hidden="true" />}
-      {isFetchingNextPage && <p>더 불러오는 중...</p>}
+      {isFetchingNextPage && <p className={styles.informText}>더 많은 포토카드 불러오는 중...</p>}
       {isFetchNextPageError && (
-        <div>
-          <p>추가 목록을 불러오지 못했습니다.</p>
-          <Button onClick={() => fetchNextPage()}>다시 시도</Button>
+        <div className={styles.wrapper}>
+          <p className={styles.informText}>추가 목록을 조회에 실패했습니다.</p>
+          <Button className={styles.retryButton} onClick={() => fetchNextPage()}>
+            다시 시도하기
+          </Button>
         </div>
       )}
     </>
