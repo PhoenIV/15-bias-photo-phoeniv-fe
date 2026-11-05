@@ -40,6 +40,7 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       const { user } = await login({ email, password });
+      await queryClient.cancelQueries({ queryKey: userKeys.me() });
       queryClient.setQueryData(userKeys.me(), user); //user 데이터를 캐시에 담는 과정
 
       router.push("/marketplace"); //로그인 요청 성공 후 이동

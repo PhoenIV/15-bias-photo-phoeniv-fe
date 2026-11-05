@@ -13,17 +13,21 @@ import * as styles from "./layout.css";
 //useMe()안에 옵션 refetchOnMount: 'always'-> 해당 옵션이 있는 컴포넌트가 마운트 될때 useMe의 queryFn이 호출됨
 export default function PrivateLayout({ children }) {
   const router = useRouter();
-  const { user, isPending, isUnauthenticated, refetch } = useMe({ refetchOnMount: "always" });
+  const { user, isPending, isFetching, isUnauthenticated, refetch } = useMe({
+    refetchOnMount: "always",
+  });
+
+  const isChecking = isPending || (isUnauthenticated && isFetching);
 
   //비로그인 유저 접급시 로그인 페이지로 이동 (replace를 사용하여 뒤로가기 했을 때도 다시 접근 못하게)
   useEffect(() => {
-    if (isUnauthenticated) {
+    if (isUnauthenticated && !isFetching) {
       router.replace("/login");
     }
-  }, [isUnauthenticated, router]);
+  }, [isUnauthenticated, isFetching, router]);
 
   //로딩중이거나 확인 중일때 private 아래의 페이지를 보여주지 않음
-  if (isPending || isUnauthenticated) {
+  if (isChecking || isUnauthenticated) {
     return null;
   }
 

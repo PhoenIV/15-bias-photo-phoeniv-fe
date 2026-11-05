@@ -4,7 +4,7 @@ import { userKeys } from "@/services/queryKeys";
 import { getMe } from "@/services/userService";
 
 export function useMe(options = {}) {
-  const { data, isPending, error, refetch } = useQuery({
+  const { data, isPending, isFetching, error, refetch } = useQuery({
     queryKey: userKeys.me(),
     queryFn: async () => {
       try {

@@ -43,6 +43,7 @@ export default function SignupPage() {
     setIsLoading(true);
     try {
       const { user } = await signup({ email, nickname, password, passwordConfirm });
+      await queryClient.cancelQueries({ queryKey: userKeys.me() });
       queryClient.setQueryData(userKeys.me(), user);
 
       router.push("/marketplace");
