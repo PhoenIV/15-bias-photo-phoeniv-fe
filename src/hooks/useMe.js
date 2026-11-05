@@ -23,5 +23,5 @@ export function useMe(options = {}) {
   //페이지 이동 또는 새로고침 한 경우에 헤더에 사용자 정보를 띄우지 않는 방법
   const isUnauthenticated = data === null;
 
-  return { user: data ?? undefined, isPending, error, isUnauthenticated, refetch };
+  return { user: data ?? undefined, isPending, isFetching, error, isUnauthenticated, refetch };
 }
