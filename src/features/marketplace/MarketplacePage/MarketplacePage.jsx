@@ -4,12 +4,12 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/Button";
 
-import CardContainer from "./CardContainer/CardContainer.jsx";
-import PageQueryRow from "./PageQueryRow/PageQueryRow.jsx";
+import CardContainer from "@/features/marketplace/MarketplacePage/components/CardContainer/CardContainer.jsx";
+import PageQueryRow from "@/features/marketplace/MarketplacePage/components/PageQueryRow/PageQueryRow.jsx";
 
-import * as styles from "./page.css.js";
+import * as styles from "./MarketplacePage.css.js";
 
-export default function MarketplaceClient() {
+export default function Marketplace() {
   const [params, setParmas] = useState({ sort: "latest", limit: 15, excludeSoldOut: "include" });
   const updateParam = (key, value) => {
     setParmas((prev) => {
@@ -20,11 +20,21 @@ export default function MarketplaceClient() {
   const onSearch = (keyword) => {
     updateParam("keyword", keyword);
   };
-  const onFilterChange = (key, value) => {
-    updateParam(key, value);
+  const onFilterChange = (filterKey, value) => {
+    updateParam(filterKey, value);
   };
   const onSortChange = (sort) => {
     updateParam("sort", sort);
+  };
+
+  /**
+   * 모바일 버전에서 전달받은 필터를 한꺼번에 반영하기
+   * @param {object} filters
+   */
+  const onMultipleFilterChange = (filters) => {
+    Object.entries(filters).forEach(([key, value]) => {
+      updateParam(key, value);
+    });
   };
 
   return (
@@ -36,7 +46,9 @@ export default function MarketplaceClient() {
         </Button>
       </div>
       <PageQueryRow
+        params={params}
         onFilterChange={onFilterChange}
+        onMultipleFilterChange={onMultipleFilterChange}
         onSearch={onSearch}
         onSortChange={onSortChange}
       />

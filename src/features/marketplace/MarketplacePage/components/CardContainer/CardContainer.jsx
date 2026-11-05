@@ -64,6 +64,8 @@ export default function CardContainer({ params }) {
             category={sale.card.genre}
             grade={sale.card.grade}
             imageId={sale.card.imagePublicId}
+            isSoldOut={sale.remainingQuantity === 0}
+            nickname={sale.seller.nickname}
             price={sale.price}
             remainCount={sale.remainingQuantity}
             title={sale.card.name}
