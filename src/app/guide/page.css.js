@@ -259,6 +259,25 @@ export const customModalTitle = style({
 });
 
 /* =========================================================
+  Toast 탭
+  ========================================================= */
+
+export const toastExampleBox = style({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
+  gap: "16px",
+  width: "100%",
+});
+
+export const toastActionRow = style({
+  display: "flex",
+  alignItems: "center",
+  gap: "12px",
+  flexWrap: "wrap",
+});
+
+/* =========================================================
   예시 블록 + 복사 가능한 코드 박스
   ========================================================= */
 

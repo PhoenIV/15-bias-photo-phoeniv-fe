@@ -3,6 +3,8 @@
 import { environmentManager, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
+import { ToastProvider } from "@/components/ui/Toast";
+
 function makeQueryClient() {
   return new QueryClient();
 }
@@ -25,8 +27,10 @@ function AppProviders({ children }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ToastProvider>
+        {children}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </ToastProvider>
     </QueryClientProvider>
   );
 }
