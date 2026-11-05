@@ -2,6 +2,11 @@
 
 import { useRouter } from "next/navigation";
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { logout } from "@/services/authService";
+import { userKeys } from "@/services/queryKeys";
+
 import { IconButton } from "@/components/ui/IconButton";
 
 import * as styles from "./Header.css";
@@ -17,9 +22,23 @@ export function MenuButton() {
 }
 
 export function LogoutButton() {
-  // TODO: 로그아웃 로직 연결 필요
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useMutation({
+    mutationFn: logout,
+    onSuccess: async () => {
+      await queryClient.cancelQueries({ queryKey: userKeys.me() });
+      queryClient.setQueryData(userKeys.me(), null);
+      router.replace("/login");
+    },
+  });
   return (
-    <button type="button" className={styles.logoutBtn} onClick={() => {}}>
+    <button
+      disabled={isPending}
+      type="button"
+      className={styles.logoutBtn}
+      onClick={() => mutate()}
+    >
       로그아웃
     </button>
   );
