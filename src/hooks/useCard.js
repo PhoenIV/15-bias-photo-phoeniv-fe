@@ -3,11 +3,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createPhotoCard, getCardQuota } from "@/services/cardService";
 import { cardKeys } from "@/services/queryKeys";
 
-// 이번 달 포토카드 생성 한도 조회
-export function useCardQuota() {
+// 이번 달 포토카드 생성 한도 조회 (계정 전환 및 진입 시 최신 데이터)
+export function useCardQuota(options = {}) {
   return useQuery({
     queryKey: cardKeys.quota(),
     queryFn: () => getCardQuota(),
+    refetchOnMount: "always",
+    ...options,
   });
 }
 
