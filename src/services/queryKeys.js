@@ -15,3 +15,8 @@ export const saleKeys = {
   lists: (params = {}) => [...saleKeys.all, "list", params],
   detail: (id) => [...saleKeys.all, "detail", id],
 };
+
+export const pointDrawKeys = {
+  all: ["point-draws"],
+  status: () => [...pointDrawKeys.all, "status"],
+};
