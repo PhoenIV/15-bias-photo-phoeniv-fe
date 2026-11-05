@@ -29,6 +29,9 @@ export function LogoutButton() {
     onSuccess: async () => {
       await queryClient.cancelQueries({ queryKey: userKeys.me() });
       queryClient.setQueryData(userKeys.me(), null);
+      // TODO: 로그인한 사용자 본인의 데이터 캐시(내 갤러리, 내 판매 목록 등)가 생기면
+      // 이 자리에서 removeQueries로 삭제 (예: queryClient.removeQueries({ queryKey: cardKeys.mine() }))
+
       router.replace("/login");
     },
   });
