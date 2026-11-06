@@ -1,3 +1,11 @@
-export default function SaleDetailPage() {
-  return <>판매글 상세 페이지</>;
+"use client";
+
+import { useMe } from "@/hooks/useMe";
+
+export default function SaleDetailPage({ sale }) {
+  const { card } = sale;
+  const { user } = useMe();
+  console.log(sale.seller.id);
+
+  return <h2>{card.name}</h2>;
 }
