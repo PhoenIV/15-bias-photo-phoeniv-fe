@@ -18,6 +18,7 @@ export function usePointDrawStatus() {
         if (error?.status === 401) {
           await queryClient.cancelQueries({ queryKey: userKeys.me() }); //-> 늦게 도착하는 유저정보가 덮어쓰지 않게 막음
           queryClient.setQueryData(userKeys.me(), null); //-> 세션 만료: 비로그인 상태로 전환 (enabled가 false가 되어 조회도 멈춤)
+          queryClient.removeQueries({ queryKey: pointDrawKeys.status() }); //-> 이전 사용자의 canDraw가 다음 로그인 사용자에게 보이지 않게 삭제
         }
         throw error;
       }
