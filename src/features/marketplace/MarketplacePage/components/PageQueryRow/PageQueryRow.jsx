@@ -3,12 +3,12 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
+import { MobileFilterModal } from "@/components/common/MobileFilterModal";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { Modal } from "@/components/ui/Modal";
 import { SearchInput } from "@/components/ui/SearchInput";
 
 import { excludeSoldOut, genre, grade, sort } from "../../MarketplaceConfig";
-import { MobileFilter } from "../MobileFilterModal";
 
 import * as styles from "./PageQueryRow.css.js";
 
@@ -81,7 +81,8 @@ export default function PageQueryRow({
           filterButtonRef.current?.focus();
         }}
       >
-        <MobileFilter
+        <MobileFilterModal
+          filters={filters}
           params={params}
           onApply={onMultipleFilterChange}
           onClose={() => setIsModalOpen(false)}
