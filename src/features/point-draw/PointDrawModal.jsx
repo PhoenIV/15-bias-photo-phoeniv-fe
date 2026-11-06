@@ -34,7 +34,7 @@ export default function PointDrawModal() {
       queryClient.invalidateQueries({ queryKey: userKeys.me() });
       queryClient.invalidateQueries({ queryKey: pointDrawKeys.status() });
     },
-    onError: (error) => {
+    onError: async (error) => {
       //429 다중탭, 다른 기기에서 중복 뽑기 막기
       if (error.code === "BOX_COOLDOWN") {
         setIsDismissed(true);
@@ -46,8 +46,9 @@ export default function PointDrawModal() {
       //401 포인트 뽑으려다 로그인 끊김
       if (error.status === 401) {
         setIsDismissed(true);
-        queryClient.invalidateQueries({ queryKey: userKeys.me() });
         setDrawError(error.message);
+        await queryClient.cancelQueries({ queryKey: userKeys.me() }); //->재조회를 막음(재조회해서 늦게 도착하는 유저정보와 겹치지 않게하려고)
+        queryClient.setQueryData(userKeys.me(), null); //-> 로그인 페이지로 이동 전에 헤더를 비로그인 상태로 보여줌
         return;
       }
 
