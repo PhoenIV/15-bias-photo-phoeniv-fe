@@ -1,4 +1,4 @@
-import HeaderContainer from "@/components/Header/HeaderContainer";
+import { HeaderContainer } from "@/components/Header";
 
 import { PointDrawModal } from "@/features/point-draw";
 
