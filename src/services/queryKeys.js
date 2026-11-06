@@ -16,3 +16,8 @@ export const saleKeys = {
   lists: (params = {}) => [...saleKeys.all, "list", params],
   detail: (id) => [...saleKeys.all, "detail", id],
 };
+
+export const notificationKeys = {
+  all: ["notifications"],
+  lists: (params = {}) => [...notificationKeys.all, "list", params],
+};
