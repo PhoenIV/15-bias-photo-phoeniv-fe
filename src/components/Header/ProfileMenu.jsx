@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 import { PROFILE_MENU_ITEMS } from "@/constants/header";
-import { breakpoints } from "@/styles/theme.css";
+import { useCloseOnBreakpoint } from "@/hooks/useCloseOnBreakpoint";
 
 import { IconButton } from "@/components/ui/IconButton";
 
@@ -93,19 +93,7 @@ export function ProfileDropdown({ nickname = "", points = 0 }) {
   const [isOpen, setIsOpen] = useState(false);
 
   // 모바일 뷰포트로 전환될 때 열려 있던 드롭다운 자동 닫힘
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const mql = window.matchMedia(`(min-width: ${breakpoints.tablet})`);
-    const handleMediaChange = (e) => {
-      if (!e.matches) {
-        setIsOpen(false);
-      }
-    };
-
-    mql.addEventListener("change", handleMediaChange);
-    return () => mql.removeEventListener("change", handleMediaChange);
-  }, [isOpen]);
+  useCloseOnBreakpoint({ isOpen, onClose: () => setIsOpen(false), closeOn: "mobile" });
 
   return (
     <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -143,19 +131,8 @@ export function ProfileDropdown({ nickname = "", points = 0 }) {
 export function MobileProfileDrawer({ isLoggedIn = false, nickname = "", points = 0 }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const mql = window.matchMedia(`(min-width: ${breakpoints.tablet})`);
-    const handleMediaChange = (e) => {
-      if (e.matches) {
-        setIsOpen(false);
-      }
-    };
-
-    mql.addEventListener("change", handleMediaChange);
-    return () => mql.removeEventListener("change", handleMediaChange);
-  }, [isOpen]);
+  // 태블릿/PC 뷰포트로 전환될 때 열려 있던 모바일 드로어 자동 닫힘
+  useCloseOnBreakpoint({ isOpen, onClose: () => setIsOpen(false), closeOn: "tablet" });
 
   const handleClose = () => setIsOpen(false);
 

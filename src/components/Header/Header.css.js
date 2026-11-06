@@ -1,4 +1,5 @@
 import { style } from "@vanilla-extract/css";
+import { recipe } from "@vanilla-extract/recipes";
 
 import { media, vars } from "@/styles/theme.css";
 
@@ -264,4 +265,162 @@ export const srOnly = style({
   clip: "rect(0, 0, 0, 0)",
   whiteSpace: "nowrap",
   border: 0,
+});
+
+/* ───────── 알림 (PC/태블릿: 팝오버, 모바일: 전체화면 모달) ───────── */
+
+export const notificationPopover = style({
+  width: "300px",
+  maxHeight: "535px",
+  overflowY: "auto",
+  overscrollBehavior: "contain",
+  backgroundColor: vars.colors.gray500,
+  borderRadius: "2px",
+  zIndex: vars.zIndex.dropdown,
+  boxShadow: "0 8px 24px rgba(0, 0, 0, 0.5)",
+  outline: "none",
+});
+
+export const notificationList = style({
+  margin: 0,
+  padding: 0,
+  listStyle: "none",
+});
+
+// 알림 항목 (읽음/안 읽음)
+export const notificationItem = recipe({
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    width: "100%",
+    padding: "20px",
+    boxSizing: "border-box",
+    borderBottom: `1px solid ${vars.colors.gray400}`,
+    textDecoration: "none",
+    transition: "background-color 0.15s ease, opacity 0.15s ease",
+    selectors: {
+      "&:focus-visible": {
+        outline: `2px solid ${vars.colors.white}`,
+        outlineOffset: "-2px",
+      },
+    },
+  },
+  variants: {
+    unread: {
+      true: {
+        backgroundColor: "#222222",
+        selectors: { "&:is(a):hover": { opacity: 0.9 } },
+      },
+      false: {
+        backgroundColor: vars.colors.gray500,
+        selectors: { "&:is(a):hover": { opacity: 0.85 } },
+      },
+    },
+  },
+});
+
+// 알림 메시지
+export const notificationMessage = recipe({
+  base: {
+    margin: 0,
+    fontSize: vars.fontSize[14],
+    fontWeight: vars.fontWeight.regular,
+    lineHeight: "1.45",
+    wordBreak: "keep-all",
+  },
+  variants: {
+    unread: {
+      true: { color: vars.colors.white },
+      false: { color: vars.colors.gray300 },
+    },
+  },
+});
+
+// 알림 상대 시간
+export const notificationTime = recipe({
+  base: {
+    fontSize: vars.fontSize[12],
+    fontWeight: vars.fontWeight.light,
+  },
+  variants: {
+    unread: {
+      true: { color: vars.colors.gray300 },
+      false: { color: vars.colors.gray400 },
+    },
+  },
+});
+
+export const notificationEmptyState = style({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "60px 20px",
+  fontSize: vars.fontSize[14],
+  fontWeight: vars.fontWeight.regular,
+  color: vars.colors.gray300,
+  textAlign: "center",
+});
+
+export const notificationErrorState = style({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: "8px",
+  padding: "16px",
+  fontSize: vars.fontSize[12],
+  color: vars.colors.gray300,
+});
+
+export const notificationRetryBtn = style({
+  padding: "6px 12px",
+  fontSize: vars.fontSize[12],
+  color: vars.colors.white,
+  backgroundColor: "transparent",
+  border: `1px solid ${vars.colors.gray400}`,
+  borderRadius: "2px",
+  cursor: "pointer",
+});
+
+export const notificationMobileOverlay = style({
+  position: "fixed",
+  inset: 0,
+  backgroundColor: vars.colors.black,
+  zIndex: vars.zIndex.modal,
+  "@media": {
+    [media.tablet]: { display: "none" },
+  },
+});
+
+export const notificationMobileContent = style({
+  position: "fixed",
+  inset: 0,
+  display: "flex",
+  flexDirection: "column",
+  width: "100%",
+  height: "100dvh",
+  backgroundColor: vars.colors.black,
+  zIndex: vars.zIndex.modal,
+  outline: "none",
+  "@media": {
+    [media.tablet]: { display: "none" },
+  },
+});
+
+export const notificationMobileHeader = style({
+  display: "grid",
+  gridTemplateColumns: "1fr auto 1fr",
+  alignItems: "center",
+  width: "100%",
+  height: "60px",
+  padding: "0 16px",
+  boxSizing: "border-box",
+  backgroundColor: vars.colors.black,
+  flexShrink: 0,
+});
+
+export const notificationMobileBody = style({
+  flex: 1,
+  overflowY: "auto",
+  overscrollBehavior: "contain",
 });

@@ -1,8 +1,7 @@
 import Link from "next/link";
 
-import { IconButton } from "@/components/ui/IconButton";
-
 import { LogoutButton } from "./HeaderButtons";
+import { NotificationPopover } from "./NotificationMenu";
 import { ProfileDropdown } from "./ProfileMenu";
 
 import * as styles from "./Header.css";
@@ -21,7 +20,7 @@ export default function DesktopNav({ isLoggedIn = false, nickname = "", points =
       {isLoggedIn ? (
         <>
           <span className={styles.pointText}>{points.toLocaleString()} P</span>
-          <IconButton icon="/images/ic-alarm-default.svg" label="알림" size={24} />
+          <NotificationPopover isLoggedIn={isLoggedIn} />
           <ProfileDropdown nickname={nickname} points={points} />
           <span className={styles.divider} />
           <LogoutButton />
