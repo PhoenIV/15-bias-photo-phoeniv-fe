@@ -1,9 +1,10 @@
 // 도메인별 쿼리 키(캐시 이름표) 관리
 export const cardKeys = {
   all: ["cards"],
-  lists: (filters = {}) => [...cardKeys.all, "list", filters],
   detail: (id) => [...cardKeys.all, "detail", id],
+  lists: (filters = {}) => [...cardKeys.all, "list", filters],
   quota: () => [...cardKeys.all, "quota"],
+  summary: () => [...cardKeys.all, "summary"],
 };
 
 export const userKeys = {
@@ -17,6 +18,11 @@ export const saleKeys = {
   detail: (id) => [...saleKeys.all, "detail", id],
 };
 
+export const pointDrawKeys = {
+  all: ["point-draws"],
+  status: () => [...pointDrawKeys.all, "status"],
+};
+  
 export const notificationKeys = {
   all: ["notifications"],
   lists: (params = {}) => [...notificationKeys.all, "list", params],
