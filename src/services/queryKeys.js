@@ -18,6 +18,11 @@ export const saleKeys = {
   detail: (id) => [...saleKeys.all, "detail", id],
 };
 
+export const pointDrawKeys = {
+  all: ["point-draws"],
+  status: () => [...pointDrawKeys.all, "status"],
+};
+  
 export const notificationKeys = {
   all: ["notifications"],
   lists: (params = {}) => [...notificationKeys.all, "list", params],
