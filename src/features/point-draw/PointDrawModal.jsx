@@ -23,7 +23,7 @@ export default function PointDrawModal() {
   const [result, setResult] = useState(null);
   const [selectedBox, setSelectedBox] = useState(null);
   const [drawError, setDrawError] = useState("");
-  const { canDraw, data } = usePointDrawStatus();
+  const { canDraw } = usePointDrawStatus();
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationFn: drawPoint,
@@ -74,7 +74,12 @@ export default function PointDrawModal() {
 
   return (
     <>
-      <Modal isOpen={isModalOpen} className={styles.modal} onClose={() => setIsDismissed(true)}>
+      <Modal
+        ariaLabel="랜덤 박스 선택"
+        isOpen={isModalOpen}
+        className={styles.modal}
+        onClose={() => setIsDismissed(true)}
+      >
         <div className={styles.container}>
           <div className={styles.header}>
             <div className={styles.title}>
@@ -82,12 +87,6 @@ export default function PointDrawModal() {
             </div>
             <div className={styles.content}>
               1시간마다 돌아오는 기회! <br /> 랜덤 상자 뽑기를 통해 포인트를 획득하세요
-            </div>
-            <div className={styles.time}>
-              <div className={styles.timeText}>다음 기회까지 남은 시간</div>
-              <div className={styles.drawTime}>
-                <RemainingTime nextAvailableAt={data?.nextAvailableAt} />
-              </div>
             </div>
           </div>
           <div className={styles.boxImage}>
@@ -105,7 +104,7 @@ export default function PointDrawModal() {
                     height={191}
                     src={`/images/random-box-${number}.png`}
                     width={245}
-                    className={`${styles.boxImgdetail} ${isGray ? styles.boxGray : ""}`}
+                    className={`${styles.boxImgdetail} ${number === 2 ? styles.boxImgMiddle : ""} ${isGray ? styles.boxGray : ""}`}
                   />
                 </button>
               );
@@ -124,21 +123,34 @@ export default function PointDrawModal() {
         </div>
       </Modal>
 
-      <Modal isOpen={isResultOpen} className={styles.modal} onClose={() => handleClose()}>
+      <Modal
+        ariaLabel="포인트 획득 결과"
+        isOpen={isResultOpen}
+        className={styles.modal}
+        onClose={() => handleClose()}
+      >
         <div className={styles.container2}>
           <div className={styles.title}>
             랜덤<div className={styles.highlight}>포인트</div>
           </div>
           <div className={styles.pointImage}>
-            <Image alt="포인트 이미지" height={191} src={`/images/point.png`} width={246} />
+            <Image
+              alt="포인트 이미지"
+              height={325}
+              src="/images/point.png"
+              width={340}
+              className={styles.pointImg}
+            />
           </div>
-          <div className={styles.point}>
-            <div className={styles.highlightpoint}>{result?.amount}P</div> 획득!
-          </div>
-          <div className={styles.time}>
-            <div className={styles.timeText}>다음 기회까지 남은 시간</div>
-            <div className={styles.drawTime}>
-              <RemainingTime nextAvailableAt={result?.nextAvailableAt} />
+          <div className={styles.bottom}>
+            <div className={styles.point}>
+              <div className={styles.highlightpoint}>{result?.amount}P</div> 획득!
+            </div>
+            <div className={styles.time2}>
+              <div className={styles.timeText}>다음 기회까지 남은 시간</div>
+              <div className={styles.drawTime}>
+                <RemainingTime nextAvailableAt={result?.nextAvailableAt} />
+              </div>
             </div>
           </div>
         </div>

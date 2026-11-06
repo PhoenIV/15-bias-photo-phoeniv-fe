@@ -32,10 +32,8 @@ export function LogoutButton() {
     mutationFn: logout,
     onSuccess: async () => {
       await queryClient.cancelQueries({ queryKey: userKeys.me() });
-      queryClient.setQueryData(userKeys.me(), null);
-      // TODO: 로그인한 사용자 본인의 데이터 캐시(내 갤러리, 내 판매 목록 등)가 생기면
-      // 이 자리에서 removeQueries로 삭제 (예: queryClient.removeQueries({ queryKey: cardKeys.mine() }))
-
+      queryClient.setQueryData(userKeys.me(), null); //-> 로그인 페이지로 이동 전에 헤더를 비로그인 상태로 보여줌
+      queryClient.clear(); //-> 사용자별 캐시를 전부 삭제
       router.replace("/login");
     },
     onError: () => {
