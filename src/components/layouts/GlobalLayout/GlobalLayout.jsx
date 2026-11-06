@@ -1,4 +1,4 @@
-import HeaderContainer from "@/components/Header/HeaderContainer";
+import { HeaderContainer } from "@/components/Header";
 
 export default function GlobalLayout({ children }) {
   return (

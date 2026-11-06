@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 
 import clsx from "clsx";
 
-import { gradeTextRecipe } from "@/styles/grade.css.js";
-import { vars } from "@/styles/theme.css.js";
+import { gradeTextRecipe } from "@/styles/grade.css";
+import { vars } from "@/styles/theme.css";
 
 import { ExchangePhotoCard, PhotoCard } from "@/components/common/PhotoCard";
 import { Button } from "@/components/ui/Button";
@@ -17,8 +17,9 @@ import { AlertModal, Modal } from "@/components/ui/Modal";
 import { PasswordInput } from "@/components/ui/PasswordInput";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { Textarea } from "@/components/ui/Textarea";
+import { Toast, useToast } from "@/components/ui/Toast";
 
-import * as styles from "./page.css.js";
+import * as styles from "./page.css";
 
 /* =========================================================
   데이터 / 코드 예시 상수
@@ -31,6 +32,7 @@ const TABS = [
   { id: "photoCard", label: "🖼️ PhotoCard" },
   { id: "form", label: "⌨️ Input & Select" },
   { id: "modal", label: "🪟 Modal" },
+  { id: "toast", label: "🍞 Toast" },
 ];
 
 // hex 값은 vanilla-extract 변수(var(--...))라 읽을 수 없습니다.
@@ -184,6 +186,27 @@ color: vars.colors.main`,
   <h2>커스텀 모달 타이틀</h2>
   <p>랜덤 포인트 모달 등으로 사용하세요</p>
 </Modal>`,
+
+  toastWarning: `import { useToast } from "@/components/ui/Toast";
+
+const toast = useToast();
+
+// 한도 소진 또는 주의 알림 (⚠️ 이모지)
+toast.warning("이번달 모든 생성 기회를 소진했어요");`,
+
+  toastSuccess: `import { useToast } from "@/components/ui/Toast";
+
+const toast = useToast();
+
+// 생성 또는 등록 성공 알림 (✅ 이모지)
+toast.success("포토카드가 성공적으로 생성되었습니다.");`,
+
+  toastError: `import { useToast } from "@/components/ui/Toast";
+
+const toast = useToast();
+
+// 실패 또는 오류 알림 (🚨 이모지)
+toast.error("포토카드 생성에 실패했습니다.");`,
 };
 
 // 드롭다운 옵션(등급)
@@ -276,6 +299,7 @@ export default function GuideClient() {
   const [activeTab, setActiveTab] = useState("colors");
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isCustomOpen, setIsCustomOpen] = useState(false);
+  const toast = useToast();
 
   return (
     <div className={styles.container}>
@@ -773,6 +797,70 @@ export default function GuideClient() {
                   <p>랜덤 포인트 뽑기 등 자유롭게 children을 채워서 사용합니다.</p>
                 </div>
               </Modal>
+            </Example>
+          </div>
+        </GuideSection>
+      )}
+
+      {/* 7. Toast 탭 */}
+      {activeTab === "toast" && (
+        <GuideSection
+          description="화면 상단에 알약 형태로 뜨는 즉각적인 피드백 알림입니다. useToast() 훅으로 전역 어디서든 간편하게 호출할 수 있습니다."
+          title="Toast (알림 토스트)"
+        >
+          <div className={styles.exampleList}>
+            <Example
+              code={SNIPPETS.toastWarning}
+              title="1. Warning Toast (주의 및 생성 한도 소진 알림)"
+            >
+              <div className={styles.toastExampleBox}>
+                <div className={styles.toastActionRow}>
+                  <Button
+                    size="sm"
+                    thickness="thin"
+                    variant="primary"
+                    onClick={() => toast.warning("이번달 모든 생성 기회를 소진했어요")}
+                  >
+                    ⚠️ Warning 토스트 띄우기
+                  </Button>
+                </div>
+                <Toast message="이번달 모든 생성 기회를 소진했어요" type="warning" />
+              </div>
+            </Example>
+
+            <Example
+              code={SNIPPETS.toastSuccess}
+              title="2. Success Toast (포토카드 생성 및 등록 완료)"
+            >
+              <div className={styles.toastExampleBox}>
+                <div className={styles.toastActionRow}>
+                  <Button
+                    size="sm"
+                    thickness="thin"
+                    variant="secondary"
+                    onClick={() => toast.success("포토카드가 성공적으로 생성되었습니다.")}
+                  >
+                    ✅ Success 토스트 띄우기
+                  </Button>
+                </div>
+                <Toast message="포토카드가 성공적으로 생성되었습니다." type="success" />
+              </div>
+            </Example>
+
+            <Example code={SNIPPETS.toastError} title="3. Error Toast (생성 실패 및 오류 알림)">
+              <div className={styles.toastExampleBox}>
+                <div className={styles.toastActionRow}>
+                  <Button
+                    size="sm"
+                    thickness="thin"
+                    variant="secondary"
+                    onClick={() => toast.error("포토카드 생성에 실패했습니다.")}
+                  >
+                    🚨 Error 토스트 띄우기
+                  </Button>
+                </div>
+                <Toast message="포토카드 생성에 실패했습니다." type="error" />
+              </div>
             </Example>
           </div>
         </GuideSection>
