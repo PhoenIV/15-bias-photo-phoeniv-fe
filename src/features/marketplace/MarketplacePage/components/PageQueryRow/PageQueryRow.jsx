@@ -7,7 +7,7 @@ import { Dropdown } from "@/components/ui/Dropdown";
 import { Modal } from "@/components/ui/Modal";
 import { SearchInput } from "@/components/ui/SearchInput";
 
-import { excludeSoldOut, genre, grade, sort } from "../../MarketplaceConfig";
+import { excludeSoldOut, genre, grade, sort } from "../../../MarketplaceConfig";
 import { MobileFilter } from "../MobileFilterModal";
 
 import * as styles from "./PageQueryRow.css.js";

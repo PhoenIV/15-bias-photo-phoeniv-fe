@@ -5,7 +5,7 @@ import { clsx } from "clsx";
 
 import { Button } from "@/components/ui/Button/index.js";
 
-import { excludeSoldOut, genre, grade } from "../../MarketplaceConfig.js";
+import { excludeSoldOut, genre, grade } from "../../../MarketplaceConfig.js";
 
 import * as styles from "./MobileFilter.css.js";
 
