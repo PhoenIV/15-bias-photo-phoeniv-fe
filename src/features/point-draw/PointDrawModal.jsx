@@ -37,7 +37,6 @@ export default function PointDrawModal() {
     onError: async (error) => {
       //429 다중탭, 다른 기기에서 중복 뽑기 막기
       if (error.code === "BOX_COOLDOWN") {
-        setIsDismissed(true);
         queryClient.invalidateQueries({ queryKey: pointDrawKeys.status() });
         setDrawError(error.message);
         return;
@@ -45,10 +44,10 @@ export default function PointDrawModal() {
 
       //401 포인트 뽑으려다 로그인 끊김
       if (error.status === 401) {
-        setIsDismissed(true);
         setDrawError(error.message);
         await queryClient.cancelQueries({ queryKey: userKeys.me() }); //->재조회를 막음(재조회해서 늦게 도착하는 유저정보와 겹치지 않게하려고)
         queryClient.setQueryData(userKeys.me(), null); //-> 로그인 페이지로 이동 전에 헤더를 비로그인 상태로 보여줌
+        queryClient.removeQueries({ queryKey: pointDrawKeys.status() });
         return;
       }
 
@@ -65,7 +64,6 @@ export default function PointDrawModal() {
   //2번 째 모달 닫는 함수
   const handleClose = () => {
     setResult(null);
-    setIsDismissed(true);
   };
 
   const handleSubmitBox = () => {
