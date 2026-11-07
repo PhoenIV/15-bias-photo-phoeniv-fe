@@ -29,16 +29,24 @@ export default function BuyerSaleAction({ sale }) {
         <div>
           <span>구매수량</span>
           <div>
-            <button disabled={isSoldOut} type="button" onClick={subtract}>
+            <button disabled={isSoldOut || quantity <= 1} type="button" onClick={subtract}>
               -
             </button>
             <input
               disabled={isSoldOut}
+              max={maxQuantity}
+              min={1}
+              step={1}
               type="number"
               value={isSoldOut ? 0 : quantity}
-              onChange={(event) => setQuantity(event.target.value)}
+              onChange={(event) => {
+                const next = event.target.valueAsNumber;
+                if (Number.isInteger(next)) {
+                  setQuantity(Math.min(maxQuantity, Math.max(1, next)));
+                }
+              }}
             />
-            <button disabled={isSoldOut} type="button" onClick={add}>
+            <button disabled={isSoldOut || quantity >= maxQuantity} type="button" onClick={add}>
               +
             </button>
           </div>
