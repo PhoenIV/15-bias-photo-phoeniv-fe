@@ -2,6 +2,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { useMutation } from "@tanstack/react-query";
+
 import { deleteSale } from "@/services/saleService";
 import { gradeTextRecipe } from "@/styles/grade.css";
 
@@ -17,6 +19,18 @@ export default function SellerSaleAction({ sale }) {
   const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] = useState(false);
   const router = useRouter();
   const toast = useToast();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: deleteSale,
+    onSuccess: () => {
+      toast.success("판매글을 내렸습니다.");
+      setIsDeleteConfirmModalOpen(false);
+      router.push("/marketplace");
+    },
+    onError: () => {
+      toast.error("판매글 내리기에 실패했습니다.");
+    },
+  });
 
   return (
     <>
@@ -57,6 +71,7 @@ export default function SellerSaleAction({ sale }) {
         }}
       ></Modal>
       <AlertModal
+        confirmText={isPending ? "판매글 내리는 중..." : "확인"}
         description="판매글을 삭제하시겠습니까?"
         isOpen={isDeleteConfirmModalOpen}
         title="판매 내리기"
@@ -64,15 +79,8 @@ export default function SellerSaleAction({ sale }) {
           setIsDeleteConfirmModalOpen(false);
         }}
         onConfirm={() => {
-          deleteSale(sale.id)
-            .then(async () => {
-              toast.success("판매글을 내렸습니다.");
-              setIsDeleteConfirmModalOpen(false);
-              router.push("/marketplace");
-            })
-            .catch(() => {
-              toast.error("판매글 내리기에 실패했습니다.");
-            });
+          if (isPending) return;
+          mutate(sale.id);
         }}
       />
     </>

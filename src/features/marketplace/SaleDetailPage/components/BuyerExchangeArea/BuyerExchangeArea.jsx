@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getOffersBySale, updateExchangeStatus } from "@/services/exchangeService";
 import { exchangeKeys } from "@/services/queryKeys";
@@ -27,11 +27,26 @@ export default function BuyerExchangeArea({ sale, user }) {
     queryFn: () => getOffersBySale(sale.id, params),
     enabled: Boolean(sale.id && user?.id),
   });
+
   const queryClient = useQueryClient();
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [isConfirmCancelModalOpen, setIsConfirmCancelModalOpen] = useState(false);
   const [isExchangeModalOpen, setIsExchangeModalOpen] = useState(false);
   const toast = useToast();
+
+  const { mutate: cancelOffer, isPending: isCancelPending } = useMutation({
+    mutationFn: updateExchangeStatus,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: exchangeKeys.perSale(sale.id, user.id, params),
+      });
+      toast.success("교환 제시를 취소했습니다.");
+      setIsConfirmCancelModalOpen(false);
+    },
+    onError: () => {
+      toast.error("교환 제시 취소에 실패했습니다.");
+    },
+  });
 
   if (isPending) return <p>불러오는 중입니다...</p>;
   if (error) return <p>오류가 발생했습니다.</p>;
@@ -99,22 +114,14 @@ export default function BuyerExchangeArea({ sale, user }) {
         </Button>
       </div>
       <AlertModal
+        confirmText={isCancelPending ? "제시 취소 중..." : "확인"}
         description={`[${selectedOffer?.offeredCard.grade}|${selectedOffer?.offeredCard.name}] 카드 교환 제시를 취소하시겠습니까?`}
         isOpen={isConfirmCancelModalOpen}
         title="교환 제시 취소"
         onClose={() => setIsConfirmCancelModalOpen(false)}
         onConfirm={() => {
-          updateExchangeStatus({ exchangeId: selectedOffer?.id, status: "CANCELLED" })
-            .then(async () => {
-              await queryClient.invalidateQueries({
-                queryKey: exchangeKeys.perSale(sale.id, user.id, params),
-              });
-              toast.success("교환 제시를 취소했습니다.");
-              setIsConfirmCancelModalOpen(false);
-            })
-            .catch(() => {
-              toast.error("교환 제시 취소에 실패했습니다.");
-            });
+          if (isCancelPending) return;
+          cancelOffer({ exchangeId: selectedOffer?.id, status: "CANCELLED" });
         }}
       />
       <ExchangeModal

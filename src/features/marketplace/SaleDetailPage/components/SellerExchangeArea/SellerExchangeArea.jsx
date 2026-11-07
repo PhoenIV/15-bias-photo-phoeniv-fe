@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getOffersBySale, updateExchangeStatus } from "@/services/exchangeService";
 import { exchangeKeys } from "@/services/queryKeys";
@@ -32,6 +32,31 @@ export default function SellerExchangeArea({ sale, user }) {
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [isConfirmRejectModalOpen, setIsConfirmRejectModalOpen] = useState(false);
   const [isConfirmApproveModalOpen, setIsConfirmApproveModalOpen] = useState(false);
+
+  const { mutate: reject, isPending: isRejectionPending } = useMutation({
+    mutationFn: updateExchangeStatus,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: exchangeKeys.perSale(sale.id, user.id, params),
+      });
+      toast.success("교환 제시를 거절했습니다.");
+      setIsConfirmRejectModalOpen(false);
+    },
+    onError: () => toast.error("교환 제시 거절에 실패했습니다."),
+  });
+
+  const { mutate: approve, isPending: isApprovalPending } = useMutation({
+    mutationFn: updateExchangeStatus,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: exchangeKeys.perSale(sale.id, user.id, params),
+      });
+      toast.success("교환 제시를 승인했습니다.");
+      setIsConfirmApproveModalOpen(false);
+      router.refresh();
+    },
+    onError: () => toast.error("교환 제시 승인에 실패했습니다."),
+  });
 
   if (isPending) return <p>불러오는 중입니다...</p>;
   if (error) return <p>오류가 발생했습니다.</p>;
@@ -64,38 +89,25 @@ export default function SellerExchangeArea({ sale, user }) {
         </div>
       </div>
       <AlertModal
+        confirmText={isRejectionPending ? "교환 제시 거절 중..." : "확인"}
         description={`[${selectedOffer?.offeredCard.grade}|${selectedOffer?.offeredCard.name}] 카드와의 교환을 거절하시겠습니까?`}
         isOpen={isConfirmRejectModalOpen}
         title="교환 제시 거절"
         onClose={() => setIsConfirmRejectModalOpen(false)}
         onConfirm={() => {
-          updateExchangeStatus({ exchangeId: selectedOffer?.id, status: "REJECTED" })
-            .then(async () => {
-              await queryClient.invalidateQueries({
-                queryKey: exchangeKeys.perSale(sale.id, user.id, params),
-              });
-              toast.success("교환 제시를 거절했습니다.");
-              setIsConfirmRejectModalOpen(false);
-            })
-            .catch(() => toast.error("교환 제시 거절에 실패했습니다."));
+          if (isRejectionPending) return;
+          reject({ exchangeId: selectedOffer?.id, status: "REJECTED" });
         }}
       />
       <AlertModal
+        confirmText={isApprovalPending ? "교환 제시 승인 중..." : "확인"}
         description={`[${selectedOffer?.offeredCard.grade}|${selectedOffer?.offeredCard.name}] 카드와의 교환을 승인하시겠습니까?`}
         isOpen={isConfirmApproveModalOpen}
         title="교환 제시 승인"
         onClose={() => setIsConfirmApproveModalOpen(false)}
         onConfirm={() => {
-          updateExchangeStatus({ exchangeId: selectedOffer?.id, status: "APPROVED" })
-            .then(async () => {
-              await queryClient.invalidateQueries({
-                queryKey: exchangeKeys.perSale(sale.id, user.id, params),
-              });
-              toast.success("교환 제시를 승인했습니다.");
-              setIsConfirmApproveModalOpen(false);
-              router.refresh();
-            })
-            .catch(() => toast.error("교환 제시 승인에 실패했습니다."));
+          if (isApprovalPending) return;
+          approve({ exchangeId: selectedOffer?.id, status: "APPROVED" });
         }}
       />
     </>

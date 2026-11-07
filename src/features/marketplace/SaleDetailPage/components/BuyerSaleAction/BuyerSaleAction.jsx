@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { useMutation } from "@tanstack/react-query";
+
 import { makePurchase } from "@/services/saleService";
 
 import { Button } from "@/components/ui/Button";
@@ -13,11 +15,26 @@ import * as styles from "./BuyerSaleAction.css";
 
 // 구매자가 보는 구매하기 영역
 export default function BuyerSaleAction({ sale }) {
+  const router = useRouter();
+  const toast = useToast();
+
   const [isPurchaseConfirmModalOpen, setIsPurchaseConfirmModalOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
+  const { mutate: purchase, isPending: isPurchasePending } = useMutation({
+    mutationFn: makePurchase,
+    onSuccess: () => {
+      toast.success("구매가 완료되었습니다.");
+      setIsPurchaseConfirmModalOpen(false);
+      router.refresh();
+    },
+    onError: () => {
+      toast.error("구매에 실패했습니다.");
+    },
+  });
+
+  // 구매 수량을 조절하는 상수와 함수
   const maxQuantity = Math.min(sale.remainingQuantity, 10);
-  const isSoldOut = sale.remainingQuantity === 0;
   const subtract = () => {
     setQuantity((prev) => Math.max(1, prev - 1));
   };
@@ -25,8 +42,7 @@ export default function BuyerSaleAction({ sale }) {
     setQuantity((prev) => Math.min(maxQuantity, prev + 1));
   };
 
-  const router = useRouter();
-  const toast = useToast();
+  const isSoldOut = sale.remainingQuantity === 0;
 
   return (
     <>
@@ -89,20 +105,14 @@ export default function BuyerSaleAction({ sale }) {
         </div>
       </div>
       <AlertModal
+        confirmText={isPurchasePending ? "구매 처리 중..." : "확인"}
         description={`[${sale.card.grade}|${sale.card.name}] ${quantity}장을 구매하시겠습니까?`}
         isOpen={isPurchaseConfirmModalOpen}
         title="포토카드 구매"
         onClose={() => setIsPurchaseConfirmModalOpen(false)}
         onConfirm={() => {
-          makePurchase({ saleId: sale.id, quantity, expectedPrice: sale.price })
-            .then(() => {
-              toast.success("구매가 완료되었습니다.");
-              setIsPurchaseConfirmModalOpen(false);
-              router.refresh();
-            })
-            .catch(() => {
-              toast.error("구매에 실패했습니다.");
-            });
+          if (isPurchasePending) return;
+          purchase({ saleId: sale.id, quantity, expectedPrice: sale.price });
         }}
       />
     </>
