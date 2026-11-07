@@ -7,7 +7,9 @@ import { exchangeKeys } from "@/services/queryKeys";
 
 import { ExchangePhotoCard } from "@/components/common/PhotoCard";
 import { Button } from "@/components/ui/Button";
-import { AlertModal, Modal } from "@/components/ui/Modal";
+import { AlertModal } from "@/components/ui/Modal";
+
+import { ExchangeModal } from "@/features/exchange/ExchangeModal";
 
 // 구매자가 보는 교환 희망 정보
 export default function BuyerExchangeArea({ sale, user }) {
@@ -87,7 +89,13 @@ export default function BuyerExchangeArea({ sale, user }) {
           setIsConfirmCancelModalOpen(false);
         }}
       />
-      <Modal isOpen={isExchangeModalOpen} onClose={() => setIsExchangeModalOpen(false)} />
+      <ExchangeModal
+        exchangeGenre={sale.exchangeGenre}
+        exchangeGrade={sale.exchangeGrade}
+        isOpen={isExchangeModalOpen}
+        saleId={sale.id}
+        onClose={() => setIsExchangeModalOpen(false)}
+      />
     </>
   );
 }
