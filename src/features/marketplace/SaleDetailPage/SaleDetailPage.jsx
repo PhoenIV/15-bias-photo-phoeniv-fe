@@ -18,18 +18,29 @@ export default function SaleDetailPage({ sale }) {
   const isSeller = sale.seller.id === user.id;
 
   return (
-    <>
-      <h3>{card.name}</h3>
-      <div className={styles.container}>
-        <Image alt="포토카드 이미지" height={410} src={card.imagePublicId} width={713} />
-        <CommonSaleInfo card={card} sale={sale} />
-        {isSeller ? <SellerSaleAction sale={sale} /> : <BuyerSaleAction sale={sale} />}
+    <div className={styles.container}>
+      <h2 className={styles.pageTitle}>마켓플레이스</h2>
+      <h3 className={styles.cardTitle}>{card.name}</h3>
+      <div className={styles.saleContainer}>
+        <div className={styles.imageWrapper}>
+          <Image alt="포토카드 이미지" fill src={card.imagePublicId} className={styles.cardImage} />
+        </div>
+        <div className={styles.saleArea}>
+          <CommonSaleInfo card={card} sale={sale} className={styles.commonSaleInfo} />
+          {isSeller ? (
+            <SellerSaleAction sale={sale} className={styles.saleActionArea} />
+          ) : (
+            <BuyerSaleAction sale={sale} className={styles.saleActionArea} />
+          )}
+        </div>
       </div>
-      {isSeller ? (
-        <SellerExchangeArea sale={sale} user={user} />
-      ) : (
-        <BuyerExchangeArea sale={sale} user={user} />
-      )}
-    </>
+      <div className={styles.exchangeContainer}>
+        {isSeller ? (
+          <SellerExchangeArea sale={sale} user={user} className={styles.exchangeArea} />
+        ) : (
+          <BuyerExchangeArea sale={sale} user={user} className={styles.exchangeArea} />
+        )}
+      </div>
+    </div>
   );
 }

@@ -8,6 +8,8 @@ import { exchangeKeys } from "@/services/queryKeys";
 import { ExchangePhotoCard } from "@/components/common/PhotoCard";
 import { AlertModal } from "@/components/ui/Modal";
 
+import * as styles from "./SellerExchangeArea.css";
+
 // 판매자가 보는 제시받은 교환카드 목록
 export default function SellerExchangeArea({ sale, user }) {
   const params = {};
@@ -32,30 +34,28 @@ export default function SellerExchangeArea({ sale, user }) {
 
   return (
     <>
-      <div>
-        <div>
-          <h3>교환 제시 목록</h3>
-          <div>
-            {offers.map((offer) => (
-              <ExchangePhotoCard
-                key={offer.id}
-                card={offer.offeredCard}
-                category={offer.offeredCard.genre}
-                grade={offer.offeredCard.grade}
-                imageId={offer.offeredCard.imagePublicId}
-                message={offer.description}
-                nickname={offer.proposer.nickname}
-                requestType="received"
-                title={offer.offeredCard.name}
-                onApprove={() => {
-                  (setIsConfirmApproveModalOpen(true), setSelectedOffer(offer));
-                }}
-                onReject={() => {
-                  (setIsConfirmRejectModalOpen(true), setSelectedOffer(offer));
-                }}
-              />
-            ))}
-          </div>
+      <div className={styles.container}>
+        <h3 className={styles.areaTitle}>교환 제시 목록</h3>
+        <div className={styles.cardsContainer}>
+          {offers.map((offer) => (
+            <ExchangePhotoCard
+              key={offer.id}
+              card={offer.offeredCard}
+              category={offer.offeredCard.genre}
+              grade={offer.offeredCard.grade}
+              imageId={offer.offeredCard.imagePublicId}
+              message={offer.description}
+              nickname={offer.proposer.nickname}
+              requestType="received"
+              title={offer.offeredCard.name}
+              onApprove={() => {
+                (setIsConfirmApproveModalOpen(true), setSelectedOffer(offer));
+              }}
+              onReject={() => {
+                (setIsConfirmRejectModalOpen(true), setSelectedOffer(offer));
+              }}
+            />
+          ))}
         </div>
       </div>
       <AlertModal

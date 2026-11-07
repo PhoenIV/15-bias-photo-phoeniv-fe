@@ -8,7 +8,10 @@ export default function CommonSaleInfo({ sale, card }) {
     <div className={styles.container}>
       <div className={styles.firstRow}>
         <span className={styles.cardInfo}>
-          <span className={gradeTextRecipe({ grade: card.grade })}>{card.grade}</span>| {card.genre}
+          <span className={gradeTextRecipe({ grade: card.grade, type: "inherit" })}>
+            {card.grade}
+          </span>{" "}
+          <span className={styles.divider}>|</span> {card.genre}
         </span>
         <span className={styles.sellerInfo}>{sale.seller.nickname}</span>
       </div>
@@ -16,13 +19,14 @@ export default function CommonSaleInfo({ sale, card }) {
         <p className={styles.descriptionInfo}>{card.description}</p>
       </div>
       <div className={styles.thirdRow}>
-        <span>가격</span>
-        <span>{sale.price}P</span>
+        <span className={styles.thirdRowFieldName}>가격</span>
+        <span className={styles.thirdRowValue}>{sale.price}P</span>
       </div>
       <div className={styles.thirdRow}>
-        <span>잔여</span>
-        <span>
-          {sale.remainingQuantity}/{sale.totalQuantity}
+        <span className={styles.thirdRowFieldName}>잔여</span>
+        <span className={styles.thirdRowValue}>
+          {sale.remainingQuantity}
+          <span className={styles.totalQuantity}> / {sale.totalQuantity}</span>
         </span>
       </div>
     </div>

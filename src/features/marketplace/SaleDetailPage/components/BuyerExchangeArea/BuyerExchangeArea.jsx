@@ -4,12 +4,15 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getOffersBySale, updateExchangeStatus } from "@/services/exchangeService";
 import { exchangeKeys } from "@/services/queryKeys";
+import { gradeTextRecipe } from "@/styles/grade.css";
 
 import { ExchangePhotoCard } from "@/components/common/PhotoCard";
 import { Button } from "@/components/ui/Button";
 import { AlertModal } from "@/components/ui/Modal";
 
 import { ExchangeModal } from "@/features/exchange/ExchangeModal";
+
+import * as styles from "./BuyerExchangeArea.css";
 
 // 구매자가 보는 교환 희망 정보
 export default function BuyerExchangeArea({ sale, user }) {
@@ -37,26 +40,34 @@ export default function BuyerExchangeArea({ sale, user }) {
   return (
     <>
       <div>
-        <div>
+        <div className={styles.areaTitleRow}>
           <span>교환 희망 정보</span>
           <Button
             disabled={sale.remainingQuantity === 0}
             size="responsive"
             thickness="thin"
+            className={styles.exchangeButtonInTitleRow}
             onClick={() => setIsExchangeModalOpen(true)}
           >
             포토카드 교환하기
           </Button>
         </div>
         <div>
-          <p>{sale.exchangeDescription}</p>
-          <span>
-            <span>{sale.exchangeGrade}</span>|{sale.exchangeGenre}
-          </span>
+          <div className={styles.exchangeDescription}>
+            <p>{sale.exchangeDescription}</p>
+          </div>
+          <div className={styles.exchangeInfoContainer}>
+            <span className={styles.exchangeInfo}>
+              <span className={gradeTextRecipe({ grade: sale.exchangeGrade, type: "inherit" })}>
+                {sale.exchangeGrade}
+              </span>{" "}
+              <span className={styles.divider}>|</span> {sale.exchangeGenre}
+            </span>
+          </div>
         </div>
         <div>
           <p>내가 제시한 카드</p>
-          <div>
+          <div className={styles.cardContainer}>
             {myOffers?.map((offer) => (
               <ExchangePhotoCard
                 key={offer.id}
@@ -75,6 +86,15 @@ export default function BuyerExchangeArea({ sale, user }) {
             ))}
           </div>
         </div>
+        <Button
+          disabled={sale.remainingQuantity === 0}
+          size="responsive"
+          thickness="thin"
+          className={styles.exchangeButtonBelowMyOffers}
+          onClick={() => setIsExchangeModalOpen(true)}
+        >
+          포토카드 교환하기
+        </Button>
       </div>
       <AlertModal
         description={`[${selectedOffer?.offeredCard.grade}|${selectedOffer?.offeredCard.name}] 카드 교환 제시를 취소하시겠습니까?`}

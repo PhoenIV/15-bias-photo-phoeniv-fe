@@ -25,11 +25,16 @@ export default function BuyerSaleAction({ sale }) {
 
   return (
     <>
-      <div>
-        <div>
-          <span>구매수량</span>
-          <div>
-            <button disabled={isSoldOut || quantity <= 1} type="button" onClick={subtract}>
+      <div className={styles.container}>
+        <div className={styles.quantityRow}>
+          <span className={styles.fieldName}>구매수량</span>
+          <div className={styles.quantityController}>
+            <button
+              disabled={isSoldOut || quantity <= 1}
+              type="button"
+              className={styles.quantityButton}
+              onClick={subtract}
+            >
               -
             </button>
             <input
@@ -39,6 +44,7 @@ export default function BuyerSaleAction({ sale }) {
               step={1}
               type="number"
               value={isSoldOut ? 0 : quantity}
+              className={styles.input}
               onChange={(event) => {
                 const next = event.target.valueAsNumber;
                 if (Number.isInteger(next)) {
@@ -46,16 +52,23 @@ export default function BuyerSaleAction({ sale }) {
                 }
               }}
             />
-            <button disabled={isSoldOut || quantity >= maxQuantity} type="button" onClick={add}>
+            <button
+              disabled={isSoldOut || quantity >= maxQuantity}
+              type="button"
+              className={styles.quantityButton}
+              onClick={add}
+            >
               +
             </button>
           </div>
         </div>
-        <div>
-          <span>총 가격</span>
-          <div>
-            <span>{isSoldOut ? "0P" : `${quantity * sale.price}P`}</span>
-            <span>{isSoldOut ? "(품절)" : `(${quantity}장)`}</span>
+        <div className={styles.totalPriceRow}>
+          <span className={styles.fieldName}>총 가격</span>
+          <div className={styles.fieldValue}>
+            <span className={styles.totalPrice}>
+              {isSoldOut ? "0P" : `${quantity * sale.price}P`}
+            </span>
+            <span className={styles.setQuantity}>{isSoldOut ? " (품절)" : ` (${quantity}장)`}</span>
           </div>
         </div>
         <div>
@@ -63,6 +76,7 @@ export default function BuyerSaleAction({ sale }) {
             disabled={isSoldOut}
             size="responsive"
             thickness="thin"
+            className={styles.purchaseButton}
             onClick={() => setIsPurchaseConfirmModalOpen(true)}
           >
             포토카드 구매하기
