@@ -25,7 +25,11 @@ export default function SaleDetailPage({ sale }) {
         <CommonSaleInfo card={card} sale={sale} />
         {isSeller ? <SellerSaleAction sale={sale} /> : <BuyerSaleAction sale={sale} />}
       </div>
-      {isSeller ? <SellerExchangeArea sale={sale} /> : <BuyerExchangeArea sale={sale} />}
+      {isSeller ? (
+        <SellerExchangeArea sale={sale} user={user} />
+      ) : (
+        <BuyerExchangeArea sale={sale} user={user} />
+      )}
     </>
   );
 }

@@ -8,7 +8,7 @@ export default function CommonSaleInfo({ sale, card }) {
     <div className={styles.container}>
       <div className={styles.firstRow}>
         <span className={styles.cardInfo}>
-          <span styles={gradeTextRecipe({ grade: card.grade })}>{card.grade}</span>| {card.genre}
+          <span className={gradeTextRecipe({ grade: card.grade })}>{card.grade}</span>| {card.genre}
         </span>
         <span className={styles.sellerInfo}>{sale.seller.nickname}</span>
       </div>

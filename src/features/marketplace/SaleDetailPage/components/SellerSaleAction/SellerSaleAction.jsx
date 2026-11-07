@@ -14,9 +14,7 @@ export default function SellerSaleAction({ sale }) {
   const onClickEdit = () => {
     setIsEditModalOpen(true);
   }; // 게시글 수정 모달을 여는 함수
-  const onConfirmDelete = () => {
-    deleteSale(sale.id);
-  };
+
   return (
     <>
       <div>
@@ -33,7 +31,7 @@ export default function SellerSaleAction({ sale }) {
           <p>{sale.exchangeDescription}</p>
         </div>
         <div>
-          <Button size="responsive" thickness="thin">
+          <Button size="responsive" thickness="thin" onClick={onClickEdit}>
             수정하기
           </Button>
           <Button
@@ -53,14 +51,17 @@ export default function SellerSaleAction({ sale }) {
         }}
       ></Modal>
       <AlertModal
+        description="판매글을 삭제하시겠습니까?"
         isOpen={isDeleteConfirmModalOpen}
-        title="판매글을 삭제합니다."
+        title="판매 내리기"
         onClose={() => {
           setIsDeleteConfirmModalOpen(false);
         }}
-      >
-        <Button onClick={onConfirmDelete} />
-      </AlertModal>
+        onConfirm={() => {
+          deleteSale(sale.id);
+          setIsDeleteConfirmModalOpen(false);
+        }}
+      ></AlertModal>
     </>
   );
 }
