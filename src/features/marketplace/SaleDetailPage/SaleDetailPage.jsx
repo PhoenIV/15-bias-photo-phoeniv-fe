@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { useMe } from "@/hooks/useMe";
+import { useSaleDetail } from "@/hooks/useSale";
 
 import { BuyerExchangeArea } from "./components/BuyerExchangeArea";
 import { BuyerSaleAction } from "./components/BuyerSaleAction";
@@ -13,9 +14,12 @@ import { SellerSaleAction } from "./components/SellerSaleAction";
 
 import * as styles from "./SaleDetailPage.css";
 
-export default function SaleDetailPage({ sale }) {
-  const { card } = sale;
+export default function SaleDetailPage({ saleId }) {
   const { user } = useMe();
+  const { data: sale, isPending, error } = useSaleDetail(saleId);
+  if (isPending) return <p>로딩중...</p>;
+  if (error) return <p>판매글을 불러오지 못했습니다.</p>;
+  const { card } = sale;
   const isSeller = sale.seller.id === user.id;
 
   return (
