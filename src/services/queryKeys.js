@@ -22,8 +22,14 @@ export const pointDrawKeys = {
   all: ["point-draws"],
   status: () => [...pointDrawKeys.all, "status"],
 };
-  
+
 export const notificationKeys = {
   all: ["notifications"],
   lists: (params = {}) => [...notificationKeys.all, "list", params],
+};
+
+export const exchangeKeys = {
+  all: ["exchange"],
+  bySale: (saleId, params = {}) => [...exchangeKeys.all, "sale", saleId, params],
+  receiveMe: (params = {}) => [...exchangeKeys.all, "me", params],
 };
