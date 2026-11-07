@@ -29,7 +29,6 @@ export const notificationKeys = {
 };
 
 export const exchangeKeys = {
-  all: ["exchange"],
-  bySale: (saleId, params = {}) => [...exchangeKeys.all, "sale", saleId, params],
-  receiveMe: (params = {}) => [...exchangeKeys.all, "me", params],
+  all: ["exchanges"],
+  perSale: (saleId, userId, params = {}) => [...exchangeKeys.all, "sale", saleId, userId, params],
 };
