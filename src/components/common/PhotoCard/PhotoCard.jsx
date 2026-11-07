@@ -16,7 +16,7 @@ import * as styles from "./PhotoCard.css";
  * @param {"COMMON" | "RARE" | "SUPER_RARE" | "LEGENDARY"} [props.grade="COMMON"] - 카드 등급
  * @param {string} props.category - 카드 카테고리 (예: 풍경)
  * @param {string} props.nickname - 판매자(또는 작가) 닉네임
- * @param {number} [props.price] - 가격 (없으면 가격 행을 숨깁니다)
+ * @param {number | null} [props.price] - 가격 (undefined면 가격 행을 숨기고, null이면 "-"로 표시합니다)
  * @param {string} [props.countLabel="잔여"] - 수량 행의 라벨 (내 카드 목록에서는 "수량")
  * @param {number} [props.remainCount] - 남은 수량 (없으면 수량 행을 숨깁니다)
  * @param {number} [props.totalCount] - 전체 수량 (있으면 "2 / 5" 형태로 표시)
@@ -57,11 +57,11 @@ export default function PhotoCard({
 
         {hasInfo && <div className={styles.horizontalDivider} />}
 
-        {/* 가격 행: price가 있을 때만 표시 */}
+        {/* 가격 행: price가 있을 때만 표시 (null이면 "-" 표시) */}
         {price !== undefined && (
           <div className={styles.infoRow}>
             <span className={styles.infoLabel}>가격</span>
-            <span className={styles.infoValue}>{price} P</span>
+            <span className={styles.infoValue}>{price === null ? "-" : `${price} P`}</span>
           </div>
         )}
 

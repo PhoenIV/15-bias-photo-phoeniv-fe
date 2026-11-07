@@ -13,5 +13,5 @@ export const SUB_PAGE_TITLES = {
 export const PROFILE_MENU_ITEMS = [
   { href: "/marketplace", label: "마켓플레이스", requiresAuth: false },
   { href: "/my-gallery", label: "마이갤러리", requiresAuth: true },
-  { href: "/my-listings", label: "판매 중인 포토카드", requiresAuth: true },
+  { href: "/my-listings", label: "나의 판매 포토카드", requiresAuth: true },
 ];

@@ -4,6 +4,8 @@ export const cardKeys = {
   detail: (id) => [...cardKeys.all, "detail", id],
   lists: (filters = {}) => [...cardKeys.all, "list", filters],
   quota: () => [...cardKeys.all, "quota"],
+  salesLists: (filters = {}) => [...cardKeys.all, "sales-list", filters],
+  salesSummary: () => [...cardKeys.all, "sales-summary"],
   summary: () => [...cardKeys.all, "summary"],
 };
 
