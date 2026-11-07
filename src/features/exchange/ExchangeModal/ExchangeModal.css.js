@@ -135,4 +135,11 @@ export const smallText = style({
 
 export const buttonRow = style({ display: "flex", gap: "15px", marginTop: "40px" });
 
-export const cardButton = style({ cursor: "pointer" });
+export const cardButton = style({
+  width: "100%",
+  padding: 0,
+  border: "none",
+  background: "none",
+  textAlign: "left",
+  cursor: "pointer",
+});

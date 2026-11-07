@@ -30,13 +30,24 @@ export default function ExchangeModal({
     onClose?.();
   };
 
+  // 제출 중에는 닫기,뒤로가기 막기
+  const handleCancel = () => {
+    if (isPending) return;
+    handleClose();
+  };
+
+  const handleBack = () => {
+    if (isPending) return;
+    setSelectedCard(null);
+  };
+
   const handleSubmit = ({ offeredUserCardId, description }) => {
     mutate(
       { saleId, offeredUserCardId, description: description.trim() || null },
       {
         onSuccess: (result) => {
           handleClose();
-          // 성공 페이지가 연결되면 onSuccess로 이동, 그 전까지는 토스트
+          // 성공 시 토스트
           if (onSuccess) onSuccess(result.data);
           else toast.success("포토카드 교환 제시에 성공했습니다!");
         },
@@ -51,13 +62,13 @@ export default function ExchangeModal({
       ariaLabel="포토카드 교환하기"
       isOpen={isOpen}
       className={styles.modal}
-      onClose={handleClose}
+      onClose={handleCancel}
     >
       {selectedCard ? (
         <OfferFormStep
           card={selectedCard}
           isSubmitting={isPending}
-          onBack={() => setSelectedCard(null)}
+          onBack={handleBack}
           onSubmit={handleSubmit}
         />
       ) : (

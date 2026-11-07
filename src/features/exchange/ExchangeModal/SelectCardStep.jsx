@@ -165,17 +165,19 @@ function MyCardList({ params, emptyMessage, onSelect }) {
     <div className={styles.cardList}>
       <ul className={styles.cardGrid}>
         {cards.map((card) => (
-          <li key={card.userCardId} className={styles.cardButton} onClick={() => onSelect(card)}>
-            <PhotoCard
-              category={genreLabel(card.genre)}
-              countLabel="수량"
-              grade={card.grade}
-              imageId={card.imagePublicId}
-              nickname={card.creatorNickname}
-              price={card.minPrice}
-              remainCount={card.netQuantity}
-              title={card.name}
-            />
+          <li key={card.userCardId}>
+            <button type="button" className={styles.cardButton} onClick={() => onSelect(card)}>
+              <PhotoCard
+                category={genreLabel(card.genre)}
+                countLabel="수량"
+                grade={card.grade}
+                imageId={card.imagePublicId}
+                nickname={card.creatorNickname}
+                price={card.minPrice}
+                remainCount={card.netQuantity}
+                title={card.name}
+              />
+            </button>
           </li>
         ))}
       </ul>
