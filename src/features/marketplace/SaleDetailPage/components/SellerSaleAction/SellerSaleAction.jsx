@@ -2,8 +2,9 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { saleKeys } from "@/services/queryKeys";
 import { deleteSale } from "@/services/saleService";
 import { gradeTextRecipe } from "@/styles/grade.css";
 
@@ -17,12 +18,14 @@ import * as styles from "./SellerSaleAction.css";
 export default function SellerSaleAction({ sale }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] = useState(false);
+  const queryClient = useQueryClient();
   const router = useRouter();
   const toast = useToast();
 
   const { mutate, isPending } = useMutation({
     mutationFn: deleteSale,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: saleKeys.lists() });
       toast.success("판매글을 내렸습니다.");
       setIsDeleteConfirmModalOpen(false);
       router.push("/marketplace");

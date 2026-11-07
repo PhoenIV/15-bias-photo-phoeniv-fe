@@ -1,10 +1,9 @@
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getOffersBySale, updateExchangeStatus } from "@/services/exchangeService";
-import { exchangeKeys } from "@/services/queryKeys";
+import { exchangeKeys, saleKeys } from "@/services/queryKeys";
 
 import { ExchangePhotoCard } from "@/components/common/PhotoCard";
 import { AlertModal } from "@/components/ui/Modal";
@@ -25,8 +24,6 @@ export default function SellerExchangeArea({ sale, user }) {
     enabled: Boolean(sale.id && user?.id),
   });
   const queryClient = useQueryClient();
-
-  const router = useRouter();
   const toast = useToast();
 
   const [selectedOffer, setSelectedOffer] = useState(null);
@@ -48,12 +45,17 @@ export default function SellerExchangeArea({ sale, user }) {
   const { mutate: approve, isPending: isApprovalPending } = useMutation({
     mutationFn: updateExchangeStatus,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: exchangeKeys.perSale(sale.id, user.id, params),
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: exchangeKeys.perSale(sale.id, user.id, params),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: saleKeys.detail(sale.id),
+        }),
+        queryClient.invalidateQueries({ queryKey: saleKeys.lists() }),
+      ]);
       toast.success("교환 제시를 승인했습니다.");
       setIsConfirmApproveModalOpen(false);
-      router.refresh();
     },
     onError: () => toast.error("교환 제시 승인에 실패했습니다."),
   });

@@ -1,10 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { saleKeys } from "@/services/queryKeys";
 import { makePurchase } from "@/services/saleService";
 
 import { Button } from "@/components/ui/Button";
@@ -15,18 +15,21 @@ import * as styles from "./BuyerSaleAction.css";
 
 // 구매자가 보는 구매하기 영역
 export default function BuyerSaleAction({ sale }) {
-  const router = useRouter();
   const toast = useToast();
+  const queryClient = useQueryClient();
 
   const [isPurchaseConfirmModalOpen, setIsPurchaseConfirmModalOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
   const { mutate: purchase, isPending: isPurchasePending } = useMutation({
     mutationFn: makePurchase,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: saleKeys.detail(sale.id) }),
+        queryClient.invalidateQueries({ queryKey: saleKeys.lists() }),
+      ]);
       toast.success("구매가 완료되었습니다.");
       setIsPurchaseConfirmModalOpen(false);
-      router.refresh();
     },
     onError: () => {
       toast.error("구매에 실패했습니다.");
