@@ -9,6 +9,7 @@ import { gradeTextRecipe } from "@/styles/grade.css";
 import { ExchangePhotoCard } from "@/components/common/PhotoCard";
 import { Button } from "@/components/ui/Button";
 import { AlertModal } from "@/components/ui/Modal";
+import { useToast } from "@/components/ui/Toast";
 
 import { ExchangeModal } from "@/features/exchange/ExchangeModal";
 
@@ -30,12 +31,11 @@ export default function BuyerExchangeArea({ sale, user }) {
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [isConfirmCancelModalOpen, setIsConfirmCancelModalOpen] = useState(false);
   const [isExchangeModalOpen, setIsExchangeModalOpen] = useState(false);
+  const toast = useToast();
 
   if (isPending) return <p>불러오는 중입니다...</p>;
   if (error) return <p>오류가 발생했습니다.</p>;
   const myOffers = response.data;
-  console.log(myOffers);
-  console.log("selectedOffer:", selectedOffer);
 
   return (
     <>
@@ -65,27 +65,29 @@ export default function BuyerExchangeArea({ sale, user }) {
             </span>
           </div>
         </div>
-        <div>
-          <p>내가 제시한 카드</p>
-          <div className={styles.cardContainer}>
-            {myOffers?.map((offer) => (
-              <ExchangePhotoCard
-                key={offer.id}
-                card={offer.offeredCard}
-                category={offer.offeredCard.genre}
-                grade={offer.offeredCard.grade}
-                imageId={offer.offeredCard.imagePublicId}
-                message={offer.description}
-                nickname={offer.proposer.nickname}
-                requestType="sent"
-                title={offer.offeredCard.name}
-                onCancel={() => {
-                  (setSelectedOffer(offer), setIsConfirmCancelModalOpen(true));
-                }}
-              />
-            ))}
+        {myOffers.length === 0 ? null : (
+          <div>
+            <p className={styles.myOfferTitleRow}>내가 제시한 카드</p>
+            <div className={styles.cardContainer}>
+              {myOffers?.map((offer) => (
+                <ExchangePhotoCard
+                  key={offer.id}
+                  card={offer.offeredCard}
+                  category={offer.offeredCard.genre}
+                  grade={offer.offeredCard.grade}
+                  imageId={offer.offeredCard.imagePublicId}
+                  message={offer.description}
+                  nickname={offer.proposer.nickname}
+                  requestType="sent"
+                  title={offer.offeredCard.name}
+                  onCancel={() => {
+                    (setSelectedOffer(offer), setIsConfirmCancelModalOpen(true));
+                  }}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
         <Button
           disabled={sale.remainingQuantity === 0}
           size="responsive"
@@ -101,12 +103,18 @@ export default function BuyerExchangeArea({ sale, user }) {
         isOpen={isConfirmCancelModalOpen}
         title="교환 제시 취소"
         onClose={() => setIsConfirmCancelModalOpen(false)}
-        onConfirm={async () => {
-          await updateExchangeStatus({ exchangeId: selectedOffer?.id, status: "CANCELLED" });
-          await queryClient.invalidateQueries({
-            queryKey: exchangeKeys.perSale(sale.id, user.id, params),
-          });
-          setIsConfirmCancelModalOpen(false);
+        onConfirm={() => {
+          updateExchangeStatus({ exchangeId: selectedOffer?.id, status: "CANCELLED" })
+            .then(async () => {
+              await queryClient.invalidateQueries({
+                queryKey: exchangeKeys.perSale(sale.id, user.id, params),
+              });
+              toast.success("교환 제시를 취소했습니다.");
+              setIsConfirmCancelModalOpen(false);
+            })
+            .catch(() => {
+              toast.error("교환 제시 취소에 실패했습니다.");
+            });
         }}
       />
       <ExchangeModal

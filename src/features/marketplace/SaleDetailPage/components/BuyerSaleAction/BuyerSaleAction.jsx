@@ -1,11 +1,13 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { makePurchase } from "@/services/saleService";
 
 import { Button } from "@/components/ui/Button";
 import { AlertModal } from "@/components/ui/Modal";
+import { useToast } from "@/components/ui/Toast";
 
 import * as styles from "./BuyerSaleAction.css";
 
@@ -22,6 +24,9 @@ export default function BuyerSaleAction({ sale }) {
   const add = () => {
     setQuantity((prev) => Math.min(maxQuantity, prev + 1));
   };
+
+  const router = useRouter();
+  const toast = useToast();
 
   return (
     <>
@@ -89,8 +94,15 @@ export default function BuyerSaleAction({ sale }) {
         title="포토카드 구매"
         onClose={() => setIsPurchaseConfirmModalOpen(false)}
         onConfirm={() => {
-          makePurchase({ saleId: sale.id, quantity, expectedPrice: sale.price });
-          setIsPurchaseConfirmModalOpen(false);
+          makePurchase({ saleId: sale.id, quantity, expectedPrice: sale.price })
+            .then(() => {
+              toast.success("구매가 완료되었습니다.");
+              setIsPurchaseConfirmModalOpen(false);
+              router.refresh();
+            })
+            .catch(() => {
+              toast.error("구매에 실패했습니다.");
+            });
         }}
       />
     </>

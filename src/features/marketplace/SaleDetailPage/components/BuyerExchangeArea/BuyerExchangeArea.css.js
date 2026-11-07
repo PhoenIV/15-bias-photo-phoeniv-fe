@@ -5,7 +5,7 @@ import { media, vars } from "@/styles/theme.css";
 export const areaTitleRow = style({
   display: "flex",
   justifyContent: "space-between",
-  alignItems: "center",
+  alignItems: "flex-end",
   color: vars.colors.white,
   fontSize: vars.fontSize[20],
   fontWeight: vars.fontWeight.bold,
@@ -51,6 +51,16 @@ export const divider = style({
 
 export const exchangeDescription = style({
   paddingBottom: "20px",
+});
+
+export const myOfferTitleRow = style({
+  color: vars.colors.white,
+  fontSize: vars.fontSize[20],
+  fontWeight: vars.fontWeight.bold,
+  paddingBottom: "10px",
+  borderBottom: `1px solid ${vars.colors.gray100}`,
+  margin: "20px auto",
+  width: "100%",
 });
 
 export const cardContainer = style({

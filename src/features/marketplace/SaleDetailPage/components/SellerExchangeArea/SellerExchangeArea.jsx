@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -7,6 +8,7 @@ import { exchangeKeys } from "@/services/queryKeys";
 
 import { ExchangePhotoCard } from "@/components/common/PhotoCard";
 import { AlertModal } from "@/components/ui/Modal";
+import { useToast } from "@/components/ui/Toast";
 
 import * as styles from "./SellerExchangeArea.css";
 
@@ -23,6 +25,9 @@ export default function SellerExchangeArea({ sale, user }) {
     enabled: Boolean(sale.id && user?.id),
   });
   const queryClient = useQueryClient();
+
+  const router = useRouter();
+  const toast = useToast();
 
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [isConfirmRejectModalOpen, setIsConfirmRejectModalOpen] = useState(false);
@@ -63,12 +68,16 @@ export default function SellerExchangeArea({ sale, user }) {
         isOpen={isConfirmRejectModalOpen}
         title="교환 제시 거절"
         onClose={() => setIsConfirmRejectModalOpen(false)}
-        onConfirm={async () => {
-          await updateExchangeStatus({ exchangeId: selectedOffer?.id, status: "REJECTED" });
-          await queryClient.invalidateQueries({
-            queryKey: exchangeKeys.perSale(sale.id, user.id, params),
-          });
-          setIsConfirmRejectModalOpen(false);
+        onConfirm={() => {
+          updateExchangeStatus({ exchangeId: selectedOffer?.id, status: "REJECTED" })
+            .then(async () => {
+              await queryClient.invalidateQueries({
+                queryKey: exchangeKeys.perSale(sale.id, user.id, params),
+              });
+              toast.success("교환 제시를 거절했습니다.");
+              setIsConfirmRejectModalOpen(false);
+            })
+            .catch(() => toast.error("교환 제시 거절에 실패했습니다."));
         }}
       />
       <AlertModal
@@ -76,12 +85,17 @@ export default function SellerExchangeArea({ sale, user }) {
         isOpen={isConfirmApproveModalOpen}
         title="교환 제시 승인"
         onClose={() => setIsConfirmApproveModalOpen(false)}
-        onConfirm={async () => {
-          await updateExchangeStatus({ exchangeId: selectedOffer?.id, status: "APPROVED" });
-          await queryClient.invalidateQueries({
-            queryKey: exchangeKeys.perSale(sale.id, user.id, params),
-          });
-          setIsConfirmApproveModalOpen(false);
+        onConfirm={() => {
+          updateExchangeStatus({ exchangeId: selectedOffer?.id, status: "APPROVED" })
+            .then(async () => {
+              await queryClient.invalidateQueries({
+                queryKey: exchangeKeys.perSale(sale.id, user.id, params),
+              });
+              toast.success("교환 제시를 승인했습니다.");
+              setIsConfirmApproveModalOpen(false);
+              router.refresh();
+            })
+            .catch(() => toast.error("교환 제시 승인에 실패했습니다."));
         }}
       />
     </>

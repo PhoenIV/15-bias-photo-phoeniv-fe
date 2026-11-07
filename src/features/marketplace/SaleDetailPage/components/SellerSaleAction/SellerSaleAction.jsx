@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { deleteSale } from "@/services/saleService";
@@ -6,6 +7,7 @@ import { gradeTextRecipe } from "@/styles/grade.css";
 
 import { Button } from "@/components/ui/Button";
 import { AlertModal, Modal } from "@/components/ui/Modal";
+import { useToast } from "@/components/ui/Toast";
 
 import * as styles from "./SellerSaleAction.css";
 
@@ -13,6 +15,8 @@ import * as styles from "./SellerSaleAction.css";
 export default function SellerSaleAction({ sale }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] = useState(false);
+  const router = useRouter();
+  const toast = useToast();
 
   return (
     <>
@@ -60,8 +64,15 @@ export default function SellerSaleAction({ sale }) {
           setIsDeleteConfirmModalOpen(false);
         }}
         onConfirm={() => {
-          deleteSale(sale.id);
-          setIsDeleteConfirmModalOpen(false);
+          deleteSale(sale.id)
+            .then(async () => {
+              toast.success("판매글을 내렸습니다.");
+              setIsDeleteConfirmModalOpen(false);
+              router.push("/marketplace");
+            })
+            .catch(() => {
+              toast.error("판매글 내리기에 실패했습니다.");
+            });
         }}
       />
     </>

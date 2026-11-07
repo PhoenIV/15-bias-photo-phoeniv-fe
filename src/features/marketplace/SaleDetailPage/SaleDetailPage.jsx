@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 import { useMe } from "@/hooks/useMe";
 
@@ -19,7 +20,9 @@ export default function SaleDetailPage({ sale }) {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.pageTitle}>마켓플레이스</h2>
+      <Link href="/marketplace">
+        <h2 className={styles.pageTitle}>마켓플레이스</h2>
+      </Link>
       <h3 className={styles.cardTitle}>{card.name}</h3>
       <div className={styles.saleContainer}>
         <div className={styles.imageWrapper}>
