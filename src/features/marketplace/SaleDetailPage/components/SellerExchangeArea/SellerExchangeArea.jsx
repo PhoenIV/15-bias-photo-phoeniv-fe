@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getOffersBySale, updateExchangeStatus } from "@/services/exchangeService";
 import { exchangeKeys } from "@/services/queryKeys";
@@ -20,6 +20,8 @@ export default function SellerExchangeArea({ sale, user }) {
     queryFn: () => getOffersBySale(sale.id, params),
     enabled: Boolean(sale.id && user?.id),
   });
+  const queryClient = useQueryClient();
+
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [isConfirmRejectModalOpen, setIsConfirmRejectModalOpen] = useState(false);
   const [isConfirmApproveModalOpen, setIsConfirmApproveModalOpen] = useState(false);
@@ -27,7 +29,7 @@ export default function SellerExchangeArea({ sale, user }) {
   if (isPending) return <p>불러오는 중입니다...</p>;
   if (error) return <p>오류가 발생했습니다.</p>;
   const offers = response.data;
-  console.log(offers);
+
   return (
     <>
       <div>
@@ -61,8 +63,11 @@ export default function SellerExchangeArea({ sale, user }) {
         isOpen={isConfirmRejectModalOpen}
         title="교환 제시 거절"
         onClose={() => setIsConfirmRejectModalOpen(false)}
-        onConfirm={() => {
-          updateExchangeStatus({ exchangeId: selectedOffer?.id, status: "REJECTED" });
+        onConfirm={async () => {
+          await updateExchangeStatus({ exchangeId: selectedOffer?.id, status: "REJECTED" });
+          await queryClient.invalidateQueries({
+            queryKey: exchangeKeys.perSale(sale.id, user.id, params),
+          });
           setIsConfirmRejectModalOpen(false);
         }}
       />
@@ -71,8 +76,11 @@ export default function SellerExchangeArea({ sale, user }) {
         isOpen={isConfirmApproveModalOpen}
         title="교환 제시 승인"
         onClose={() => setIsConfirmApproveModalOpen(false)}
-        onConfirm={() => {
-          updateExchangeStatus({ exchangeId: selectedOffer?.id, status: "APPROVED" });
+        onConfirm={async () => {
+          await updateExchangeStatus({ exchangeId: selectedOffer?.id, status: "APPROVED" });
+          await queryClient.invalidateQueries({
+            queryKey: exchangeKeys.perSale(sale.id, user.id, params),
+          });
           setIsConfirmApproveModalOpen(false);
         }}
       />

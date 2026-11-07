@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getOffersBySale, updateExchangeStatus } from "@/services/exchangeService";
 import { exchangeKeys } from "@/services/queryKeys";
@@ -21,6 +21,7 @@ export default function BuyerExchangeArea({ sale, user }) {
     queryFn: () => getOffersBySale(sale.id, params),
     enabled: Boolean(sale.id && user?.id),
   });
+  const queryClient = useQueryClient();
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [isConfirmCancelModalOpen, setIsConfirmCancelModalOpen] = useState(false);
   const [isExchangeModalOpen, setIsExchangeModalOpen] = useState(false);
@@ -78,9 +79,12 @@ export default function BuyerExchangeArea({ sale, user }) {
         isOpen={isConfirmCancelModalOpen}
         title="교환 제시 취소"
         onClose={() => setIsConfirmCancelModalOpen(false)}
-        onConfirm={() => {
-          (updateExchangeStatus({ exchangeId: selectedOffer?.id, status: "CANCELLED" }),
-            setIsConfirmCancelModalOpen(false));
+        onConfirm={async () => {
+          await updateExchangeStatus({ exchangeId: selectedOffer?.id, status: "CANCELLED" });
+          await queryClient.invalidateQueries({
+            queryKey: exchangeKeys.perSale(sale.id, user.id, params),
+          });
+          setIsConfirmCancelModalOpen(false);
         }}
       />
       <Modal isOpen={isExchangeModalOpen} onClose={() => setIsExchangeModalOpen(false)} />
