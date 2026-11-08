@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import SalePickModal from "../SalePickModal/SalePickModal.jsx";
 import CardContainer from "@/features/marketplace/MarketplacePage/components/CardContainer/CardContainer.jsx";
 import PageQueryRow from "@/features/marketplace/MarketplacePage/components/PageQueryRow/PageQueryRow.jsx";
+import { SaleForm } from "@/features/sale/SaleForm";
 
 import * as styles from "./MarketplacePage.css.js";
 
@@ -19,6 +20,7 @@ export default function Marketplace() {
   };
 
   const [isSalePickModalOpen, setIsSalePickModalOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null); // 판매할 카드 (있으면 판매하기 모달 열림)
 
   const onSearch = (keyword) => {
     updateParam("keyword", keyword);
@@ -64,7 +66,17 @@ export default function Marketplace() {
         />
         <CardContainer params={params} />
       </div>
-      <SalePickModal isOpen={isSalePickModalOpen} onClose={() => setIsSalePickModalOpen(false)} />
+      <SalePickModal
+        isOpen={isSalePickModalOpen}
+        onClose={() => setIsSalePickModalOpen(false)}
+        onSelect={(card) => {
+          setIsSalePickModalOpen(false);
+          setSelectedCard(card);
+        }}
+      />
+      {selectedCard && (
+        <SaleForm card={selectedCard} isOpen onClose={() => setSelectedCard(null)} />
+      )}
     </>
   );
 }

@@ -9,8 +9,10 @@ import { deleteSale } from "@/services/saleService";
 import { gradeTextRecipe } from "@/styles/grade.css";
 
 import { Button } from "@/components/ui/Button";
-import { AlertModal, Modal } from "@/components/ui/Modal";
+import { AlertModal } from "@/components/ui/Modal";
 import { useToast } from "@/components/ui/Toast";
+
+import { SaleEditModal } from "@/features/sale/SaleEditModal";
 
 import * as styles from "./SellerSaleAction.css";
 
@@ -67,12 +69,10 @@ export default function SellerSaleAction({ sale }) {
           </Button>
         </div>
       </div>
-      <Modal
-        isOpen={isEditModalOpen}
-        onClose={() => {
-          setIsEditModalOpen(false);
-        }}
-      ></Modal>
+      {/* 열 때마다 지금 판매글 값으로 새로 채우려고 열렸을 때만 그림 */}
+      {isEditModalOpen && (
+        <SaleEditModal isOpen sale={sale} onClose={() => setIsEditModalOpen(false)} />
+      )}
       <AlertModal
         confirmText={isPending ? "판매글 내리는 중..." : "확인"}
         description="판매글을 삭제하시겠습니까?"
