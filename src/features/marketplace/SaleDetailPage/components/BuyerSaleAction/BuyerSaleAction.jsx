@@ -38,11 +38,12 @@ export default function BuyerSaleAction({ sale }) {
 
   // 구매 수량을 조절하는 상수와 함수
   const maxQuantity = Math.min(sale.remainingQuantity, 10);
+  const currentQuantity = Math.min(quantity, Math.max(1, maxQuantity));
   const subtract = () => {
-    setQuantity((prev) => Math.max(1, prev - 1));
+    setQuantity(Math.max(1, currentQuantity - 1));
   };
   const add = () => {
-    setQuantity((prev) => Math.min(maxQuantity, prev + 1));
+    setQuantity(Math.min(maxQuantity, currentQuantity + 1));
   };
 
   const isSoldOut = sale.remainingQuantity === 0;
@@ -54,7 +55,7 @@ export default function BuyerSaleAction({ sale }) {
           <span className={styles.fieldName}>구매수량</span>
           <div className={styles.quantityController}>
             <button
-              disabled={isSoldOut || quantity <= 1}
+              disabled={isSoldOut || currentQuantity <= 1}
               type="button"
               className={styles.quantityButton}
               onClick={subtract}
@@ -67,7 +68,7 @@ export default function BuyerSaleAction({ sale }) {
               min={1}
               step={1}
               type="number"
-              value={isSoldOut ? 0 : quantity}
+              value={isSoldOut ? 0 : currentQuantity}
               className={styles.input}
               onChange={(event) => {
                 const next = event.target.valueAsNumber;
@@ -77,7 +78,7 @@ export default function BuyerSaleAction({ sale }) {
               }}
             />
             <button
-              disabled={isSoldOut || quantity >= maxQuantity}
+              disabled={isSoldOut || currentQuantity >= maxQuantity}
               type="button"
               className={styles.quantityButton}
               onClick={add}
@@ -90,9 +91,11 @@ export default function BuyerSaleAction({ sale }) {
           <span className={styles.fieldName}>총 가격</span>
           <div className={styles.fieldValue}>
             <span className={styles.totalPrice}>
-              {isSoldOut ? "0P" : `${quantity * sale.price}P`}
+              {isSoldOut ? "0P" : `${currentQuantity * sale.price}P`}
             </span>
-            <span className={styles.setQuantity}>{isSoldOut ? " (품절)" : ` (${quantity}장)`}</span>
+            <span className={styles.setQuantity}>
+              {isSoldOut ? " (품절)" : ` (${currentQuantity}장)`}
+            </span>
           </div>
         </div>
         <div>
@@ -109,13 +112,13 @@ export default function BuyerSaleAction({ sale }) {
       </div>
       <AlertModal
         confirmText={isPurchasePending ? "구매 처리 중..." : "확인"}
-        description={`[${sale.card.grade}|${sale.card.name}] ${quantity}장을 구매하시겠습니까?`}
+        description={`[${sale.card.grade}|${sale.card.name}] ${currentQuantity}장을 구매하시겠습니까?`}
         isOpen={isPurchaseConfirmModalOpen}
         title="포토카드 구매"
         onClose={() => setIsPurchaseConfirmModalOpen(false)}
         onConfirm={() => {
           if (isPurchasePending) return;
-          purchase({ saleId: sale.id, quantity, expectedPrice: sale.price });
+          purchase({ saleId: sale.id, quantity: currentQuantity, expectedPrice: sale.price });
         }}
       />
     </>
