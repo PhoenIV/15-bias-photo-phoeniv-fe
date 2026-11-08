@@ -79,7 +79,7 @@ export default function SalePickModalChildren({}) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && isFetching) {
+        if (entry.isIntersecting) {
           fetchNextPage();
         }
       },
