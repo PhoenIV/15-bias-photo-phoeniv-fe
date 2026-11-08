@@ -161,3 +161,13 @@ export const mobileFilterModal = style({
 globalStyle(`${mobileFilterModal} button[aria-label="모달 닫기"]`, {
   display: "none",
 });
+
+// 카드를 버튼으로 감싸도 모양은 그대로 (키보드 Tab·Enter로 선택 가능)
+export const cardButton = style({
+  width: "100%",
+  padding: 0,
+  border: "none",
+  background: "none",
+  textAlign: "left",
+  cursor: "pointer",
+});

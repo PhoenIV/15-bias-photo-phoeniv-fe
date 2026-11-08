@@ -15,7 +15,7 @@ import { genre, grade } from "../MarketplaceConfig";
 
 import * as styles from "./SalePickModal.css";
 
-export default function SalePickModalChildren({}) {
+export default function SalePickModalChildren({ onSelect }) {
   const updateParam = (key, value) => {
     setParams((prev) => {
       return { ...prev, [key]: value || undefined };
@@ -138,17 +138,24 @@ export default function SalePickModalChildren({}) {
         ) : (
           <div className={styles.cardContainer}>
             {cards.map((card) => (
-              <PhotoCard
+              // 카드를 누르면 고른 카드를 판매하기 모달로 넘김
+              <button
                 key={card.userCardId}
-                category={GENRE_LABEL_MAP[card.genre] ?? card.genre}
-                countLabel="수량"
-                grade={card.grade}
-                imageId={card.imagePublicId}
-                nickname={card.creatorNickname}
-                price={card.minPrice}
-                remainCount={card.netQuantity}
-                title={card.name}
-              />
+                type="button"
+                className={styles.cardButton}
+                onClick={() => onSelect(card)}
+              >
+                <PhotoCard
+                  category={GENRE_LABEL_MAP[card.genre] ?? card.genre}
+                  countLabel="수량"
+                  grade={card.grade}
+                  imageId={card.imagePublicId}
+                  nickname={card.creatorNickname}
+                  price={card.minPrice}
+                  remainCount={card.netQuantity}
+                  title={card.name}
+                />
+              </button>
             ))}
           </div>
         )}
