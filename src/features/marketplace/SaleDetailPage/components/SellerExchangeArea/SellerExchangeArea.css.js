@@ -12,6 +12,12 @@ export const areaTitle = style({
   borderBottom: `1px solid ${vars.colors.gray100}`,
 });
 
+export const informText = style({
+  color: vars.colors.white,
+  fontSize: vars.fontSize[16],
+  margin: "15px 0",
+});
+
 export const cardsContainer = style({
   display: "grid",
   gridTemplateColumns: "repeat(2, 1fr)",

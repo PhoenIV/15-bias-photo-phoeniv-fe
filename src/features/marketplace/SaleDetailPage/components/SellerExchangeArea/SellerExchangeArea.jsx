@@ -68,27 +68,31 @@ export default function SellerExchangeArea({ sale, user }) {
     <>
       <div className={styles.container}>
         <h3 className={styles.areaTitle}>교환 제시 목록</h3>
-        <div className={styles.cardsContainer}>
-          {offers.map((offer) => (
-            <ExchangePhotoCard
-              key={offer.id}
-              card={offer.offeredCard}
-              category={offer.offeredCard.genre}
-              grade={offer.offeredCard.grade}
-              imageId={offer.offeredCard.imagePublicId}
-              message={offer.description}
-              nickname={offer.proposer.nickname}
-              requestType="received"
-              title={offer.offeredCard.name}
-              onApprove={() => {
-                (setIsConfirmApproveModalOpen(true), setSelectedOffer(offer));
-              }}
-              onReject={() => {
-                (setIsConfirmRejectModalOpen(true), setSelectedOffer(offer));
-              }}
-            />
-          ))}
-        </div>
+        {offers.length === 0 ? (
+          <p className={styles.informText}>아직 들어온 교환 제시가 없습니다.</p>
+        ) : (
+          <div className={styles.cardsContainer}>
+            {offers.map((offer) => (
+              <ExchangePhotoCard
+                key={offer.id}
+                card={offer.offeredCard}
+                category={offer.offeredCard.genre}
+                grade={offer.offeredCard.grade}
+                imageId={offer.offeredCard.imagePublicId}
+                message={offer.description}
+                nickname={offer.proposer.nickname}
+                requestType="received"
+                title={offer.offeredCard.name}
+                onApprove={() => {
+                  (setIsConfirmApproveModalOpen(true), setSelectedOffer(offer));
+                }}
+                onReject={() => {
+                  (setIsConfirmRejectModalOpen(true), setSelectedOffer(offer));
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
       <AlertModal
         confirmText={isRejectionPending ? "교환 제시 거절 중..." : "확인"}
