@@ -96,7 +96,7 @@ export default function SaleEditModal({ sale, isOpen, onClose }) {
             </p>
 
             <div className={styles.fieldRow}>
-              <span>총 판매 수량</span>
+              <span>남은 판매 수량</span>
               <div>
                 <button
                   disabled={quantity <= 1}
