@@ -33,11 +33,11 @@ export default function SellerExchangeArea({ sale, user }) {
   const { mutate: reject, isPending: isRejectionPending } = useMutation({
     mutationFn: updateExchangeStatus,
     onSuccess: async () => {
+      toast.success("교환 제시를 거절했습니다.");
+      setIsConfirmRejectModalOpen(false);
       await queryClient.invalidateQueries({
         queryKey: exchangeKeys.perSale(sale.id, user.id, params),
       });
-      toast.success("교환 제시를 거절했습니다.");
-      setIsConfirmRejectModalOpen(false);
     },
     onError: () => toast.error("교환 제시 거절에 실패했습니다."),
   });
@@ -45,6 +45,8 @@ export default function SellerExchangeArea({ sale, user }) {
   const { mutate: approve, isPending: isApprovalPending } = useMutation({
     mutationFn: updateExchangeStatus,
     onSuccess: async () => {
+      toast.success("교환 제시를 승인했습니다.");
+      setIsConfirmApproveModalOpen(false);
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: exchangeKeys.perSale(sale.id, user.id, params),
@@ -54,8 +56,6 @@ export default function SellerExchangeArea({ sale, user }) {
         }),
         queryClient.invalidateQueries({ queryKey: saleKeys.lists() }),
       ]);
-      toast.success("교환 제시를 승인했습니다.");
-      setIsConfirmApproveModalOpen(false);
     },
     onError: () => toast.error("교환 제시 승인에 실패했습니다."),
   });
