@@ -107,7 +107,7 @@ export default function BuyerSaleAction({ sale }) {
           <Button
             disabled={isSoldOut}
             size="responsive"
-            thickness="thin"
+            thickness="thick"
             className={styles.purchaseButton}
             onClick={() => setIsPurchaseConfirmModalOpen(true)}
           >
