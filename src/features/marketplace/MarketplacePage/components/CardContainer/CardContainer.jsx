@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -79,18 +80,20 @@ export default function CardContainer({ params }) {
     <>
       <div className={styles.container}>
         {sales.map((sale) => (
-          <PhotoCard
-            key={sale.id}
-            category={sale.card.genre}
-            grade={sale.card.grade}
-            imageId={sale.card.imagePublicId}
-            isSoldOut={sale.remainingQuantity === 0}
-            nickname={sale.seller.nickname}
-            price={sale.price}
-            remainCount={sale.remainingQuantity}
-            title={sale.card.name}
-            totalCount={sale.totalQuantity}
-          />
+          <Link key={sale.id} href={`/sales/${sale.id}`}>
+            <PhotoCard
+              key={sale.id}
+              category={sale.card.genre}
+              grade={sale.card.grade}
+              imageId={sale.card.imagePublicId}
+              isSoldOut={sale.remainingQuantity === 0}
+              nickname={sale.seller.nickname}
+              price={sale.price}
+              remainCount={sale.remainingQuantity}
+              title={sale.card.name}
+              totalCount={sale.totalQuantity}
+            />
+          </Link>
         ))}
       </div>
 
