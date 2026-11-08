@@ -31,8 +31,13 @@ export default function BuyerSaleAction({ sale }) {
       toast.success("구매가 완료되었습니다.");
       setIsPurchaseConfirmModalOpen(false);
     },
-    onError: () => {
+    onError: async () => {
       toast.error("구매에 실패했습니다.");
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: saleKeys.detail(sale.id) }),
+        queryClient.invalidateQueries({ queryKey: saleKeys.lists() }),
+      ]);
+      setIsPurchaseConfirmModalOpen(false);
     },
   });
 
@@ -118,6 +123,11 @@ export default function BuyerSaleAction({ sale }) {
         onClose={() => setIsPurchaseConfirmModalOpen(false)}
         onConfirm={() => {
           if (isPurchasePending) return;
+          if (isSoldOut) {
+            setIsPurchaseConfirmModalOpen(false);
+            toast.error("이미 품절된 판매글입니다."); // 구매확정 없이 모달만 열린채 기다리다가 품절된 경우, 클라이언트가 해당 사실을 알고 있을 때.
+            return;
+          }
           purchase({ saleId: sale.id, quantity: currentQuantity, expectedPrice: sale.price });
         }}
       />
