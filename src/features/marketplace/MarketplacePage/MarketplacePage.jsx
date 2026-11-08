@@ -4,18 +4,21 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/Button";
 
+import SalePickModal from "../SalePickModal/SalePickModal.jsx";
 import CardContainer from "@/features/marketplace/MarketplacePage/components/CardContainer/CardContainer.jsx";
 import PageQueryRow from "@/features/marketplace/MarketplacePage/components/PageQueryRow/PageQueryRow.jsx";
 
 import * as styles from "./MarketplacePage.css.js";
 
 export default function Marketplace() {
-  const [params, setParmas] = useState({ sort: "latest", limit: 15, excludeSoldOut: "include" });
+  const [params, setParams] = useState({ sort: "latest", limit: 15, excludeSoldOut: "include" });
   const updateParam = (key, value) => {
-    setParmas((prev) => {
+    setParams((prev) => {
       return { ...prev, [key]: value || undefined };
     });
   };
+
+  const [isSalePickModalOpen, setIsSalePickModalOpen] = useState(false);
 
   const onSearch = (keyword) => {
     updateParam("keyword", keyword);
@@ -38,21 +41,30 @@ export default function Marketplace() {
   };
 
   return (
-    <div className={styles.page}>
-      <div className={styles.topRow}>
-        <h1 className={styles.pageTitle}>마켓플레이스</h1>
-        <Button size="responsive" thickness="thin" variant="primary" className={styles.sellButton}>
-          나의 포토카드 판매하기
-        </Button>
+    <>
+      <div className={styles.page}>
+        <div className={styles.topRow}>
+          <h1 className={styles.pageTitle}>마켓플레이스</h1>
+          <Button
+            size="responsive"
+            thickness="thin"
+            variant="primary"
+            className={styles.sellButton}
+            onClick={() => setIsSalePickModalOpen(true)}
+          >
+            나의 포토카드 판매하기
+          </Button>
+        </div>
+        <PageQueryRow
+          params={params}
+          onFilterChange={onFilterChange}
+          onMultipleFilterChange={onMultipleFilterChange}
+          onSearch={onSearch}
+          onSortChange={onSortChange}
+        />
+        <CardContainer params={params} />
       </div>
-      <PageQueryRow
-        params={params}
-        onFilterChange={onFilterChange}
-        onMultipleFilterChange={onMultipleFilterChange}
-        onSearch={onSearch}
-        onSortChange={onSortChange}
-      />
-      <CardContainer params={params} />
-    </div>
+      <SalePickModal isOpen={isSalePickModalOpen} onClose={() => setIsSalePickModalOpen(false)} />
+    </>
   );
 }
