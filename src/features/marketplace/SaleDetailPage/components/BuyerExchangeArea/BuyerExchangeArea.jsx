@@ -69,14 +69,14 @@ export default function BuyerExchangeArea({ sale, user }) {
         </div>
         <div>
           <div className={styles.exchangeDescription}>
-            <p>{sale.exchangeDescription}</p>
+            <p>{sale.exchangeDescription ?? "판매자가 교환 희망 설명을 등록하지 않았습니다."}</p>
           </div>
           <div className={styles.exchangeInfoContainer}>
             <span className={styles.exchangeInfo}>
               <span className={gradeTextRecipe({ grade: sale.exchangeGrade, type: "inherit" })}>
-                {sale.exchangeGrade}
+                {sale.exchangeGrade ?? "모든 등급"}
               </span>{" "}
-              <span className={styles.divider}>|</span> {sale.exchangeGenre}
+              <span className={styles.divider}>|</span> {sale.exchangeGenre ?? "모든 장르"}
             </span>
           </div>
         </div>
