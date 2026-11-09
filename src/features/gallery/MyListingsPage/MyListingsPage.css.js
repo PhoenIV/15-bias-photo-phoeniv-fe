@@ -298,6 +298,12 @@ export const cardGrid = style({
   },
 });
 
+export const cardLink = style({
+  display: "block",
+  textDecoration: "none",
+  color: "inherit",
+});
+
 export const statusWrapper = style({
   display: "flex",
   flexDirection: "column",

@@ -95,9 +95,8 @@ export function NotificationList({ isLoggedIn = false, onItemClick, scrollContai
           return (
             <li key={item.id}>
               {item.saleId ? (
-                // TODO: 상세 페이지 주소 확인 후 맞춰서 변경
                 <Link
-                  href={`/marketplace/${item.saleId}`}
+                  href={`/sales/${item.saleId}`}
                   className={itemClassName}
                   onClick={onItemClick}
                 >

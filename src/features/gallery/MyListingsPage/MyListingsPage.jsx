@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { clsx } from "clsx";
@@ -61,8 +62,9 @@ export default function MyListingsPage() {
     params.isSoldOut !== undefined,
   );
 
-  const totalCount = summary?.totalCount ?? 0;
-  const gradeCounts = summary?.gradeCounts ?? DEFAULT_GRADE_COUNTS;
+  // 필터에 연동되는 실시간 등급 통계
+  const totalCount = data?.pages?.[0]?.pagination?.totalCount ?? summary?.totalCount ?? 0;
+  const gradeCounts = data?.pages?.[0]?.gradeCounts ?? summary?.gradeCounts ?? DEFAULT_GRADE_COUNTS;
 
   // 태블릿/PC 뷰포트로 전환될 때 열려 있던 모바일 필터 모달 자동 닫힘
   useCloseOnBreakpoint({
@@ -235,9 +237,8 @@ export default function MyListingsPage() {
               const photoCard = item.photoCard ?? item;
               const cardKey = item.id ?? `${item.saleType}-${item.itemId}`;
 
-              return (
+              const cardContent = (
                 <PhotoCard
-                  key={cardKey}
                   category={GENRE_LABEL_MAP[photoCard.genre] ?? photoCard.genre}
                   countLabel="잔여"
                   grade={photoCard.grade}
@@ -249,6 +250,14 @@ export default function MyListingsPage() {
                   status={item.isSoldOut ? undefined : SALE_TYPE_STATUS_MAP[item.saleType]}
                   title={photoCard.name}
                 />
+              );
+
+              return item.saleId ? (
+                <Link key={cardKey} href={`/sales/${item.saleId}`} className={styles.cardLink}>
+                  {cardContent}
+                </Link>
+              ) : (
+                <div key={cardKey}>{cardContent}</div>
               );
             })}
           </div>

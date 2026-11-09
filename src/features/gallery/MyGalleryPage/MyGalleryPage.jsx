@@ -6,7 +6,12 @@ import { useEffect, useRef, useState } from "react";
 
 import { clsx } from "clsx";
 
-import { CARD_GENRE_FILTER, GENRE_LABEL_MAP, GRADE_OPTIONS } from "@/constants/card";
+import {
+  CARD_GENRE_FILTER,
+  DEFAULT_GRADE_COUNTS,
+  GENRE_LABEL_MAP,
+  GRADE_OPTIONS,
+} from "@/constants/card";
 import { useCardQuota, useMyGalleryCards, useMyGallerySummary } from "@/hooks/useCard";
 import { useMe } from "@/hooks/useMe";
 
@@ -21,13 +26,6 @@ import { SearchInput } from "@/components/ui/SearchInput";
 import * as styles from "./MyGalleryPage.css";
 
 const DEFAULT_LIMIT = 15;
-
-const DEFAULT_GRADE_COUNTS = {
-  COMMON: 0,
-  LEGENDARY: 0,
-  RARE: 0,
-  SUPER_RARE: 0,
-};
 
 const GALLERY_FILTERS = [CARD_GENRE_FILTER];
 
@@ -56,9 +54,9 @@ export default function MyGalleryPage() {
 
   const hasActiveFilter = Boolean(params.keyword || params.grade || params.genre);
 
-  // 검색·필터와 무관하게 전체 보유 카드의 통계를 안전하게 유지
-  const totalCount = summary?.totalCount ?? 0;
-  const gradeCounts = summary?.gradeCounts ?? DEFAULT_GRADE_COUNTS;
+  // 검색·필터(키워드/장르)에 연동되는 실시간 등급 통계 (첫 페이지 응답 우선, 초기/폴백 시 summary)
+  const totalCount = data?.pages?.[0]?.pagination?.totalCount ?? summary?.totalCount ?? 0;
+  const gradeCounts = data?.pages?.[0]?.gradeCounts ?? summary?.gradeCounts ?? DEFAULT_GRADE_COUNTS;
 
   // TODO: 마켓플레이스와 중복되는 743px 브레이크포인트 리스너는 공통 커스텀 훅으로 통합 리팩터링 필요
   useEffect(() => {
