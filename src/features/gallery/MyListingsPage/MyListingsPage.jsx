@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { clsx } from "clsx";
@@ -236,9 +237,8 @@ export default function MyListingsPage() {
               const photoCard = item.photoCard ?? item;
               const cardKey = item.id ?? `${item.saleType}-${item.itemId}`;
 
-              return (
+              const cardContent = (
                 <PhotoCard
-                  key={cardKey}
                   category={GENRE_LABEL_MAP[photoCard.genre] ?? photoCard.genre}
                   countLabel="잔여"
                   grade={photoCard.grade}
@@ -250,6 +250,14 @@ export default function MyListingsPage() {
                   status={item.isSoldOut ? undefined : SALE_TYPE_STATUS_MAP[item.saleType]}
                   title={photoCard.name}
                 />
+              );
+
+              return item.saleId ? (
+                <Link key={cardKey} href={`/sales/${item.saleId}`} className={styles.cardLink}>
+                  {cardContent}
+                </Link>
+              ) : (
+                <div key={cardKey}>{cardContent}</div>
               );
             })}
           </div>
