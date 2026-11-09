@@ -40,17 +40,19 @@ export default function Marketplace() {
   };
 
   // 인증과 관련된 부분
-  const { user, isPending, isFetching, error, isUnauthenticated } = useMe();
+  const { isPending, isFetching, refetch: refetchMe } = useMe();
   const router = useRouter();
   const [isNeedLoginModalOpen, setIsNeedLoginModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
-  const handleClick = () => {
-    if (isPending || isFetching) return;
-    if (error) {
+  const handleClick = async () => {
+    const result = await refetchMe();
+
+    if (result.isError) {
       setIsErrorModalOpen(true);
       return;
     }
-    if (!user || isUnauthenticated) {
+
+    if (!result.data) {
       setIsNeedLoginModalOpen(true);
       return;
     }
