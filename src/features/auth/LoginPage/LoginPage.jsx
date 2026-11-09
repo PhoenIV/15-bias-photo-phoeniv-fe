@@ -1,12 +1,13 @@
 "use client";
 
+import Image from "next/image.js";
 import Link from "next/link";
-import { useRouter } from "next/navigation.js";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation.js";
+import { useEffect, useState } from "react";
 
 import { useQueryClient } from "@tanstack/react-query";
 
-import { login } from "@/services/authService.js";
+import { googleLogin, login } from "@/services/authService.js";
 import { userKeys } from "@/services/queryKeys.js";
 import { validateLogin } from "@/utils/validators.js";
 
@@ -18,14 +19,34 @@ import { PasswordInput } from "@/components/ui/PasswordInput";
 
 import * as styles from "./LoginPage.css.js";
 
+const SOCIAL_ERROR_MESSAGES = {
+  INVALID_SOCIAL_AUTH_STATE: "유효하지 않거나 만료된 소셜 로그인 요청입니다.",
+  SOCIAL_ACCOUNT_LINK_REQUIRED:
+    "구글 계정과 동일한 계정으로 가입되어있습니다.\n일반 로그인으로 진행하세요.",
+  SOCIAL_AUTH_FAILED: "구글 로그인에 실패했습니다. 다시 시도해 주세요.",
+};
+
 export default function LoginPage() {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const socialError = searchParams.get("error");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [fieldError, setFieldError] = useState({});
-  const [loginError, setLoginError] = useState("");
+  const [loginError, setLoginError] = useState(() => {
+    if (!socialError) {
+      return "";
+    }
+    return SOCIAL_ERROR_MESSAGES[socialError] ?? "구글 로그인에 실패했습니다. 다시 시도해 주세요";
+  });
+
+  useEffect(() => {
+    if (socialError) {
+      router.replace("/login");
+    }
+  }, [socialError, router]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -87,22 +108,37 @@ export default function LoginPage() {
               }}
             />
           </div>
-          <Button
-            disabled={isLoading}
-            fullWidth
-            thickness="thin"
-            type="submit"
-            className={styles.loginBtn}
-          >
-            {isLoading ? (
-              <span role="status">
-                <span aria-hidden="true" className={styles.spinner} />
-                <span className={styles.srOnly}>로그인 중</span>
+          <div className={styles.buttonContainer}>
+            <Button
+              disabled={isLoading}
+              fullWidth
+              thickness="thin"
+              type="submit"
+              className={styles.loginBtn}
+            >
+              {isLoading ? (
+                <span role="status">
+                  <span aria-hidden="true" className={styles.spinner} />
+                  <span className={styles.srOnly}>로그인 중</span>
+                </span>
+              ) : (
+                "로그인"
+              )}
+            </Button>
+            <Button
+              disabled={isLoading}
+              fullWidth
+              thickness="thin"
+              type="button"
+              className={styles.googleBtn}
+              onClick={() => googleLogin()}
+            >
+              <span className={styles.googleBtnText}>
+                <Image alt="구글 로고" height={22} src="/images/google-logo.svg" width={22} />
+                <span>Google로 시작하기</span>
               </span>
-            ) : (
-              "로그인"
-            )}
-          </Button>
+            </Button>
+          </div>
           <div className={styles.navRegister}>
             <div className={styles.text}>최애의 포토가 처음이신가요?</div>
             <Link href="/signup" className={styles.link}>
@@ -116,7 +152,9 @@ export default function LoginPage() {
         description={loginError}
         isOpen={Boolean(loginError)}
         title="로그인 실패"
-        onClose={() => setLoginError("")}
+        onClose={() => {
+          setLoginError("");
+        }}
       />
     </>
   );
