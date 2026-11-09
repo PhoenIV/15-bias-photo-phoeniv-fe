@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
+import { AUTH_ROUTES } from "@/constants/authRoutes";
 import { useMe } from "@/hooks/useMe";
 
 import { Button } from "@/components/ui/Button";
@@ -22,7 +23,7 @@ export default function PrivateLayout({ children }) {
   //비로그인 유저 접급시 로그인 페이지로 이동 (replace를 사용하여 뒤로가기 했을 때도 다시 접근 못하게)
   useEffect(() => {
     if (isUnauthenticated && !isFetching) {
-      router.replace("/login");
+      router.replace(AUTH_ROUTES.LOGIN);
     }
   }, [isUnauthenticated, isFetching, router]);
 
