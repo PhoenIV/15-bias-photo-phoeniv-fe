@@ -48,7 +48,6 @@ export const filters = style({
   display: "none",
   "@media": {
     [media.tablet]: {
-      flex: "0 0 300px",
       display: "flex",
       height: "45px",
       justifyContent: "space-around",
@@ -104,6 +103,7 @@ export const sort = style({
       height: "45px",
     },
     [media.tablet]: {
+      maxWidth: "",
       height: "50px",
     },
   },
