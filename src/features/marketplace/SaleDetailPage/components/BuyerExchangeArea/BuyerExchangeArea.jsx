@@ -93,6 +93,7 @@ export default function BuyerExchangeArea({ sale, user }) {
                   imageId={offer.offeredCard.imagePublicId}
                   message={offer.description}
                   nickname={offer.proposer.nickname}
+                  price={offer.offeredCard.latestPrice ?? null}
                   requestType="sent"
                   title={offer.offeredCard.name}
                   onCancel={() => {
