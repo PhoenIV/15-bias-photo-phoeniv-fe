@@ -99,6 +99,7 @@ export const filters = style({
 
 export const filter = style({
   height: "22px",
+  minWidth: "120px",
   whiteSpace: "nowrap",
 });
 
