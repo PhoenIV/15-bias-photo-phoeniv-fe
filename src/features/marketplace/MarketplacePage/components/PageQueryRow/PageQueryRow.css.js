@@ -59,13 +59,17 @@ export const filters = style({
 });
 
 export const filter = style({
+  flex: "1 1 0",
   height: "22px",
+  minWidth: "120px",
   whiteSpace: "nowrap",
+  textAlign: "left",
 });
 
 export const mobileFilter = style({
   width: "45px",
   height: "45px",
+  minWidth: 0,
   margin: "15px",
   "@media": {
     [media.tablet]: {
@@ -77,7 +81,13 @@ export const mobileFilter = style({
 export const blankSpace = style({
   display: "none",
   "@media": {
-    [media.tablet]: { display: "flex", width: "100%", maxWidth: "200px" },
+    [media.tablet]: {
+      display: "flex",
+      width: "100%",
+      maxWidth: "200px",
+      flex: "1 1 0",
+      minWidth: 0,
+    },
     [media.pc]: { display: "flex", width: "100%", maxWidth: "400px" },
   },
 });
@@ -93,6 +103,7 @@ export const sort = style({
       height: "45px",
     },
     [media.tablet]: {
+      maxWidth: "",
       height: "50px",
     },
   },

@@ -32,7 +32,7 @@ export const exchangeButtonBelowMyOffers = style({
   width: "100%",
   marginTop: "20px",
   "@media": {
-    [media.tablet]: { display: "none" },
+    [media.tablet]: { display: "none", selectors: { "&": { display: "none" } } },
   },
 });
 
@@ -65,6 +65,6 @@ export const myOfferTitleRow = style({
 
 export const cardContainer = style({
   display: "grid",
-  gridTemplateColumns: "repeat(2, 1fr)",
-  "@media": { [media.pc]: { gridTemplateColumns: "repeat(3, 1fr)" } },
+  gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+  "@media": { [media.pc]: { gridTemplateColumns: "repeat(3, minmax(0, 1fr))" } },
 });

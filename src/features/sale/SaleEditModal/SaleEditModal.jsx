@@ -32,8 +32,8 @@ export default function SaleEditModal({ sale, isOpen, onClose }) {
   const [genre, setGenre] = useState(sale.exchangeGenre ?? "");
   const [description, setDescription] = useState(sale.exchangeDescription ?? "");
 
-  // 상세 응답에 내 보유 수량이 없어서 일단 10장까지 (넘으면 서버 에러 토스트)
-  const maxQuantity = 10;
+  // 최대 = 지금 남은 수량 + 더 올릴 수 있는 내 보유 수량 (10장 이하)
+  const maxQuantity = Math.min(sale.remainingQuantity + card.netQuantity, 10);
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateSale,
@@ -96,7 +96,7 @@ export default function SaleEditModal({ sale, isOpen, onClose }) {
             </p>
 
             <div className={styles.fieldRow}>
-              <span>남은 판매 수량</span>
+              <span>(최대 {maxQuantity}장)</span>
               <div>
                 <button
                   disabled={quantity <= 1}
