@@ -24,13 +24,24 @@ export const quantityButton = style({
   color: vars.colors.white,
   fontSize: vars.fontSize[20],
   textAlign: "center",
+  width: "15%",
 });
 
 export const input = style({
   background: vars.colors.black,
   color: vars.colors.white,
   textAlign: "center",
-  width: "80%",
+  width: "70%",
+  // 클릭가능한 화살표 숨기기
+  selectors: {
+    "&::-webkit-inner-spin-button, &::-webkit-outer-spin-button": {
+      WebkitAppearance: "none",
+      margin: 0,
+    },
+    "&": {
+      MozAppearance: "textfield",
+    },
+  },
 });
 
 export const totalPriceRow = style({
