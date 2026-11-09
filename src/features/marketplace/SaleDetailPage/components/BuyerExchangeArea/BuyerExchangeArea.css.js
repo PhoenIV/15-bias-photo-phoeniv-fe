@@ -32,7 +32,7 @@ export const exchangeButtonBelowMyOffers = style({
   width: "100%",
   marginTop: "20px",
   "@media": {
-    [media.tablet]: { display: "none" },
+    [media.tablet]: { display: "none", selectors: { "&": { display: "none" } } },
   },
 });
 
