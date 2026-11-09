@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -65,7 +66,7 @@ export default function BuyerSaleAction({ sale }) {
               className={styles.quantityButton}
               onClick={subtract}
             >
-              -
+              <Image alt="빼기" height={15} src="/images/ic-minus.svg" width={15} />
             </button>
             <input
               disabled={isSoldOut}
@@ -88,7 +89,7 @@ export default function BuyerSaleAction({ sale }) {
               className={styles.quantityButton}
               onClick={add}
             >
-              +
+              <Image alt="더하기" height={15} src="/images/ic-plus.svg" width={15} />
             </button>
           </div>
         </div>
