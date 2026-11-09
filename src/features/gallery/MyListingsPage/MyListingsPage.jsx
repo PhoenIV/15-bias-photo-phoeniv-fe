@@ -61,8 +61,9 @@ export default function MyListingsPage() {
     params.isSoldOut !== undefined,
   );
 
-  const totalCount = summary?.totalCount ?? 0;
-  const gradeCounts = summary?.gradeCounts ?? DEFAULT_GRADE_COUNTS;
+  // 필터에 연동되는 실시간 등급 통계
+  const totalCount = data?.pages?.[0]?.pagination?.totalCount ?? summary?.totalCount ?? 0;
+  const gradeCounts = data?.pages?.[0]?.gradeCounts ?? summary?.gradeCounts ?? DEFAULT_GRADE_COUNTS;
 
   // 태블릿/PC 뷰포트로 전환될 때 열려 있던 모바일 필터 모달 자동 닫힘
   useCloseOnBreakpoint({
