@@ -2,16 +2,14 @@
 // 여기에 없는 경로는 기본 Header(로고) 표시
 // 피그마를 보고 서브 타이틀을 정리한 것으로 경로는 자유롭게 변경해주세요!
 export const SUB_PAGE_TITLES = {
-  "/marketplace/sell": "나의 포토카드 판매하기",
   "/my-gallery": "마이갤러리",
   "/my-gallery/create": "포토카드 생성",
   "/my-listings": "나의 판매 포토카드",
-  "/notification": "알림",
 };
 
 // 프로필 네비게이션 메뉴 목록
 export const PROFILE_MENU_ITEMS = [
   { href: "/marketplace", label: "마켓플레이스", requiresAuth: false },
   { href: "/my-gallery", label: "마이갤러리", requiresAuth: true },
-  { href: "/my-listings", label: "판매 중인 포토카드", requiresAuth: true },
+  { href: "/my-listings", label: "나의 판매 포토카드", requiresAuth: true },
 ];

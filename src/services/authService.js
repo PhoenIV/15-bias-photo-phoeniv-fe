@@ -1,4 +1,4 @@
-import { apiFetch } from "@/lib/apiFetch";
+import { apiFetch, BASE_URL } from "@/lib/apiFetch";
 
 /**
  * 로그인 (POST /api/auth/login)
@@ -32,4 +32,9 @@ export async function signup(signupData) {
  */
 export function logout() {
   return apiFetch("/auth/logout", { method: "POST" });
+}
+
+//요청을 보내는게 아니라 페이지를 이동한다 (marketplace 페이지로 이동)
+export function googleLogin(next = "/marketplace") {
+  window.location.href = `${BASE_URL}/auth/google/login?next=${encodeURIComponent(next)}`;
 }
