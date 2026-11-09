@@ -9,6 +9,9 @@ export const container = style({
   alignItems: "center",
   flexDirection: "column",
 });
+// 회원가입 페이지가 열려 있을 때만 창 전체의 스크롤바를 숨김 (휠/터치 스크롤은 그대로 동작)
+globalStyle(`html:has(${container})`, { scrollbarWidth: "none" }); // Firefox, 최신 Chrome
+globalStyle(`html:has(${container})::-webkit-scrollbar`, { display: "none" }); // Safari 등
 
 export const signupContainer = style({
   display: "flex",
@@ -16,15 +19,18 @@ export const signupContainer = style({
   alignItems: "center",
   flexDirection: "column",
   width: "100%",
-  maxWidth: "345px",
+  maxWidth: "calc(100vw - 30px)",
   minHeight: "100dvh",
+  padding: "80px 0 60px",
 
   "@media": {
     [media.tablet]: {
       maxWidth: "440px",
+      padding: "150px 0 80px",
     },
     [media.pc]: {
       maxWidth: "520px",
+      padding: "150px 0 80px",
     },
   },
 });
@@ -42,7 +48,13 @@ export const formContainer = style({
 export const logoSize = style({
   display: "block",
 });
-globalStyle(`${logoSize} img`, { width: "330px" });
+globalStyle(`${logoSize} img`, {
+  width: "190px",
+
+  "@media": {
+    [media.tablet]: { width: "330px" },
+  },
+});
 
 export const input = style({
   width: "100%",
@@ -54,12 +66,59 @@ export const navLogin = style({
   gap: "10px",
 });
 
+export const buttonContainer = style({
+  display: "flex",
+  flexDirection: "column",
+  gap: "16px",
+  width: "100%",
+});
+
 export const buttonText = style({
+  selectors: {
+    "&": {
+      transition: "0.2s",
+    },
+
+    "&:active": {
+      transform: "translateY(2px)",
+    },
+  },
+
   color: vars.colors.black,
   fontFamily: vars.fonts.base,
   fontSize: vars.fontSize[18],
   fontWeight: vars.fontWeight.bold,
   lineHeight: "normal",
+});
+
+export const googleBtn = style({
+  selectors: {
+    "&": {
+      transition: "0.2s",
+    },
+
+    "&:active": {
+      transform: "translateY(2px)",
+    },
+
+    "&&:not(:disabled)": { backgroundColor: vars.colors.white },
+    "&&": {
+      color: vars.colors.black,
+      fontFamily: vars.fonts.base,
+      fontSize: vars.fontSize[18],
+      fontWeight: vars.fontWeight.regular,
+    },
+  },
+  fontFamily: vars.fonts.base,
+  lineHeight: "normal",
+  cursor: "pointer",
+});
+
+export const googleBtnText = style({
+  display: "flex",
+  flexDirection: "row",
+  gap: "12px",
+  alignItems: "center",
 });
 
 export const text = style({

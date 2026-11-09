@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image.js";
 import Link from "next/link";
 import { useRouter } from "next/navigation.js";
 import { useState } from "react";
@@ -123,22 +124,43 @@ export default function SignupPage() {
               onChange={handleChange("passwordConfirm", setPasswordConfirm)}
             />
           </div>
-          <Button
-            disabled={isLoading}
-            fullWidth
-            thickness="thin"
-            type="submit"
-            className={styles.buttonText}
-          >
-            {isLoading ? (
-              <span role="status">
-                <span aria-hidden="true" className={styles.spinner} />
-                <span className={styles.srOnly}>회원가입 중</span>
-              </span>
-            ) : (
-              "가입하기"
-            )}
-          </Button>
+          <div className={styles.buttonContainer}>
+            <Button
+              disabled={isLoading}
+              fullWidth
+              thickness="thin"
+              type="submit"
+              className={styles.buttonText}
+            >
+              {isLoading ? (
+                <span role="status">
+                  <span aria-hidden="true" className={styles.spinner} />
+                  <span className={styles.srOnly}>회원가입 중</span>
+                </span>
+              ) : (
+                "가입하기"
+              )}
+            </Button>
+            <Button
+              disabled={isLoading}
+              fullWidth
+              thickness="thin"
+              type="submit"
+              className={styles.googleBtn}
+            >
+              {isLoading ? (
+                <span role="status">
+                  <span aria-hidden="true" className={styles.spinner} />
+                  <span className={styles.srOnly}>이동 중</span>
+                </span>
+              ) : (
+                <span className={styles.googleBtnText}>
+                  <Image alt="구글 로고" height={22} src="/images/google-logo.svg" width={22} />
+                  <span>Google로 시작하기</span>
+                </span>
+              )}
+            </Button>
+          </div>
           <div className={styles.navLogin}>
             <div className={styles.text}>이미 최애의포토 회원이신가요?</div>
             <Link href="/login" className={styles.link}>
