@@ -68,11 +68,11 @@ export const buttonContainer = style({
 
 export const loginBtn = style({
   selectors: {
-    "&": {
+    "&&": {
       transition: "0.2s",
     },
 
-    "&:active": {
+    "&&:active": {
       transform: "translateY(2px)",
     },
   },
@@ -86,11 +86,11 @@ export const loginBtn = style({
 
 export const googleBtn = style({
   selectors: {
-    "&": {
+    "&&": {
       transition: "0.2s",
     },
 
-    "&:active": {
+    "&&:active": {
       transform: "translateY(2px)",
     },
 

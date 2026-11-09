@@ -75,11 +75,11 @@ export const buttonContainer = style({
 
 export const buttonText = style({
   selectors: {
-    "&": {
+    "&&": {
       transition: "0.2s",
     },
 
-    "&:active": {
+    "&&:active": {
       transform: "translateY(2px)",
     },
   },
@@ -93,11 +93,11 @@ export const buttonText = style({
 
 export const googleBtn = style({
   selectors: {
-    "&": {
+    "&&": {
       transition: "0.2s",
     },
 
-    "&:active": {
+    "&&:active": {
       transform: "translateY(2px)",
     },
 

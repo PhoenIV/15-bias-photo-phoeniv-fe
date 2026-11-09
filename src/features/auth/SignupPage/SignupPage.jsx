@@ -7,7 +7,7 @@ import { useState } from "react";
 
 import { useQueryClient } from "@tanstack/react-query";
 
-import { signup } from "@/services/authService.js";
+import { googleLogin, signup } from "@/services/authService.js";
 import { userKeys } from "@/services/queryKeys.js";
 import { validateSignup } from "@/utils/validators.js";
 
@@ -145,20 +145,14 @@ export default function SignupPage() {
               disabled={isLoading}
               fullWidth
               thickness="thin"
-              type="submit"
+              type="button"
               className={styles.googleBtn}
+              onClick={() => googleLogin()}
             >
-              {isLoading ? (
-                <span role="status">
-                  <span aria-hidden="true" className={styles.spinner} />
-                  <span className={styles.srOnly}>이동 중</span>
-                </span>
-              ) : (
-                <span className={styles.googleBtnText}>
-                  <Image alt="구글 로고" height={22} src="/images/google-logo.svg" width={22} />
-                  <span>Google로 시작하기</span>
-                </span>
-              )}
+              <span className={styles.googleBtnText}>
+                <Image alt="구글 로고" height={22} src="/images/google-logo.svg" width={22} />
+                <span>Google로 시작하기</span>
+              </span>
             </Button>
           </div>
           <div className={styles.navLogin}>
