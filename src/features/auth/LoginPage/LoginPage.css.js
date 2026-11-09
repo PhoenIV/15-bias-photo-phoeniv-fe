@@ -86,10 +86,6 @@ export const loginBtn = style({
 
 export const googleBtn = style({
   selectors: {
-    "&&": {
-      transition: "0.2s",
-    },
-
     "&&:active": {
       transform: "translateY(2px)",
     },
@@ -100,6 +96,7 @@ export const googleBtn = style({
       fontFamily: vars.fonts.base,
       fontSize: vars.fontSize[18],
       fontWeight: vars.fontWeight.regular,
+      transition: "0.2s",
     },
   },
   fontFamily: vars.fonts.base,
