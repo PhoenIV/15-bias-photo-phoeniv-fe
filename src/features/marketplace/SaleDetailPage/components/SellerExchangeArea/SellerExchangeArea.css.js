@@ -20,9 +20,9 @@ export const informText = style({
 
 export const cardsContainer = style({
   display: "grid",
-  gridTemplateColumns: "repeat(2, 1fr)",
+  gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
   gap: "25px",
   "@media": {
-    [media.pc]: { gridTemplateColumns: "repeat(3, 1fr)" },
+    [media.pc]: { gridTemplateColumns: "repeat(3, minmax(0, 1fr))" },
   },
 });

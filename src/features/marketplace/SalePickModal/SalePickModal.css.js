@@ -139,7 +139,7 @@ export const bigInformText = style({
 
 export const cardContainer = style({
   display: "grid",
-  gridTemplateColumns: "repeat(2, 1fr)",
+  gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
   gap: "12px",
 });
 
