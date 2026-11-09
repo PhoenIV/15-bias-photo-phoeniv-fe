@@ -46,9 +46,14 @@ export default function ExchangePhotoCard({
         <div className={styles.exchangeMeta}>
           <GradeCategory category={category} grade={grade} />
           <div className={styles.exchangeMetaRight}>
-            <span className={styles.purchaseText}>
-              <span className={styles.purchasePrice}>{price} P</span> 에 구매
-            </span>
+            {price ? (
+              <span className={styles.purchaseText}>
+                <span className={styles.purchasePrice}>{price} P</span> 에 구매
+              </span>
+            ) : (
+              <span className={styles.purchasePrice}>신규 카드</span>
+            )}
+
             <span className={styles.nicknameText}>{nickname}</span>
           </div>
         </div>

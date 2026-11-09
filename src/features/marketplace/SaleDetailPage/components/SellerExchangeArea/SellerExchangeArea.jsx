@@ -81,6 +81,7 @@ export default function SellerExchangeArea({ sale, user }) {
                 imageId={offer.offeredCard.imagePublicId}
                 message={offer.description}
                 nickname={offer.proposer.nickname}
+                price={offer.offeredCard.latestPrice ?? null}
                 requestType="received"
                 title={offer.offeredCard.name}
                 onApprove={() => {
