@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation.js";
 import { useState } from "react";
 
+import { DEFAULT_CARD_LIMIT } from "@/constants/card";
 import { useMe } from "@/hooks/useMe.js";
 
 import { Button } from "@/components/ui/Button";
@@ -17,7 +18,11 @@ import * as styles from "./MarketplacePage.css.js";
 
 export default function Marketplace() {
   // 키워드, 필터링, 정렬과 관련된 부분
-  const [params, setParams] = useState({ sort: "latest", limit: 15, excludeSoldOut: "include" });
+  const [params, setParams] = useState({
+    sort: "latest",
+    limit: DEFAULT_CARD_LIMIT,
+    excludeSoldOut: "include",
+  });
   const updateParam = (key, value) => {
     setParams((prev) => {
       return { ...prev, [key]: value || undefined };

@@ -8,15 +8,17 @@ import { clsx } from "clsx";
 
 import {
   CARD_GENRE_FILTER,
+  DEFAULT_CARD_LIMIT,
   DEFAULT_GRADE_COUNTS,
   GENRE_LABEL_MAP,
   GRADE_OPTIONS,
+  NEXT_PAGE_SKELETON_COUNT,
 } from "@/constants/card";
 import { useCardQuota, useMyGalleryCards, useMyGallerySummary } from "@/hooks/useCard";
 import { useMe } from "@/hooks/useMe";
 
 import { MobileFilterModal } from "@/components/common/MobileFilterModal";
-import { PhotoCard } from "@/components/common/PhotoCard";
+import { PhotoCard, PhotoCardSkeleton } from "@/components/common/PhotoCard";
 import { Button } from "@/components/ui/Button";
 import { Chip } from "@/components/ui/Chip";
 import { Dropdown } from "@/components/ui/Dropdown";
@@ -24,8 +26,6 @@ import { Modal } from "@/components/ui/Modal";
 import { SearchInput } from "@/components/ui/SearchInput";
 
 import * as styles from "./MyGalleryPage.css";
-
-const DEFAULT_LIMIT = 15;
 
 const GALLERY_FILTERS = [CARD_GENRE_FILTER];
 
@@ -35,7 +35,7 @@ export default function MyGalleryPage() {
   const { data: quota, isPending: isQuotaPending } = useCardQuota();
   const { data: summary } = useMyGallerySummary();
 
-  const [params, setParams] = useState({ limit: DEFAULT_LIMIT });
+  const [params, setParams] = useState({ limit: DEFAULT_CARD_LIMIT });
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   const filterButtonRef = useRef(null);
@@ -221,10 +221,16 @@ export default function MyGalleryPage() {
 
       {/* 포토카드 목록 영역 */}
       {isPending ? (
-        <div aria-live="polite" role="status" className={styles.statusWrapper}>
-          <p className={styles.informText}>최애가 나를 기다린다!</p>
-          <p className={styles.informText}>로딩중...</p>
-        </div>
+        <>
+          <p aria-live="polite" role="status" className={styles.srOnly}>
+            보유한 포토카드 목록을 불러오는 중입니다.
+          </p>
+          <div aria-busy="true" aria-label="보유 포토카드 목록 로딩 중" className={styles.cardGrid}>
+            {Array.from({ length: DEFAULT_CARD_LIMIT }).map((_, index) => (
+              <PhotoCardSkeleton key={index} />
+            ))}
+          </div>
+        </>
       ) : isError && !data ? (
         <div role="status" className={styles.statusWrapper}>
           <p className={styles.informText}>앗! 조회에 실패했습니다.</p>
@@ -259,14 +265,19 @@ export default function MyGalleryPage() {
                 title={card.name}
               />
             ))}
+            {isFetchingNextPage && (
+              <>
+                <p aria-live="polite" role="status" className={styles.srOnly}>
+                  추가 포토카드를 불러오는 중입니다.
+                </p>
+                {Array.from({ length: NEXT_PAGE_SKELETON_COUNT }).map((_, index) => (
+                  <PhotoCardSkeleton key={`next-skeleton-${index}`} />
+                ))}
+              </>
+            )}
           </div>
 
           {hasNextPage && <div ref={loadMoreRef} aria-hidden="true" />}
-          {isFetchingNextPage && (
-            <p aria-live="polite" role="status" className={styles.informText}>
-              더 많은 포토카드 불러오는 중...
-            </p>
-          )}
           {isFetchNextPageError && (
             <div role="status" className={styles.statusWrapper}>
               <p className={styles.informText}>추가 목록 조회에 실패했습니다.</p>

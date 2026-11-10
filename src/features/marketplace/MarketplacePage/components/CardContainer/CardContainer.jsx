@@ -3,10 +3,11 @@ import { useEffect, useRef } from "react";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 
+import { DEFAULT_CARD_LIMIT, NEXT_PAGE_SKELETON_COUNT } from "@/constants/card";
 import { saleKeys } from "@/services/queryKeys";
 import { getSales } from "@/services/saleService";
 
-import { PhotoCard } from "@/components/common/PhotoCard";
+import { PhotoCard, PhotoCardSkeleton } from "@/components/common/PhotoCard";
 import { Button } from "@/components/ui/Button";
 
 import { genre } from "@/features/marketplace/MarketplaceConfig";
@@ -58,10 +59,16 @@ export default function CardContainer({ params }) {
 
   if (isPending)
     return (
-      <div className={styles.wrapper}>
-        <p className={styles.informText}>최애가 나를 기다린다!</p>
-        <p className={styles.informText}>로딩중...</p>
-      </div>
+      <>
+        <p aria-live="polite" role="status" className={styles.srOnly}>
+          마켓플레이스 포토카드 목록을 불러오는 중입니다.
+        </p>
+        <div aria-busy="true" aria-label="마켓플레이스 목록 로딩 중" className={styles.container}>
+          {Array.from({ length: params.limit ?? DEFAULT_CARD_LIMIT }).map((_, index) => (
+            <PhotoCardSkeleton key={index} />
+          ))}
+        </div>
+      </>
     );
   if (isError && !data)
     return (
@@ -101,10 +108,19 @@ export default function CardContainer({ params }) {
             />
           </Link>
         ))}
+        {isFetchingNextPage && (
+          <>
+            <p aria-live="polite" role="status" className={styles.srOnly}>
+              추가 포토카드를 불러오는 중입니다.
+            </p>
+            {Array.from({ length: NEXT_PAGE_SKELETON_COUNT }).map((_, index) => (
+              <PhotoCardSkeleton key={`next-skeleton-${index}`} />
+            ))}
+          </>
+        )}
       </div>
 
       {hasNextPage && <div ref={loadMoreRef} aria-hidden="true" />}
-      {isFetchingNextPage && <p className={styles.informText}>더 많은 포토카드 불러오는 중...</p>}
       {isFetchNextPageError && (
         <div className={styles.wrapper}>
           <p className={styles.informText}>추가 목록을 조회에 실패했습니다.</p>
