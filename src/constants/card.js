@@ -1,3 +1,8 @@
+// 카드 목록 조회 및 스켈레톤 노출 개수 공통 상수
+// 모바일(2열)과 PC(3열) 그리드
+export const DEFAULT_CARD_LIMIT = 12;
+export const NEXT_PAGE_SKELETON_COUNT = DEFAULT_CARD_LIMIT;
+
 // 포토카드 관련 상수 (등급, 장르)
 export const GRADE_OPTIONS = [
   { color: "main", label: "COMMON", value: "COMMON" },

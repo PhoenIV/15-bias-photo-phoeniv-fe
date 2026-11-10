@@ -10,9 +10,11 @@ import {
   CARD_GENRE_FILTER,
   CARD_SALE_TYPE_FILTER,
   CARD_SOLD_OUT_FILTER,
+  DEFAULT_CARD_LIMIT,
   DEFAULT_GRADE_COUNTS,
   GENRE_LABEL_MAP,
   GRADE_OPTIONS,
+  NEXT_PAGE_SKELETON_COUNT,
   SALE_TYPE_STATUS_MAP,
 } from "@/constants/card";
 import { useMySalesCards, useMySalesSummary } from "@/hooks/useCard";
@@ -20,7 +22,7 @@ import { useCloseOnBreakpoint } from "@/hooks/useCloseOnBreakpoint";
 import { useMe } from "@/hooks/useMe";
 
 import { MobileFilterModal } from "@/components/common/MobileFilterModal";
-import { PhotoCard } from "@/components/common/PhotoCard";
+import { PhotoCard, PhotoCardSkeleton } from "@/components/common/PhotoCard";
 import { Button } from "@/components/ui/Button";
 import { Chip } from "@/components/ui/Chip";
 import { Dropdown } from "@/components/ui/Dropdown";
@@ -29,15 +31,13 @@ import { SearchInput } from "@/components/ui/SearchInput";
 
 import * as styles from "./MyListingsPage.css";
 
-const DEFAULT_LIMIT = 15;
-
 const LISTINGS_FILTERS = [CARD_GENRE_FILTER, CARD_SALE_TYPE_FILTER, CARD_SOLD_OUT_FILTER];
 
 export default function MyListingsPage() {
   const { user } = useMe();
   const { data: summary } = useMySalesSummary();
 
-  const [params, setParams] = useState({ limit: DEFAULT_LIMIT });
+  const [params, setParams] = useState({ limit: DEFAULT_CARD_LIMIT });
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   const filterButtonRef = useRef(null);
@@ -208,9 +208,10 @@ export default function MyListingsPage() {
 
       {/* 포토카드 목록 영역 */}
       {isPending ? (
-        <div aria-live="polite" role="status" className={styles.statusWrapper}>
-          <p className={styles.informText}>최애가 나를 기다린다!</p>
-          <p className={styles.informText}>로딩중...</p>
+        <div aria-busy="true" aria-label="포토카드 목록 로딩 중" className={styles.cardGrid}>
+          {Array.from({ length: DEFAULT_CARD_LIMIT }).map((_, index) => (
+            <PhotoCardSkeleton key={index} />
+          ))}
         </div>
       ) : isError && !data ? (
         <div role="status" className={styles.statusWrapper}>
@@ -260,14 +261,13 @@ export default function MyListingsPage() {
                 <div key={cardKey}>{cardContent}</div>
               );
             })}
+            {isFetchingNextPage &&
+              Array.from({ length: NEXT_PAGE_SKELETON_COUNT }).map((_, index) => (
+                <PhotoCardSkeleton key={`next-skeleton-${index}`} />
+              ))}
           </div>
 
           {hasNextPage && <div ref={loadMoreRef} aria-hidden="true" />}
-          {isFetchingNextPage && (
-            <p aria-live="polite" role="status" className={styles.informText}>
-              더 많은 포토카드 불러오는 중...
-            </p>
-          )}
           {isFetchNextPageError && (
             <div role="status" className={styles.statusWrapper}>
               <p className={styles.informText}>추가 목록 조회에 실패했습니다.</p>
