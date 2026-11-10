@@ -27,8 +27,15 @@ export default function Marketplace() {
     updateParam("keyword", keyword);
   };
   const onFilterChange = (filterKey, value) => {
-    updateParam(filterKey, value);
+    if (filterKey === "excludeSoldOut") {
+      updateParam(filterKey, value);
+      return;
+    }
+
+    // 등급 필터, 장르 필터에만 같은 값을 다시 클릭하면 필터가 해제되는 기능
+    setParams((prev) => ({ ...prev, [filterKey]: prev[filterKey] === value ? undefined : value }));
   };
+
   const onSortChange = (sort) => {
     updateParam("sort", sort);
   };
