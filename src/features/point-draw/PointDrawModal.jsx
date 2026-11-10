@@ -29,6 +29,7 @@ export default function PointDrawModal() {
     mutationFn: drawPoint,
     onSuccess: (data) => {
       setResult(data); //-> onSuccess안에서 data로 result에 할당 (골라서 사용)
+      setSelectedBox(null); //-> 1시간 이후 뽑기 모달 열릴때 박스 선택 안되도록
 
       //재조회가 실패해도 이전 canDraw: true가 남지 않게 뽑기 상태 캐시를 먼저 쿨다운 상태로 갱신
       queryClient.setQueryData(pointDrawKeys.status(), (prev) => ({
