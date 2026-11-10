@@ -5,6 +5,8 @@ import { useState } from "react";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { DEFAULT_BACK_FALLBACK_HREF } from "@/constants/header";
+import { useInAppHistoryContext } from "@/hooks/useInAppHistory";
 import { logout } from "@/services/authService";
 import { userKeys } from "@/services/queryKeys";
 
@@ -17,10 +19,26 @@ import * as styles from "./Header.css";
 
 /**
  * 모바일 서브페이지 헤더 좌측의 뒤로가기 버튼
+ * 앱 내 이전 경로가 있으면 router.back(), 없으면 fallbackHref로 replace 이동합니다.
+ *
+ * @param {Object} props
+ * @param {string} [props.fallbackHref=DEFAULT_BACK_FALLBACK_HREF] - 앱 내 이전 경로가 없을 때 이동할 폴백 경로
  */
-export function BackButton() {
+export function BackButton({ fallbackHref = DEFAULT_BACK_FALLBACK_HREF }) {
   const router = useRouter();
-  return <IconButton icon="/images/ic-back.svg" label="뒤로가기" onClick={() => router.back()} />;
+  const { checkCanGoBack, markFallbackReplace } = useInAppHistoryContext();
+
+  const handleBack = () => {
+    if (checkCanGoBack()) {
+      router.back();
+      return;
+    }
+
+    markFallbackReplace();
+    router.replace(fallbackHref);
+  };
+
+  return <IconButton icon="/images/ic-back.svg" label="뒤로가기" onClick={handleBack} />;
 }
 
 /**

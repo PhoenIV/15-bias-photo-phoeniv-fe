@@ -10,16 +10,17 @@ import * as styles from "./Header.css";
  *
  * @param {Object} props
  * @param {string} props.title - 모바일 헤더 중앙에 표시할 서브페이지 타이틀
+ * @param {string} [props.fallbackHref] - 뒤로가기 시 앱 내 이전 히스토리가 없을 때 이동할 폴백 경로
  * @param {boolean} [props.isLoggedIn=false] - 로그인 여부
  * @param {string} [props.nickname=""] - 사용자 닉네임
  * @param {number} [props.points=0] - 보유 포인트
  */
-export default function SubPageHeader({ title, ...navProps }) {
+export default function SubPageHeader({ fallbackHref, title, ...navProps }) {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
         <div className={styles.mobileSide}>
-          <BackButton />
+          <BackButton fallbackHref={fallbackHref} />
         </div>
 
         <div className={styles.centerOrLeftArea}>
