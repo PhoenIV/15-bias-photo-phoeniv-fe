@@ -9,9 +9,15 @@ import { getSales } from "@/services/saleService";
 import { PhotoCard } from "@/components/common/PhotoCard";
 import { Button } from "@/components/ui/Button";
 
+import { genre } from "@/features/marketplace/MarketplaceConfig";
+
 import * as styles from "./CardContainer.css";
 
 export default function CardContainer({ params }) {
+  const genre_label_map = (value) => {
+    return genre.options.find((option) => option.value === value)?.label ?? value;
+  };
+
   const {
     data,
     isPending,
@@ -83,7 +89,7 @@ export default function CardContainer({ params }) {
           <Link key={sale.id} href={`/sales/${sale.id}`}>
             <PhotoCard
               key={sale.id}
-              category={sale.card.genre}
+              category={genre_label_map(sale.card.genre)}
               grade={sale.card.grade}
               imageId={sale.card.imagePublicId}
               isSoldOut={sale.remainingQuantity === 0}
