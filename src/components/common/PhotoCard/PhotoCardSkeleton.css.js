@@ -71,7 +71,7 @@ export const metaLeftBar = style([
     height: "10px",
     "@media": {
       [media.tablet]: {
-        height: "14px",
+        height: "16px",
       },
     },
   },
@@ -84,7 +84,7 @@ export const metaRightBar = style([
     height: "10px",
     "@media": {
       [media.tablet]: {
-        height: "14px",
+        height: "16px",
       },
     },
   },
@@ -112,7 +112,7 @@ export const infoLabelBar = style([
     height: "10px",
     "@media": {
       [media.tablet]: {
-        height: "14px",
+        height: "16px",
       },
     },
   },
@@ -125,7 +125,7 @@ export const infoValueBar = style([
     height: "10px",
     "@media": {
       [media.tablet]: {
-        height: "14px",
+        height: "16px",
       },
     },
   },
@@ -140,8 +140,8 @@ export const logo = style([
       [media.tablet]: {
         display: "block",
         margin: "8px auto 0",
-        width: "75px",
-        height: "14px",
+        width: "80px",
+        height: "16px",
       },
     },
   },

@@ -59,11 +59,16 @@ export default function CardContainer({ params }) {
 
   if (isPending)
     return (
-      <div aria-busy="true" aria-label="마켓플레이스 목록 로딩 중" className={styles.container}>
-        {Array.from({ length: params.limit ?? DEFAULT_CARD_LIMIT }).map((_, index) => (
-          <PhotoCardSkeleton key={index} />
-        ))}
-      </div>
+      <>
+        <p aria-live="polite" role="status" className={styles.srOnly}>
+          마켓플레이스 포토카드 목록을 불러오는 중입니다.
+        </p>
+        <div aria-busy="true" aria-label="마켓플레이스 목록 로딩 중" className={styles.container}>
+          {Array.from({ length: params.limit ?? DEFAULT_CARD_LIMIT }).map((_, index) => (
+            <PhotoCardSkeleton key={index} />
+          ))}
+        </div>
+      </>
     );
   if (isError && !data)
     return (
@@ -103,10 +108,16 @@ export default function CardContainer({ params }) {
             />
           </Link>
         ))}
-        {isFetchingNextPage &&
-          Array.from({ length: NEXT_PAGE_SKELETON_COUNT }).map((_, index) => (
-            <PhotoCardSkeleton key={`next-skeleton-${index}`} />
-          ))}
+        {isFetchingNextPage && (
+          <>
+            <p aria-live="polite" role="status" className={styles.srOnly}>
+              추가 포토카드를 불러오는 중입니다.
+            </p>
+            {Array.from({ length: NEXT_PAGE_SKELETON_COUNT }).map((_, index) => (
+              <PhotoCardSkeleton key={`next-skeleton-${index}`} />
+            ))}
+          </>
+        )}
       </div>
 
       {hasNextPage && <div ref={loadMoreRef} aria-hidden="true" />}

@@ -221,11 +221,16 @@ export default function MyGalleryPage() {
 
       {/* 포토카드 목록 영역 */}
       {isPending ? (
-        <div aria-busy="true" aria-label="보유 포토카드 목록 로딩 중" className={styles.cardGrid}>
-          {Array.from({ length: DEFAULT_CARD_LIMIT }).map((_, index) => (
-            <PhotoCardSkeleton key={index} />
-          ))}
-        </div>
+        <>
+          <p aria-live="polite" role="status" className={styles.srOnly}>
+            보유한 포토카드 목록을 불러오는 중입니다.
+          </p>
+          <div aria-busy="true" aria-label="보유 포토카드 목록 로딩 중" className={styles.cardGrid}>
+            {Array.from({ length: DEFAULT_CARD_LIMIT }).map((_, index) => (
+              <PhotoCardSkeleton key={index} />
+            ))}
+          </div>
+        </>
       ) : isError && !data ? (
         <div role="status" className={styles.statusWrapper}>
           <p className={styles.informText}>앗! 조회에 실패했습니다.</p>
@@ -260,10 +265,16 @@ export default function MyGalleryPage() {
                 title={card.name}
               />
             ))}
-            {isFetchingNextPage &&
-              Array.from({ length: NEXT_PAGE_SKELETON_COUNT }).map((_, index) => (
-                <PhotoCardSkeleton key={`next-skeleton-${index}`} />
-              ))}
+            {isFetchingNextPage && (
+              <>
+                <p aria-live="polite" role="status" className={styles.srOnly}>
+                  추가 포토카드를 불러오는 중입니다.
+                </p>
+                {Array.from({ length: NEXT_PAGE_SKELETON_COUNT }).map((_, index) => (
+                  <PhotoCardSkeleton key={`next-skeleton-${index}`} />
+                ))}
+              </>
+            )}
           </div>
 
           {hasNextPage && <div ref={loadMoreRef} aria-hidden="true" />}
