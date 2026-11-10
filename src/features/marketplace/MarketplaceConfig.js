@@ -20,7 +20,7 @@ export const genre = {
     { label: "시즌그리팅", value: "SEASONS_GREETINGS" },
     { label: "팬미팅", value: "FAN_MEETING" },
     { label: "콘서트", value: "CONCERT" },
-    { label: "엠디", value: "MD" },
+    { label: "MD", value: "MD" },
     { label: "콜라보", value: "COLLAB" },
     { label: "팬클럽", value: "FAN_CLUB" },
     { label: "기타", value: "OTHERS" },
