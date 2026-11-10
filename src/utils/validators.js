@@ -6,13 +6,13 @@ export function emailValidator(email) {
   }
 }
 
-export function passwordValidator(password) {
-  if (!password) {
-    return "비밀번호는 필수입니다.";
-  }
-}
+// export function passwordValidator(password) {
+//   if (!password) {
+//     return "비밀번호는 필수입니다.";
+//   }
+// }
 
-export function passwordSignupValidator(password) {
+export function passwordValidator(password) {
   const PW_ENGLISH_REGEX = /[A-Za-z]/;
   const PW_NUMBER_REGEX = /\d/;
 
@@ -71,7 +71,7 @@ export function validateSignup({ email, nickname, password, passwordConfirm }) {
 
   const emailError = emailValidator(email);
   const nicknameError = nicknameValidator(nickname);
-  const passwordError = passwordSignupValidator(password);
+  const passwordError = passwordValidator(password);
   const passwordConfirmError = passwordConfirmValidator({ password, passwordConfirm });
 
   if (emailError) {
