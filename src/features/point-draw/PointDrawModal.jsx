@@ -29,6 +29,8 @@ export default function PointDrawModal() {
     mutationFn: drawPoint,
     onSuccess: (data) => {
       setResult(data); //-> onSuccess안에서 data로 result에 할당 (골라서 사용)
+      setSelectedBox(null); //-> 1시간 이후 뽑기 모달 열릴때 선택상태 초기화
+      setIsDismissed(false);
 
       //재조회가 실패해도 이전 canDraw: true가 남지 않게 뽑기 상태 캐시를 먼저 쿨다운 상태로 갱신
       queryClient.setQueryData(pointDrawKeys.status(), (prev) => ({
@@ -44,6 +46,7 @@ export default function PointDrawModal() {
     onError: async (error) => {
       //429 다중탭, 다른 기기에서 중복 뽑기 막기
       if (error.code === "BOX_COOLDOWN") {
+        setSelectedBox(null); //-> 1시간 이후 뽑기 모달 열릴때 선택상태 초기화
         queryClient.invalidateQueries({ queryKey: pointDrawKeys.status() });
         setDrawError(error.message);
         return;
