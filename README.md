@@ -172,7 +172,7 @@
 
 #### 마켓플레이스 페이지
 
-![마켓플레이스] (https://github.com/user-attachments/assets/92971eb1-4ee3-4ce7-b3f6-638e75e8bcbf)
+![마켓플레이스](https://github.com/user-attachments/assets/92971eb1-4ee3-4ce7-b3f6-638e75e8bcbf)
 
 - TanStack Query를 활용한 판매 포토카드 목록 조회 및 캐싱
 - 검색, 중첩 적용 가능한 3종 필터, 정렬 기능 도입
@@ -180,7 +180,7 @@
 
 #### 판매글 상세 페이지
 
-![판매글 상세] (https://github.com/user-attachments/assets/b909b46a-6bce-4076-9215-d2ed2289b4b1)
+![판매글 상세](https://github.com/user-attachments/assets/b909b46a-6bce-4076-9215-d2ed2289b4b1)
 
 - 판매글 작성 여부에 따른 화면 분기 (판매자 - 판매글 수정, 내리기, 교환 승인 또는 거절 / 구매자 - 포토카드 구매, 교환 신청)
 - api 호출이 즉시 발생하는 버튼의 경우 알럿 모달을 띄워 유저 의사 재확인
@@ -188,14 +188,14 @@
 
 ### 판매 카드 선택 모달
 
-![나의 포토카드 판매하기] (https://github.com/user-attachments/assets/23be6392-5989-47db-8e4e-ce18209004da)
+![나의 포토카드 판매하기](https://github.com/user-attachments/assets/23be6392-5989-47db-8e4e-ce18209004da)
 
 - 검색 및 중첩 2종 필터 기능이 적용된 보유 포토카드 목록 조회
 - 대기 및 오류 상태에 따른 화면 분기
 
 #### 모바일 필터 공용 컴포넌트
 
-![모바일 필터] (https://github.com/user-attachments/assets/c624c7c6-3f64-4785-b488-d78b58210c14)
+![모바일 필터](https://github.com/user-attachments/assets/c624c7c6-3f64-4785-b488-d78b58210c14)
 
 - 중첩 적용 가능한 등급, 장르, 품절 여부에 따른 필터링 구현
 - 키보드 접근성 준수
