@@ -17,9 +17,9 @@
 
 김수지 [개인 Github 링크](https://github.com/cloud2-k)
 
-박수환 [개인 Github 링크](https://github.com/pionsuhwan-hub)
+박수환 [개인 Github 링크](https://github.com/Suhwan-P)
 
-이승현 [개인 Github 링크](https://github.com/mona1222)
+이승현 [개인 Github 링크](https://github.com/MonsteraforCoding)
 
 ## 🛠️ 기술 스택
 
