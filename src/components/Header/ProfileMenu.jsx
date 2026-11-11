@@ -8,6 +8,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 import { PROFILE_MENU_ITEMS } from "@/constants/header";
 import { useCloseOnBreakpoint } from "@/hooks/useCloseOnBreakpoint";
+import { formatNumber } from "@/utils/formatNumber";
 
 import { IconButton } from "@/components/ui/IconButton";
 
@@ -31,7 +32,7 @@ export function ProfileUserInfo({ isLoggedIn = false, nickname = "", points = 0 
           <p className={styles.profileGreeting}>안녕하세요, {nickname}님!</p>
           <div className={styles.profilePointRow}>
             <span className={styles.profilePointLabel}>보유 포인트</span>
-            <span className={styles.profilePointValue}>{points.toLocaleString()} P</span>
+            <span className={styles.profilePointValue}>{formatNumber(points)} P</span>
           </div>
         </>
       ) : (

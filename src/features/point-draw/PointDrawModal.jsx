@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { usePointDrawStatus } from "@/hooks/usePointDrawStatus";
 import { drawPoint } from "@/services/pointDrawService";
 import { pointDrawKeys, userKeys } from "@/services/queryKeys";
+import { formatNumber } from "@/utils/formatNumber";
 
 import { Button } from "@/components/ui/Button";
 import { AlertModal, Modal } from "@/components/ui/Modal";
@@ -153,7 +154,7 @@ export default function PointDrawModal() {
           </div>
           <div className={styles.bottom}>
             <div className={styles.point}>
-              <div className={styles.highlightpoint}>{result?.amount}P</div> 획득!
+              <div className={styles.highlightpoint}>{formatNumber(result?.amount)}P</div> 획득!
             </div>
             <div className={styles.time2}>
               <div className={styles.timeText}>다음 기회까지 남은 시간</div>

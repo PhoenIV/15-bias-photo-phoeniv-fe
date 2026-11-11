@@ -1,5 +1,7 @@
 import clsx from "clsx";
 
+import { formatNumber } from "@/utils/formatNumber";
+
 import { Button } from "@/components/ui/Button";
 
 import { CardImage, GradeCategory } from "./PhotoCardParts";
@@ -48,7 +50,7 @@ export default function ExchangePhotoCard({
           <div className={styles.exchangeMetaRight}>
             {price ? (
               <span className={styles.purchaseText}>
-                <span className={styles.purchasePrice}>{price} P</span> 에 구매
+                <span className={styles.purchasePrice}>{formatNumber(price)} P</span> 에 구매
               </span>
             ) : (
               <span className={styles.purchasePrice}>신규 카드</span>
