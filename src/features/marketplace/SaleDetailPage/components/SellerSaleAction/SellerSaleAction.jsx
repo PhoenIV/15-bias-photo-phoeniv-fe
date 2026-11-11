@@ -52,7 +52,7 @@ export default function SellerSaleAction({ sale }) {
         <div className={styles.exchangeInfoContainer}>
           <span className={styles.exchangeInfo}>
             <span className={gradeTextRecipe({ grade: sale.exchangeGrade, type: "inherit" })}>
-              {sale.exchangeGrade}
+              {sale.exchangeGrade ?? "모든 등급"}
             </span>{" "}
             <span className={styles.divider}>|</span>{" "}
             {genre_label_map(sale.exchangeGenre) ?? "모든 장르"}
