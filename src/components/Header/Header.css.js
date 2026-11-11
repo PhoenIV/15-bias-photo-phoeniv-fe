@@ -5,6 +5,11 @@ import { media, vars } from "@/styles/theme.css";
 
 // 헤더 배경
 export const header = style({
+  // 스크롤 시 상단 고정 추가
+  position: "sticky",
+  top: 0,
+  zIndex: vars.zIndex.sticky,
+
   width: "100%",
   height: "60px",
   backgroundColor: vars.colors.black,
