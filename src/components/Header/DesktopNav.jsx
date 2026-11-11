@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { formatNumber } from "@/utils/formatNumber";
+
 import { LogoutButton } from "./HeaderButtons";
 import { NotificationPopover } from "./NotificationMenu";
 import { ProfileDropdown } from "./ProfileMenu";
@@ -19,7 +21,7 @@ export default function DesktopNav({ isLoggedIn = false, nickname = "", points =
     <nav className={styles.desktopNav}>
       {isLoggedIn ? (
         <>
-          <span className={styles.pointText}>{points.toLocaleString()} P</span>
+          <span className={styles.pointText}>{formatNumber(points)} P</span>
           <NotificationPopover isLoggedIn={isLoggedIn} />
           <ProfileDropdown nickname={nickname} points={points} />
           <span className={styles.divider} />

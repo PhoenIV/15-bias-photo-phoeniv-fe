@@ -2,6 +2,8 @@ import Image from "next/image";
 
 import clsx from "clsx";
 
+import { formatNumber } from "@/utils/formatNumber";
+
 import { CardImage, GradeCategory } from "./PhotoCardParts";
 
 import * as styles from "./PhotoCard.css";
@@ -61,7 +63,9 @@ export default function PhotoCard({
         {price !== undefined && (
           <div className={styles.infoRow}>
             <span className={styles.infoLabel}>가격</span>
-            <span className={styles.infoValue}>{price === null ? "-" : `${price} P`}</span>
+            <span className={styles.infoValue}>
+              {price === null ? "-" : `${formatNumber(price)} P`}
+            </span>
           </div>
         )}
 
@@ -70,9 +74,9 @@ export default function PhotoCard({
           <div className={styles.infoRow}>
             <span className={styles.infoLabel}>{countLabel}</span>
             <span className={styles.infoValue}>
-              {remainCount}
+              {formatNumber(remainCount)}
               {totalCount !== undefined && (
-                <span className={styles.totalCount}> / {totalCount}</span>
+                <span className={styles.totalCount}> / {formatNumber(totalCount)}</span>
               )}
             </span>
           </div>
