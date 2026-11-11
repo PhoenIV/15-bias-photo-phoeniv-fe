@@ -1,4 +1,5 @@
 import { gradeTextRecipe } from "@/styles/grade.css.js";
+import { formatNumber } from "@/utils/formatNumber";
 
 import { genre } from "@/features/marketplace/MarketplaceConfig.js";
 
@@ -26,13 +27,13 @@ export default function CommonSaleInfo({ sale, card }) {
       </div>
       <div className={styles.thirdRow}>
         <span className={styles.thirdRowFieldName}>가격</span>
-        <span className={styles.thirdRowValue}>{sale.price}P</span>
+        <span className={styles.thirdRowValue}>{formatNumber(sale.price)}P</span>
       </div>
       <div className={styles.thirdRow}>
         <span className={styles.thirdRowFieldName}>잔여</span>
         <span className={styles.thirdRowValue}>
-          {sale.remainingQuantity}
-          <span className={styles.totalQuantity}> / {sale.totalQuantity}</span>
+          {formatNumber(sale.remainingQuantity)}
+          <span className={styles.totalQuantity}> / {formatNumber(sale.totalQuantity)}</span>
         </span>
       </div>
     </div>

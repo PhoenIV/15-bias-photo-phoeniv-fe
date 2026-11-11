@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { saleKeys } from "@/services/queryKeys";
 import { makePurchase } from "@/services/saleService";
+import { formatNumber } from "@/utils/formatNumber";
 
 import { Button } from "@/components/ui/Button";
 import { AlertModal } from "@/components/ui/Modal";
@@ -97,7 +98,7 @@ export default function BuyerSaleAction({ sale }) {
           <span className={styles.fieldName}>총 가격</span>
           <div className={styles.fieldValue}>
             <span className={styles.totalPrice}>
-              {isSoldOut ? "0P" : `${currentQuantity * sale.price}P`}
+              {isSoldOut ? "0P" : `${formatNumber(currentQuantity * sale.price)}P`}
             </span>
             <span className={styles.setQuantity}>
               {isSoldOut ? " (품절)" : ` (${currentQuantity}장)`}
