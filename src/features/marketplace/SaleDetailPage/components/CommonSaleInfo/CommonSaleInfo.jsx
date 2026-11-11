@@ -1,9 +1,15 @@
 import { gradeTextRecipe } from "@/styles/grade.css.js";
 
+import { genre } from "@/features/marketplace/MarketplaceConfig.js";
+
 import * as styles from "./CommonSaleInfo.css.js";
 
 // 판매자, 구매자 공통 포토카드 정보 영역
 export default function CommonSaleInfo({ sale, card }) {
+  const genre_label_map = (value) => {
+    return genre.options.find((option) => option.value === value)?.label ?? value;
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.firstRow}>
@@ -11,7 +17,7 @@ export default function CommonSaleInfo({ sale, card }) {
           <span className={gradeTextRecipe({ grade: card.grade, type: "inherit" })}>
             {card.grade}
           </span>{" "}
-          <span className={styles.divider}>|</span> {card.genre}
+          <span className={styles.divider}>|</span> {genre_label_map(card.genre)}
         </span>
         <span className={styles.sellerInfo}>{sale.seller.nickname}</span>
       </div>

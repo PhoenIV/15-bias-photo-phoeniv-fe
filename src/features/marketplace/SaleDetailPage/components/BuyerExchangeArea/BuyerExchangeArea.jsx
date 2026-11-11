@@ -12,11 +12,16 @@ import { AlertModal } from "@/components/ui/Modal";
 import { useToast } from "@/components/ui/Toast";
 
 import { ExchangeModal } from "@/features/exchange/ExchangeModal";
+import { genre } from "@/features/marketplace/MarketplaceConfig";
 
 import * as styles from "./BuyerExchangeArea.css";
 
 // 구매자가 보는 교환 희망 정보
 export default function BuyerExchangeArea({ sale, user }) {
+  const genre_label_map = (value) => {
+    return genre.options.find((option) => option.value === value)?.label ?? value;
+  };
+
   const params = {};
   const {
     data: response,
@@ -76,7 +81,8 @@ export default function BuyerExchangeArea({ sale, user }) {
               <span className={gradeTextRecipe({ grade: sale.exchangeGrade, type: "inherit" })}>
                 {sale.exchangeGrade ?? "모든 등급"}
               </span>{" "}
-              <span className={styles.divider}>|</span> {sale.exchangeGenre ?? "모든 장르"}
+              <span className={styles.divider}>|</span>{" "}
+              {genre_label_map(sale.exchangeGenre) ?? "모든 장르"}
             </span>
           </div>
         </div>

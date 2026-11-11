@@ -12,12 +12,17 @@ import { Button } from "@/components/ui/Button";
 import { AlertModal } from "@/components/ui/Modal";
 import { useToast } from "@/components/ui/Toast";
 
+import { genre } from "@/features/marketplace/MarketplaceConfig";
 import { SaleEditModal } from "@/features/sale/SaleEditModal";
 
 import * as styles from "./SellerSaleAction.css";
 
 // 판매자가 보는 판매글 교환 정보 및 수정, 삭제 버튼 영역
 export default function SellerSaleAction({ sale }) {
+  const genre_label_map = (value) => {
+    return genre.options.find((option) => option.value === value)?.label ?? value;
+  };
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] = useState(false);
   const queryClient = useQueryClient();
@@ -49,11 +54,12 @@ export default function SellerSaleAction({ sale }) {
             <span className={gradeTextRecipe({ grade: sale.exchangeGrade, type: "inherit" })}>
               {sale.exchangeGrade}
             </span>{" "}
-            <span className={styles.divider}>|</span> {sale.exchangeGenre}
+            <span className={styles.divider}>|</span>{" "}
+            {genre_label_map(sale.exchangeGenre) ?? "모든 장르"}
           </span>
         </div>
         <div className={styles.exchangeDescription}>
-          <p>{sale.exchangeDescription}</p>
+          <p>{sale.exchangeDescription ?? "교환 희망 설명을 등록하지 않았습니다."}</p>
         </div>
         <div className={styles.actionButtons}>
           <Button size="responsive" thickness="thick" onClick={() => setIsEditModalOpen(true)}>
