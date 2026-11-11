@@ -1,15 +1,27 @@
-# 📸 최애의 포토
+# 📸 최애의 포토 - Frontend
 
 > **"최애의 포토카드를 사고, 팔고, 교환하는 디지털 컬렉션 마켓플레이스"**
 
 "최애의 포토"는 좋아하는 아이돌·스포츠 스타·그림의 디지털 포토카드를 사고팔고 교환하며 나만의 컬렉션을 완성하는 팬덤 수집 커뮤니티 플랫폼입니다.
 
+본 저장소는 "최애의 포토" 서비스의 사용자 인터페이스(UI/UX), 포토카드 탐색 및 거래 인터랙션을 제공하는 프론트엔드 웹 애플리케이션입니다.
+
 - **팀명**: PhoenIV
 - **프로젝트 기간**: 2026.10.23 ~ 2026.11.12 (3주)
-- **배포 사이트**: [🌐 최애의 포토 바로가기](https://15-bias-photo-phoeniv-fe.vercel.app/)
+- **웹 서비스 (FE)**: [🌐 최애의 포토 바로가기](https://15-bias-photo-phoeniv-fe.vercel.app/)
+- **백엔드 API 서버**: [🚀 Render API 서버 바로가기](https://one5-bias-photo-phoeniv-be.onrender.com/) _(무료 플랜 특성상 첫 접속 시 50초 내외 Cold Start 발생 가능)_
+- **백엔드 저장소**: [📦 백엔드 저장소 바로가기](https://github.com/PhoenIV/15-bias-photo-phoeniv-be)
 - **팀 협업 문서**: [📄 Notion 작업 문서 바로가기](https://app.notion.com/p/b0c8c54986818390ad5d018ef529bd16?v=9998c5498681829b87858877c6f5c7b8)
 
 > ⚠️ **저작권 안내**: 본 프로젝트는 비상업적 학습 및 포트폴리오 용도로 제작되었으며, 서비스 내에 활용된 이미지 및 콘텐츠의 모든 권리는 원저작권자에게 있습니다.
+
+### ✨ 핵심 기능 (Key Features)
+
+- 🃏 **포토카드 생성 및 수집**: 나만의 한정판 디지털 포토카드를 직접 발급하고 등급별로 수집
+- 🛒 **마켓플레이스 거래**: 포인트로 다른 유저의 포토카드를 실시간 구매하거나 내 카드 판매 등록
+- 🔄 **1:1 맞교환 제안**: 원하는 카드 조건을 탐색하고 내 카드를 제시하여 안전하게 맞교환
+- 🎁 **랜덤 포인트 뽑기**: 1시간 쿨다운 타이머 기반의 무료 포인트 충전 시스템
+- 🔔 **실시간 알림 (SSE)**: 판매 체결, 구매 완료, 교환 제안 상태를 Server-Sent Events로 실시간 수신
 
 ## 👥 팀원 구성
 
@@ -27,9 +39,10 @@
 | :------------------- | :---------------------------------------------------------------- | :------------------------------------------------------------------------------- |
 | **Framework**        | Next.js 16.4 (App Router), React 19.3                             | 최신 App Router 아키텍처 및 React Compiler를 통한 자동 렌더링 최적화             |
 | **State Management** | TanStack Query v5 (`@tanstack/react-query`)                       | 서버 상태(Server State) 캐싱, 자동 동기화, 백그라운드 리페치 및 쿼리 무효화 관리 |
-| **Styling**          | Vanilla Extract (`@vanilla-extract/css`, `sprinkles`, `recipes`)  | 빌드 타임에 CSS 파일로 추출되는 제로 런타임 CSS-in-JS, 타입 세이프 테마 시스템   |
-| **UI Primitive**     | Radix UI (`Dialog`, `DropdownMenu`, `Popover`)                    | WAI-ARIA 접근성 가이드라인을 완벽히 준수하는 Headless UI 컴포넌트 활용           |
+| **Styling**          | Vanilla Extract (`@vanilla-extract/css`, `recipes`)               | 빌드 타임에 CSS 파일로 추출되는 제로 런타임 CSS-in-JS, 타입 세이프 테마 시스템   |
+| **UI Primitive**     | Radix UI (`Dialog`, `DropdownMenu`, `Popover`)                    | WAI-ARIA 접근성 가이드라인을 준수하는 Headless UI 컴포넌트 활용                  |
 | **Form Management**  | React Hook Form                                                   | 비제어 컴포넌트 기반의 가벼운 폼 상태 관리 및 직관적인 입력 유효성 검증          |
+| **Media Storage**    | Cloudinary (`cloudinaryLoader`)                                   | Next.js Image 커스텀 로더 기반 반응형 WebP/AVIF 자동 변환 및 이미지 최적화 서빙  |
 | **Code Quality**     | ESLint 9, Prettier, Perfectionist, Husky, lint-staged, Commitlint | 일관된 코드 포맷팅 및 컨벤셔널 커밋 규칙 자동화                                  |
 | **Tool & Infra**     | GitHub, Discord, Notion, Swagger, Vercel                          | 팀 협업, 실시간 커뮤니케이션, API 명세 합의 및 Vercel 기반 프론트엔드 CI/CD 배포 |
 
@@ -63,17 +76,17 @@
 
 ![마이갤러리](https://github.com/user-attachments/assets/b8662637-bb4e-47d6-bf5c-a25444c8cd31)
 
-- TanStack Query를 활용한 보유 포토카드 목록 조회, 캐싱 및 실시간 등급 통계 집계
-- 등급별(COMMON, RARE, SUPER RARE, LEGENDARY) 칩 및 검색어를 조합한 다중 조건 실시간 필터링 구현
+- TanStack Query를 활용하여 보유 포토카드 목록 조회, 캐싱 및 무한 스크롤 구현
+- 등급, 장르, 검색어를 조합한 다중 조건 필터링 및 상단 등급별 통계 실시간 집계
 - 보유 카드별 총 수량과 판매/교환 진행 중인 수량을 직관적으로 분리 표시
 
 #### 나의 판매 포토카드
 
 ![나의 판매 포토카드](https://github.com/user-attachments/assets/a474958b-3328-4944-8fea-420b01484e0e)
 
-- 내가 마켓에 등록한 판매 목록 조회 및 판매 상태(판매 중 / 판매 완료 등) 뱃지 시각화
+- 내가 등록한 판매 카드 및 교환 제안 목록 조회, 진행 상태(판매 중 / 판매 완료) 뱃지 시각화
 - 판매 카드 아이템 클릭 시 해당 판매 상세 페이지로 바로 이동하는 내비게이션 연동
-- 판매 등록된 카드들의 등급별 보유 현황과 실시간 판매 진행 현황 관리
+- 상단 등급별 통계 데이터 연동을 통한 판매/교환 현황 관리
 
 #### 포토카드 생성하기
 
@@ -90,8 +103,8 @@
 
 #### 알림 및 프로필 메뉴
 
-- Radix UI(Popover)를 활용하여 키보드 접근성을 지원하는 헤더 알림 패널 및 프로필 드롭다운 구현
-- TanStack Query를 통한 실시간 알림 목록 동기화, 미확인 알림 뱃지 카운트 및 개별/전체 읽음 처리
+- SSE(Server-Sent Events)를 연동하여 실시간 알림 수신 및 TanStack Query 캐시 자동 동기화
+- Radix UI(Popover)를 활용하여 키보드 접근성을 지원하는 헤더 알림 패널 및 프로필 드롭다운 메뉴 구현
 - 알림 메시지 클릭 시 해당 판매 상세 페이지로 연결되는 딥링크 처리 및 프로필 포인트 정보 실시간 조회(`useMe`)
 
 #### 사용자 경험(UX) 최적화 (스켈레톤 UI)
@@ -150,12 +163,26 @@
   - `app/`: Next.js App Router 규칙에 따른 순수 라우팅 및 중첩 레이아웃만 담당합니다.
   - `components/ui/` vs `features/`: 비즈니스 로직이 없는 순수 디자인 시스템 원자 컴포넌트와 도메인 의존성이 있는 비즈니스 컴포넌트를 엄격히 분리했습니다.
   - `services/` & `hooks/`: 순수 API fetch 함수(`services/`)와 React 상태/캐싱을 다루는 커스텀 훅(`hooks/`)을 분리하여 선언적인 데이터 패칭 아키텍처를 구축했습니다.
-- **Zero-runtime 스타일링 체계 (`styles/`)**:
-  - Vanilla Extract를 채택하여 런타임 오버헤드 없이 전역 테마 및 스타일 토큰을 한곳에서 타입 세이프(Type-safe)하게 관리합니다.
 
-## 🌐 구현 홈페이지
+## 🚀 시작하기 (Quick Start)
 
-[최애의 포토✨](https://15-bias-photo-phoeniv-fe.vercel.app/)
+### 1. 환경 변수 설정
+
+`.env.example` 파일을 복사하여 로컬 환경 변수 파일(`.env.local`)을 생성하고 백엔드 API 주소를 설정합니다.
+
+```bash
+cp .env.example .env.local
+```
+
+### 2. 패키지 설치 및 실행
+
+```bash
+# 의존성 패키지 설치 (pnpm 권장)
+pnpm install
+
+# 로컬 개발 서버 실행 (기본 포트: 3000)
+pnpm dev
+```
 
 ## 📝 프로젝트 회고록
 
