@@ -261,7 +261,7 @@
 
 ### 1. 환경 변수 설정
 
-`.env.example` 파일을 복사하여 로컬 환경 변수 파일(`.env.local`)을 생성하고 백엔드 API 주소를 설정합니다.
+`.env.example` 파일을 복사하여 로컬 환경 변수 파일(`.env.local`)을 생성하고 백엔드 API 주소 및 Cloudinary Cloud Name을 설정합니다.
 
 ```bash
 cp .env.example .env.local
