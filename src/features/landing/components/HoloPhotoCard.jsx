@@ -71,7 +71,15 @@ export default function HoloPhotoCard({ src, alt }) {
       onMouseMove={handleMouseMove}
     >
       {/* 원본 포토카드 이미지 */}
-      <Image alt={alt} height={360} src={src} width={240} className={styles.holoCardImage} />
+      <Image
+        alt={alt}
+        height={360}
+        loading="lazy"
+        sizes="240px"
+        src={src}
+        width={240}
+        className={styles.holoCardImage}
+      />
 
       {/* 줄무늬 없는 부드러운 오로라 홀로그램 코팅 */}
       <div className={styles.holoFoil} style={foilStyle} />

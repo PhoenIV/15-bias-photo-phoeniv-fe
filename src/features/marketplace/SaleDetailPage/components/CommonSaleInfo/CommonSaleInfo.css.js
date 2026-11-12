@@ -5,6 +5,7 @@ import { vars } from "@/styles/theme.css";
 export const container = style({
   display: "flex",
   flexDirection: "column",
+  borderBottom: `1px solid ${vars.colors.gray400}`,
 });
 
 export const firstRow = style({

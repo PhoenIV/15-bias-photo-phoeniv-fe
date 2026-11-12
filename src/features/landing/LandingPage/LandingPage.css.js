@@ -49,7 +49,7 @@ export const heroBgLayer = style({
     left: "-5%",
     right: "-5%",
     bottom: "-5%",
-    backgroundImage: "url('/images/hero-bg.png')",
+    backgroundImage: "url('/images/hero-bg.webp')",
     backgroundSize: "cover",
     backgroundPosition: "center",
     zIndex: -1,
