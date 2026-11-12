@@ -11,7 +11,7 @@ export const cardWrapperRecipe = recipe({
   base: {
     width: "100%",
     minWidth: 0,
-    backgroundColor: vars.colors.black,
+    backgroundColor: vars.colors.gray500,
     border: `1px solid rgba(255, 255, 255, 0.10)`,
     borderRadius: "2px",
     display: "flex",
