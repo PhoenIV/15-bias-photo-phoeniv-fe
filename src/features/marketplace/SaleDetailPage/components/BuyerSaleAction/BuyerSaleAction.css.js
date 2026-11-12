@@ -12,10 +12,12 @@ export const container = style({
 export const quantityRow = style({
   display: "flex",
   justifyContent: "space-between",
+  alignItems: "center",
 });
 
 export const quantityController = style({
   display: "inline-block",
+  padding: "5px",
   border: `1px solid ${vars.colors.white}`,
   width: "100px",
 });
@@ -32,6 +34,8 @@ export const input = style({
   color: vars.colors.white,
   textAlign: "center",
   width: "70%",
+  position: "relative",
+  top: "-2px",
   // 클릭가능한 화살표 숨기기
   selectors: {
     "&::-webkit-inner-spin-button, &::-webkit-outer-spin-button": {

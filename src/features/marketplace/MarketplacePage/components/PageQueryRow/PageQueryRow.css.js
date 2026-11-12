@@ -13,9 +13,6 @@ export const pageQueryRow = style({
       alignItems: "center",
     },
     [media.pc]: {
-      //   gridTemplateColumns: "140px auto minmax(120px, 1fr)",
-      //   gridTemplateAreas: `"search filters sort"`,
-      //   gap: "16px",
       display: "flex",
       alignItems: "center",
     },
@@ -55,15 +52,25 @@ export const filters = style({
       gap: "10px",
       "& button": { border: "none" },
     },
+    [media.pc]: {
+      display: "flex",
+      justifyContent: "flex-start",
+    },
   },
 });
 
 export const filter = style({
   flex: "1 1 0",
   height: "22px",
-  minWidth: "120px",
+  // minWidth: "120px",
+  width: "auto",
   whiteSpace: "nowrap",
   textAlign: "left",
+});
+
+globalStyle(`${filter} > ul`, {
+  minWidth: "130px",
+  width: "max-content",
 });
 
 export const mobileFilter = style({
@@ -88,7 +95,7 @@ export const blankSpace = style({
       flex: "1 1 0",
       minWidth: 0,
     },
-    [media.pc]: { display: "flex", width: "100%", maxWidth: "400px" },
+    [media.pc]: { display: "flex", width: "100%", maxWidth: "600px" },
   },
 });
 
