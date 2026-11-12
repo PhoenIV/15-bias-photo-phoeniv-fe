@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { preload } from "react-dom";
 
 import { Button } from "@/components/ui/Button";
 
@@ -10,6 +11,9 @@ import ResponsiveGraphic from "@/features/landing/components/ResponsiveGraphic";
 import * as styles from "./LandingPage.css";
 
 export default function LandingPage() {
+  // 히어로 배경은 CSS background-image라 브라우저가 늦게 발견하므로(LCP) 미리 로드 요청
+  preload("/images/hero-bg.webp", { as: "image", fetchPriority: "high" });
+
   return (
     <main className={styles.container}>
       {/* {히어로 배너 섹션} */}
@@ -47,9 +51,13 @@ export default function LandingPage() {
             <div className={styles.heroGraphicWrapper}>
               <ResponsiveGraphic
                 alt="마켓플레이스 메인 배너"
-                srcLg="/images/hero-pc.png"
-                srcMd="/images/hero-tablet.png"
-                srcSm="/images/hero-mobile.png"
+                priority
+                sizeLg={[3834, 1530]}
+                sizeMd={[1488, 704]}
+                sizeSm={[750, 398]}
+                srcLg="/images/hero-pc.webp"
+                srcMd="/images/hero-tablet.webp"
+                srcSm="/images/hero-mobile.webp"
               />
             </div>
           </div>
@@ -58,22 +66,25 @@ export default function LandingPage() {
 
       {/* 포인트 거래 소개 섹션 */}
       <LandingSection
-        bgImage="/images/landing1-bg.png"
+        bgImage="/images/landing1-bg.webp"
         subtitle={"내 포토카드를 포인트로 팔고, 원하는 포토카드를\n포인트로 안전하게 교환하세요"}
         title="포인트로 안전하게 거래하세요"
         titleHighlight="안전하게 거래"
       >
         <ResponsiveGraphic
           alt="포인트 거래 예시 화면"
-          srcLg="/images/landing1-pc.png"
-          srcMd="/images/landing1-tablet.png"
-          srcSm="/images/landing1-mobile.png"
+          sizeLg={[3204, 1554]}
+          sizeMd={[1240, 768]}
+          sizeSm={[343, 231]}
+          srcLg="/images/landing1-pc.webp"
+          srcMd="/images/landing1-tablet.webp"
+          srcSm="/images/landing1-mobile.webp"
         />
       </LandingSection>
 
       {/* 실시간 알림 기능 소개 섹션 */}
       <LandingSection
-        bgImage="/images/landing2-bg.png"
+        bgImage="/images/landing2-bg.webp"
         highlightColor="blue"
         subtitle={"교환 제안부터 판매 완료까지,\n실시간 알림으로 놓치지 마세요"}
         title="알림으로 보다 빨라진 거래"
@@ -81,24 +92,30 @@ export default function LandingPage() {
       >
         <ResponsiveGraphic
           alt="실시간 알림 예시 화면"
-          srcLg="/images/landing2-pc.png"
-          srcMd="/images/landing2-tablet.png"
-          srcSm="/images/landing2-mobile.png"
+          sizeLg={[2136, 1036]}
+          sizeMd={[1208, 932]}
+          sizeSm={[652, 670]}
+          srcLg="/images/landing2-pc.webp"
+          srcMd="/images/landing2-tablet.webp"
+          srcSm="/images/landing2-mobile.webp"
         />
       </LandingSection>
 
       {/* 랜덤 상자 포인트 소개 섹션 */}
       <LandingSection
-        bgImage="/images/landing3-bg.png"
+        bgImage="/images/landing3-bg.webp"
         subtitle={"한 시간마다 주어지는 랜덤 상자를 열고,\n포인트를 획득하세요"}
         title="랜덤 상자로 포인트 받자! 🎉"
         titleHighlight="포인트 받자!"
       >
         <ResponsiveGraphic
           alt="랜덤 상자 포인트 뽑기 화면"
-          srcLg="/images/landing3-pc.png"
-          srcMd="/images/landing3-tablet.png"
-          srcSm="/images/landing3-mobile.png"
+          sizeLg={[1778, 1140]}
+          sizeMd={[1114, 714]}
+          sizeSm={[616, 397]}
+          srcLg="/images/landing3-pc.webp"
+          srcMd="/images/landing3-tablet.webp"
+          srcSm="/images/landing3-mobile.webp"
         />
       </LandingSection>
 
