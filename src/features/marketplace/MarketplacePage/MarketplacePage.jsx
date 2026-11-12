@@ -6,6 +6,7 @@ import { useState } from "react";
 import { DEFAULT_CARD_LIMIT } from "@/constants/card";
 import { useMe } from "@/hooks/useMe.js";
 
+import PageTitle from "@/components/common/PageTitle/PageTitle.jsx";
 import { Button } from "@/components/ui/Button";
 import { AlertModal } from "@/components/ui/Modal/index.js";
 
@@ -56,6 +57,11 @@ export default function Marketplace() {
   const router = useRouter();
   const [isNeedLoginModalOpen, setIsNeedLoginModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+
+  // 인증된 유저가 판매하기를 눌렀을 때와 관련된 부분
+  const [isSalePickModalOpen, setIsSalePickModalOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null); // 판매할 카드 (있으면 판매하기 모달 열림)
+
   const handleClick = async () => {
     const result = await refetchMe();
 
@@ -71,25 +77,24 @@ export default function Marketplace() {
     setIsSalePickModalOpen(true);
   };
 
-  // 인증된 유저가 판매하기를 눌렀을 때와 관련된 부분
-  const [isSalePickModalOpen, setIsSalePickModalOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState(null); // 판매할 카드 (있으면 판매하기 모달 열림)
+  const action = (
+    <Button
+      disabled={isFetching || isPending}
+      size="responsive"
+      thickness="thin"
+      variant="primary"
+      className={styles.sellButton}
+      onClick={handleClick}
+    >
+      {isFetching || isPending ? "로딩중..." : "나의 포토카드 판매하기"}
+    </Button>
+  );
 
   return (
     <>
       <div className={styles.page}>
         <div className={styles.topRow}>
-          <h1 className={styles.pageTitle}>마켓플레이스</h1>
-          <Button
-            disabled={isFetching || isPending}
-            size="responsive"
-            thickness="thin"
-            variant="primary"
-            className={styles.sellButton}
-            onClick={handleClick}
-          >
-            {isFetching || isPending ? "로딩중..." : "나의 포토카드 판매하기"}
-          </Button>
+          <PageTitle action={action}>마켓플레이스</PageTitle>
         </div>
         <PageQueryRow
           params={params}
