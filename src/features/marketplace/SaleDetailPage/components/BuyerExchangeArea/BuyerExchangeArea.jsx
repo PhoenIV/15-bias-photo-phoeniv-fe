@@ -94,7 +94,7 @@ export default function BuyerExchangeArea({ sale, user }) {
                 <ExchangePhotoCard
                   key={offer.id}
                   card={offer.offeredCard}
-                  category={offer.offeredCard.genre}
+                  category={genre_label_map(offer.offeredCard.genre) ?? offer.offeredCard.genre}
                   grade={offer.offeredCard.grade}
                   imageId={offer.offeredCard.imagePublicId}
                   message={offer.description}
