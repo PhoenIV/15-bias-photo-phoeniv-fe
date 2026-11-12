@@ -1,7 +1,8 @@
 export default function cloudinaryLoader({ src, width, quality }) {
-  // 로컬 이미지 예외 처리
+  // 로컬 이미지(public/)는 별도 변환 서버가 없어 쿼리가 의미 없으므로 그대로 반환.
+  // 용량 최적화는 파일 자체를 WebP로 변환해서 처리한다.
   if (src.startsWith("/")) {
-    return `${src}?w=${width}&q=${quality || 75}`;
+    return src;
   }
 
   // 그 외(Cloudinary)
