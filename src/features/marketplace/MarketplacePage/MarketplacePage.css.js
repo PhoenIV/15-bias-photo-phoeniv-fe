@@ -6,8 +6,10 @@ export const page = style({
   display: "flex",
   flexDirection: "column",
   minHeight: "100dvh",
+  maxWidth: "1480px",
   minWidth: "375px",
   padding: "15px",
+  margin: "0 auto",
   "@media": {
     [media.tablet]: {
       padding: "30px",
@@ -34,6 +36,7 @@ export const topRow = style({
 export const pageTitle = style({
   fontFamily: vars.fonts.brand,
   display: "none",
+  color: vars.colors.white,
   "@media": {
     [media.tablet]: {
       display: "flex",
